@@ -1,0 +1,193 @@
+scripts (main) U
+❯ ./audit_homework__maninava.sh
+Audit completed.
+
+scripts (main) U
+❯ ls -l ~/exam_results/audit
+total 44
+-rw-r--r-- 1 mava mava  103 Jul 20 19:56 cwd.txt
+-rw-r--r-- 1 mava mava 2017 Jul 20 19:56 files_conf.txt
+-rw------- 1 mava mava  119 Jul 20 19:56 hosts.bak
+-rw-r--r-- 1 mava mava  100 Jul 20 19:56 hosts_perm.txt
+-rw-r--r-- 1 mava mava 1104 Jul 20 19:56 logs_top.txt
+-rw-r--r-- 1 mava mava    8 Jul 20 19:56 notes.txt
+-rw-r--r-- 1 mava mava  199 Jul 20 19:56 preview_shell.txt
+-rw-r--r-- 1 mava mava   83 Jul 20 19:56 summary_group.txt
+-rw-r--r-- 1 mava mava  130 Jul 20 19:56 sysinfo.txt
+-rw-r--r-- 1 mava mava   27 Jul 20 19:56 users_bash.txt
+-rw-r--r-- 1 mava mava  265 Jul 20 19:56 users.txt
+
+scripts (main) U
+❯ for file in $HOME/exam_results/audit/*.txt; do
+    echo "----- $(basename "$file") -----"
+    cat "$file"
+    echo
+done
+----- cwd.txt -----
+# Current Working Directory
+/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/02-Linux/scripts
+
+----- files_conf.txt -----
+# Configuration Files
+/etc/ssh/sshd_config.d/99-archlinux.conf
+/etc/ld.so.conf
+/etc/ts.conf
+/etc/avahi/avahi-daemon.conf
+/etc/libaudit.conf
+/etc/audit/auditd.conf
+/etc/nsswitch.conf
+/etc/valkey/valkey.conf
+/etc/valkey/sentinel.conf
+/etc/mke2fs.conf
+/etc/systemd/logind.conf
+/etc/systemd/system.conf
+/etc/systemd/journald.conf
+/etc/systemd/resolved.conf
+/etc/systemd/oomd.conf
+/etc/systemd/homed.conf
+/etc/systemd/timesyncd.conf
+/etc/systemd/coredump.conf
+/etc/systemd/networkd.conf
+/etc/systemd/journal-remote.conf
+/etc/systemd/zram-generator.conf
+/etc/systemd/journal-upload.conf
+/etc/systemd/pstore.conf
+/etc/systemd/user.conf
+/etc/systemd/sleep.conf
+/etc/gai.conf
+/etc/e2scrub.conf
+/etc/mkinitcpio.conf
+/etc/man_db.conf
+/etc/pacman.conf
+/etc/resolv.conf
+/etc/fonts/fonts.conf
+/etc/gtk-3.0/im-multipress.conf
+/etc/arptables.conf
+/etc/sudo_logsrvd.conf
+/etc/request-key.d/cifs.spnego.conf
+/etc/request-key.d/cifs.idmap.conf
+/etc/ebtables.conf
+/etc/smartd.conf
+/etc/sensors3.conf
+/etc/dkms/framework.conf
+/etc/libao.conf
+/etc/vconsole.conf
+/etc/NetworkManager/NetworkManager.conf
+/etc/nftables.conf
+/etc/security/group.conf
+/etc/security/access.conf
+/etc/security/time.conf
+/etc/security/limits.conf
+/etc/security/namespace.conf
+/etc/security/pwhistory.conf
+/etc/security/faillock.conf
+/etc/security/pam_env.conf
+/etc/libva.conf
+/etc/bluetooth/network.conf
+/etc/bluetooth/main.conf
+/etc/bluetooth/input.conf
+/etc/sudo.conf
+/etc/locale.conf
+/etc/openldap/ldap.conf
+/etc/mdadm.conf
+/etc/xattr.conf
+/etc/pacman.d/gnupg/gpg.conf
+/etc/pacman.d/gnupg/gpg-agent.conf
+/etc/ufw/ufw.conf
+/etc/ufw/sysctl.conf
+/etc/krb5.conf
+/etc/makepkg.conf
+/etc/rsyncd.conf
+/etc/udev/udev.conf
+/etc/udev/iocost.conf
+/etc/healthd.conf
+/etc/X11/xorg.conf.d/00-keyboard.conf
+/etc/xdg/user-dirs.conf
+/etc/pulse/client.conf
+/etc/UPower/UPower.conf
+/etc/host.conf
+/etc/ld.so.conf.d/lib32-glibc.conf
+/etc/request-key.conf
+/etc/makepkg.conf.d/fortran.conf
+/etc/makepkg.conf.d/rust.conf
+/etc/udisks2/udisks2.conf
+/etc/fuse.conf
+/etc/jack/example.conf
+
+----- hosts_perm.txt -----
+# Hosts Permissions
+-rw------- 1 mava mava 119 Jul 20 19:56 /home/mava/exam_results/audit/hosts.bak
+
+----- logs_top.txt -----
+# Top 10 Log Files
+96M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system@92aba5bc647f4c67a7359989ea6a3770-0000000000008e54-00065505596e7184.journal
+65M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system.journal
+65M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system@00065656697df1bb-870f8ec6a4875823.journal~
+55M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system@92aba5bc647f4c67a7359989ea6a3770-000000000008ce22-0006565679ac92f2.journal
+25M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/user-1000@000656566a9e912c-ddde04be184fac7c.journal~
+25M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system@000655055971b586-24d9558269d96304.journal~
+9.0M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/user-1000@92aba5bc647f4c67a7359989ea6a3770-000000000008ce21-0006565679abd9a5.journal
+8.1M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/user-1000.journal
+8.1M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/user-1000@000655055c8eb8b7-130194dd5ad48e66.journal~
+8.1M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/user-1000@000654f428739adb-d82fce1edf6832ed.journal~
+
+----- notes.txt -----
+# Notes
+
+----- preview_shell.txt -----
+# Shell Preview
+root:x:0:0::/root:/usr/usr/bin/zsh
+bin:x:1:1::/:/usr/bin/nologin
+daemon:x:2:2::/:/usr/bin/nologin
+mail:x:8:12::/var/spool/mail:/usr/bin/nologin
+ftp:x:14:11::/srv/ftp:/usr/bin/nologin
+
+----- summary_group.txt -----
+# Group Summary
+root:x:0:root
+sys:x:3:bin
+mem:x:8:
+valkey:x:962:
+mattermost:x:961:
+
+----- sysinfo.txt -----
+# System Information
+Linux jermaine 7.0.13-arch1-1 #1 SMP PREEMPT_DYNAMIC Tue, 23 Jun 2026 11:14:21 +0000 x86_64 GNU/Linux
+x86_64
+
+----- users_bash.txt -----
+# Bash Users
+root
+postgres
+
+----- users.txt -----
+# All Users
+root
+bin
+daemon
+mail
+ftp
+http
+nobody
+dbus
+systemd-coredump
+systemd-network
+systemd-oom
+systemd-journal-remote
+systemd-resolve
+systemd-timesync
+tss
+uuidd
+alpm
+avahi
+pcscd
+polkitd
+mava
+rtkit
+git
+nvidia-persistenced
+systemd-imds
+postgres
+valkey
+mattermost
+
