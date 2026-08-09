@@ -1,0 +1,32 @@
+# HTTP Capture Summary
+9
+packets captured on port 80 (30s window)
+
+# HTTP Capture Details
+15:57:30.321338 IP jermaine.55072 > ec2-34-223-124-45.us-west-2.compute.amazonaws.com.http: Flags [S], seq 1357234482, win 64240, options [mss 1460,sackOK,TS val 2048315930 ecr 0,nop,wscale 10], length 0
+15:57:31.339240 IP jermaine.55072 > ec2-34-223-124-45.us-west-2.compute.amazonaws.com.http: Flags [S], seq 1357234482, win 64240, options [mss 1460,sackOK,TS val 2048316948 ecr 0,nop,wscale 10], length 0
+15:57:32.363112 IP jermaine.55072 > ec2-34-223-124-45.us-west-2.compute.amazonaws.com.http: Flags [S], seq 1357234482, win 64240, options [mss 1460,sackOK,TS val 2048317972 ecr 0,nop,wscale 10], length 0
+15:57:33.387140 IP jermaine.55072 > ec2-34-223-124-45.us-west-2.compute.amazonaws.com.http: Flags [S], seq 1357234482, win 64240, options [mss 1460,sackOK,TS val 2048318996 ecr 0,nop,wscale 10], length 0
+15:57:34.411137 IP jermaine.55072 > ec2-34-223-124-45.us-west-2.compute.amazonaws.com.http: Flags [S], seq 1357234482, win 64240, options [mss 1460,sackOK,TS val 2048320020 ecr 0,nop,wscale 10], length 0
+15:57:35.435141 IP jermaine.55072 > ec2-34-223-124-45.us-west-2.compute.amazonaws.com.http: Flags [S], seq 1357234482, win 64240, options [mss 1460,sackOK,TS val 2048321044 ecr 0,nop,wscale 10], length 0
+15:57:37.483094 IP jermaine.55072 > ec2-34-223-124-45.us-west-2.compute.amazonaws.com.http: Flags [S], seq 1357234482, win 64240, options [mss 1460,sackOK,TS val 2048323092 ecr 0,nop,wscale 10], length 0
+15:57:41.515161 IP jermaine.55072 > ec2-34-223-124-45.us-west-2.compute.amazonaws.com.http: Flags [S], seq 1357234482, win 64240, options [mss 1460,sackOK,TS val 2048327124 ecr 0,nop,wscale 10], length 0
+15:57:49.643170 IP jermaine.55072 > ec2-34-223-124-45.us-west-2.compute.amazonaws.com.http: Flags [S], seq 1357234482, win 64240, options [mss 1460,sackOK,TS val 2048335252 ecr 0,nop,wscale 10], length 0
+
+# DNS Capture Summary
+4
+packets captured on port 53 (30s window)
+
+# DNS Capture Details
+15:59:11.332506 IP jermaine.42398 > Android.local.domain: 1617+ A? example.com. (29)
+15:59:11.403827 IP Android.local.domain > jermaine.42398: 1617 2/0/0 A 188.114.99.0, A 188.114.98.0 (61)
+15:59:11.418908 IP jermaine.55337 > Android.local.domain: 44737+ A? github.com. (28)
+15:59:11.503201 IP Android.local.domain > jermaine.55337: 44737 1/0/0 A 140.82.121.3 (44)
+
+# Observations
+1. HTTP: TCP 3-way handshake SYN packets from client (jermaine:55072) to
+   server port 80. Multiple SYN retransmissions (1s interval) seen - the
+   web server did not reply with SYN-ACK, a sign of connectivity/firewall issue.
+2. DNS: 2 queries (example.com, github.com) to the local resolver
+   (Android.local.domain, the gateway). Each query got a valid A-record answer.
+3. No HTTP data packets were seen because the TCP connection never completed.

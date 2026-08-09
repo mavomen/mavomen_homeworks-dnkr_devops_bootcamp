@@ -1,0 +1,59 @@
+# Commands History - ManiNava Network Homework 01
+# Scenario 1
+ip link
+ip addr
+ip route
+cat /etc/resolv.conf
+sudo pacman -S netplan
+sudo netplan generate
+# (netplan apply documented - not applied to live system)
+ping -c 5 8.8.8.8
+ping -c 5 google.com
+dig +short github.com
+ss -tuln
+ss -tn state established
+ss -tulnp | grep -E ':80 |:443 '
+# Scenario 2
+sudo timeout 30 tcpdump -i wlp7s0 port 80 -w http_capture.pcap
+sudo timeout 30 tcpdump -i wlp7s0 port 53 -w dns_capture.pcap
+tcpdump -r http_capture.pcap
+tshark -r http_capture.pcap -q -z conv,tcp
+tshark -r http_capture.pcap -Y tcp.analysis.retransmission
+timeout 3 nc -zv localhost 80/22/3306
+# Scenario 3
+sudo ufw enable
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow from 192.168.1.0/24 to any port 22
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw status numbered > firewall_rules.txt
+ss -ntu | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -rn
+# (only IPs with >100 connections)
+ss -ntu | awk 'NR>1{print $5}' | cut -d: -f1 | sort | uniq -c | sort -rn | awk '$1 > 100'
+journalctl -u sshd --no-pager | grep -i 'failed password'
+# Scenario 4
+echo '192.168.1.10    app.local' >> /etc/hosts
+echo '192.168.1.11    db.local' >> /etc/hosts
+echo '192.168.1.12    cache.local' >> /etc/hosts
+# switch link DNS to 1.1.1.1 (systemd-resolved) + verify
+sudo resolvectl dns wlp7s0 1.1.1.1
+resolvectl status wlp7s0
+getent hosts app.local db.local cache.local
+ping -c 2 app.local
+nslookup google.com
+nslookup google.com 1.1.1.1
+# restore previous DNS
+sudo resolvectl dns wlp7s0 192.168.45.27
+# Wireshark screenshots (GUI) - see scenario_2/wireshark_*.png
+wireshark -r http_capture.pcap
+wireshark -r http_capture.pcap -Y 'tcp.analysis.retransmission'
+wireshark -r dns_capture.pcap
+ip route show
+traceroute 8.8.8.8
+mtr -r -c 3 8.8.8.8
+# Scenario 5
+iperf3 -s -p 5201
+iperf3 -c 127.0.0.1 -p 5201 -t 10
+iperf3 -c 127.0.0.1 -p 5201 -u -b 100M -t 10
+ss -tuln

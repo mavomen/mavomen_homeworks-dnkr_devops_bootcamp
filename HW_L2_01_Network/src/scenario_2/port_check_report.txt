@@ -1,0 +1,12 @@
+# Port 80 (HTTP)
+nc: connect to localhost (::1) port 80 (tcp) failed: Connection refused
+nc: connect to localhost (127.0.0.1) port 80 (tcp) failed: Connection refused
+port 80 is not reachable
+# Port 22 (SSH)
+nc: connect to localhost (::1) port 22 (tcp) failed: Connection refused
+nc: connect to localhost (127.0.0.1) port 22 (tcp) failed: Connection refused
+port 22 is not reachable
+# Port 3306 (MySQL)
+nc: connect to localhost (::1) port 3306 (tcp) failed: Connection refused
+nc: connect to localhost (127.0.0.1) port 3306 (tcp) failed: Connection refused
+port 3306 is not reachable

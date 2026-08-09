@@ -1,0 +1,41 @@
+# Network Topology
+
+## 1. Current (assumed) Company Topology
+
+- 1 Router (Gateway: 192.168.1.1)
+- 1 Switch
+- 3 Servers: Web (192.168.1.10), DB (192.168.1.11), Cache (192.168.1.12)
+- 10 User computers (192.168.1.100 - 192.168.1.110)
+
+All devices connect to the central switch (Star topology); the switch connects
+to the router, which provides internet access.
+
+## 2. ASCII Diagram
+
+                       Internet
+                           |
+                       [ Router ]
+                    (192.168.1.1)
+                           |
+                       [ Switch ]
+                    /     |     \
+                   /      |      \
+              [ Web ] [ DB ] [ Cache ]
+        192.168.1.10   .11    .12
+                   \      |      /
+                    \     |     /
+              [ Users 10 PCs ]
+         192.168.1.100 - 192.168.1.110
+
+## 3. What Happens If the Switch Fails?
+
+In a Star topology the switch is the single point of failure. If it dies:
+
+- Every device connected to it (all 3 servers + all 10 users) loses
+  connectivity instantly, both between each other and to the router/internet.
+- The router itself is still alive, and the servers/users are still running,
+  but no traffic can pass through the failed switch.
+- Recovery: replace/reboot the switch; until then the whole LAN is down.
+
+Note: this is why production setups use redundant switches (two stacked/core
+switches) to avoid a single point of failure.

@@ -1,0 +1,68 @@
+scripts (main) U
+❯ ./scenario_1/test_connectivity.sh
+Connectivity test completed. Report saved to .../scenario_1/connectivity_report.txt
+
+scripts (main) U
+❯ ./scenario_2/capture_traffic.sh
+tcpdump: listening on wlp7s0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+9 packets captured (port 80) -> http_capture.pcap
+4 packets captured (port 53) -> dns_capture.pcap
+
+scripts (main) U
+❯ tcpdump -r scenario_2/http_capture.pcap
+15:57:30.32 IP jermaine.55072 > ...http: Flags [S] ... (SYN retransmissions visible)
+15:57:49.64 IP jermaine.55072 > ...http: Flags [S] ...
+
+scripts (main) U
+❯ tshark -r scenario_2/http_capture.pcap -q -z conv,tcp
+1 TCP conversation: 192.168.195.244:55072 <-> 34.223.124.45:80 (9 frames, 666 bytes)
+
+scripts (main) U
+❯ tshark -r scenario_2/dns_capture.pcap -Y dns.flags.response==1 -T fields -e dns.qry.name -e dns.time
+example.com      0.071s
+github.com       0.084s
+Average DNS RTT: ~0.078s
+
+scripts (main) U
+❯ ./scenario_2/port_check.sh
+Port check completed. Report saved to .../scenario_2/port_check_report.txt
+- port 80 (HTTP): not reachable
+- port 22 (SSH): not reachable
+- port 3306 (MySQL): not reachable
+
+scripts (main) U
+❯ ./scenario_3/monitor_suspicious.sh
+Security report completed. Saved to .../scenario_3/security_report.txt
+
+scripts (main) U
+❯ sudo ufw status numbered > scenario_3/firewall_rules.txt
+Status: active
+[ 1] 80/tcp      ALLOW IN    Anywhere
+[ 2] 443/tcp     ALLOW IN    Anywhere
+[ 3] 22          ALLOW IN    192.168.1.0/24
+(firewall tested then disabled - not left running on host)
+
+scripts (main) U
+❯ ip route show
+default via 192.168.45.27 dev wlp7s0 proto dhcp src 192.168.45.244 metric 600
+192.168.45.0/24 dev wlp7s0 proto kernel scope link src 192.168.45.244 metric 600
+
+scripts (main) U
+❯ mtr -r -c 3 8.8.8.8
+  1.|-- dns.google   0.0%  3   0.6  0.4  0.3  0.6  0.2
+
+scripts (main) U
+❯ nslookup google.com
+Server: 127.0.0.53
+Name: google.com
+Address: 192.178.192.139 ... (10 addresses)
+
+scripts (main) U
+❯ ./scenario_5/network_performance.sh
+Performance test completed. Report saved to .../scenario_5/performance_report.txt
+TCP: 42.4 Gbits/sec  (localhost)
+UDP: 100 Mbits/sec, jitter 0.065 ms, packet loss 0/3815 (0%)
+
+scripts (main) U
+❯ zip -r ManiNava_network_01.zip ManiNava_network_01/
+  adding: ManiNava_network_01/ (31 files, 32814 bytes)

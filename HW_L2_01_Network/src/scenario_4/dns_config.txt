@@ -1,0 +1,42 @@
+# /etc/hosts entries
+192.168.1.10    app.local
+192.168.1.11    db.local
+192.168.1.12    cache.local
+(verified present in /etc/hosts)
+
+# DNS Server Configuration
+DNS server changed to 1.1.1.1 on the main interface (wlp7s0) with
+systemd-resolved: sudo resolvectl dns wlp7s0 1.1.1.1
+Verified current link DNS server:
+Link 3 (wlp7s0):
+    Current DNS Server: 1.1.1.1
+           DNS Servers: 1.1.1.1
+
+# DNS Test - /etc/hosts resolution
+getent hosts app.local db.local cache.local:
+192.168.1.10    app.local
+192.168.1.11    db.local
+192.168.1.12    cache.local
+=> all three local names resolve to their assigned IPs
+
+# DNS Test - ping app.local
+PING app.local (192.168.1.10) 56(84) bytes of data.
+--- app.local ping statistics ---
+2 packets transmitted, 0 received, 100% packet loss, time 1013ms
+(note: name resolution succeeds - host resolves to 192.168.1.10;
+ no reply because no host is currently listening on 192.168.1.10)
+
+# DNS Test - nslookup google.com (via systemd-resolved stub)
+Server:         127.0.0.53
+Address:        127.0.0.53#53
+Name:   google.com
+Address: 142.250.200.174
+=> the stub resolver (127.0.0.53) forwards queries upstream to the
+   link DNS server, now 1.1.1.1
+
+# DNS Test - nslookup google.com 1.1.1.1 (direct query)
+Server:         1.1.1.1
+Address:        1.1.1.1#53
+Name:   google.com
+Address: 142.250.200.174
+=> public DNS resolution works correctly through the new DNS server 1.1.1.1

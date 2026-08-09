@@ -1,0 +1,55 @@
+# Full Routing Table
+default via 192.168.45.27 dev wlp7s0 proto dhcp src 192.168.45.244 metric 600 
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown 
+172.18.0.0/30 dev singbox_tun proto kernel scope link src 172.18.0.1 
+172.19.0.0/16 dev br-449f3bae092e proto kernel scope link src 172.19.0.1 
+192.168.45.0/24 dev wlp7s0 proto kernel scope link src 192.168.45.244 metric 600 
+
+# Route Trace to 8.8.8.8 (traceroute, ICMP)
+traceroute to 8.8.8.8 (8.8.8.8), 30 hops max, 60 byte packets
+ 1  * * *
+ 2  * * *
+ 3  * * *
+ 4  * * *
+ 5  * * *
+ 6  * * *
+ 7  * * *
+ 8  * * *
+ 9  * * *
+10  * * *
+11  * * *
+12  * * *
+13  * * *
+14  * * *
+15  * * *
+16  * * *
+17  * * *
+18  * * *
+19  * * *
+20  * * *
+21  * * *
+22  * * *
+23  * * *
+24  * * *
+25  * * *
+26  * * *
+27  * * *
+28  * * *
+29  * * *
+30  * * *
+
+# Route Trace to 8.8.8.8 (mtr, 3 packets)
+Start: 2026-08-15T01:07:24+0330
+HOST: jermaine                    Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- dns.google                 0.0%     3    0.6   0.4   0.3   0.6   0.2
+
+# Hops and Latency
+Hop 1: 192.168.45.27 (gateway) / dns.google via VPN tunnel (singbox_tun)
+        avg latency ~0.3ms
+Note: intermediate hops show * because ICMP time-exceeded is filtered;
+      traffic travels through a VPN tunnel so the visible hop count is reduced.
+
+# What is a Router?
+A router is a Layer-3 device that forwards packets between different networks
+by inspecting their destination IP and looking it up in its routing table.
+It selects the best next-hop for each packet and connects your LAN to the internet.

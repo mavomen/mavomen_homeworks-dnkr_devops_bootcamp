@@ -1,0 +1,39 @@
+# Wireshark Analysis (via tshark CLI)
+
+# 1. TCP Connections Established
+================================================================================
+TCP Conversations
+Filter:<No Filter>
+                                                           |       <-      | |       ->      | |     Total     |    Relative    |   Duration   |
+                                                           | Frames  Bytes | | Frames  Bytes | | Frames  Bytes |      Start     |              |
+192.168.195.244:55072      <-> 34.223.124.45:80                 0 0 bytes         9 666 bytes       9 666 bytes     0.000000000        19.3218
+================================================================================
+Only ONE TCP connection attempted (client 192.168.195.244:55072 -> 34.223.124.45:80).
+No connection was fully established: only SYN packets were seen, no SYN-ACK.
+
+# 2. DNS Queries
+example.com
+github.com
+2 DNS queries recorded: example.com and github.com
+
+# 3. Packet Loss / TCP Retransmissions
+2	1.017902000	0
+3	2.041774000	0
+4	3.065802000	0
+5	4.089799000	0
+6	5.113803000	0
+7	7.161756000	0
+8	11.193823000	0
+9	19.321832000	0
+8 retransmissions detected (SYN retransmissions) - the server never answered,
+which indicates packet loss toward port 80 (connection blocked/filtered).
+
+# 4. Average Response Time (RTT)
+DNS RTT per query (tshark dns.time field):
+0.071321000	example.com	0.071321000
+0.170695000	github.com	0.084293000
+Average DNS response time: (0.071 + 0.084) / 2 = 0.078s
+No HTTP RTT was measurable because the TCP handshake never completed.
+
+Screenshots of the captures are included in this folder (wireshark_http_main.png,
+wireshark_http_retrans.png with the tcp.analysis.retransmission filter, wireshark_dns_main.png).
