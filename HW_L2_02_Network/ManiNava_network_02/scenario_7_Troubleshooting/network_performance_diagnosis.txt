@@ -1,0 +1,39 @@
+# network performance diagnosis - Fri Aug 21 08:05:12 PM +0330 2026
+
+# 1+2. latency & packet loss (10 packets each)
+
+== 8.8.8.8 ==
+10 packets transmitted, 10 received, 0% packet loss, time 9249ms
+rtt min/avg/max/mdev = 0.223/0.298/0.400/0.051 ms
+
+== 1.1.1.1 ==
+10 packets transmitted, 10 received, 0% packet loss, time 9210ms
+rtt min/avg/max/mdev = 0.201/0.280/0.473/0.069 ms
+
+== google.com ==
+10 packets transmitted, 10 received, 0% packet loss, time 9233ms
+rtt min/avg/max/mdev = 0.143/0.253/0.448/0.082 ms
+
+== github.com ==
+10 packets transmitted, 10 received, 0% packet loss, time 9208ms
+rtt min/avg/max/mdev = 0.167/0.342/0.785/0.166 ms
+
+# 3. dns resolution time
+google.com -> 0 ms
+github.com -> 0 ms
+stackoverflow.com -> 355 ms
+
+# 4. mtu check on main interface
+mtu 1500
+
+# ping with dont-fragment, probing max payload:
+#   1472 bytes payload + 28 ip/icmp header = standard 1500 mtu
+1472 bytes: OK (mtu 1500 works)
+1452 bytes: OK (mtu >= 1480)
+
+# 5. bottleneck analysis
+baseline (8.8.8.8): avg 0.303ms, 0% packet loss
+- if avg > 100ms or loss > 0% -> check wifi signal / isp first
+- if only some targets are slow -> problem is on that path/provider
+- if dns times are high (>50ms) -> resolver issue, try 1.1.1.1
+- if mtu probe fails -> vpn/tunnel overhead, lower interface mtu

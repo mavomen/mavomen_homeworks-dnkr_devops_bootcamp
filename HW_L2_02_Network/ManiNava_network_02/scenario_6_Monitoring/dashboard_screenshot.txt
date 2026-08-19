@@ -1,0 +1,52 @@
+dashboard.sh - captured output (one frame)
+run with: ./dashboard.sh  (clears screen and refreshes every 10s, ctrl+c to stop)
+
+================ Network Dashboard ================
+updated: Fri Aug 21 08:03:51 PM +0330 2026
+
+-- interfaces / ips --
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+enp8s0           DOWN           
+wlp7s0           UP             192.168.54.244/24 fe80::6ecd:20f2:1d29:3111/64 
+br-17dfce368fff  DOWN           172.20.0.1/16 
+br-449f3bae092e  UP             172.19.0.1/16 fe80::bc3c:7ff:febb:46b3/64 
+docker0          DOWN           172.17.0.1/16 fe80::c84b:2ff:fe1e:3d48/64 
+veth87e885f@if2  UP             fe80::8461:fff:fed8:8388/64 
+singbox_tun      UNKNOWN        172.18.0.1/30 fe80::6099:8653:8e50:35e4/64 
+
+-- active connections --
+established: 131
+
+-- open (listening) ports --
+tcp 0.0.0.0:5355
+tcp 0.0.0.0:5433
+tcp 127.0.0.1:10808
+tcp 127.0.0.1:10814
+tcp 127.0.0.1:35519
+tcp 127.0.0.1:5432
+tcp 127.0.0.1:6379
+tcp 127.0.0.53%lo:53
+tcp 127.0.0.54:53
+tcp [::1]:5432
+tcp [::1]:6379
+tcp [::]:5355
+tcp [::]:5433
+tcp *:8086
+udp 0.0.0.0:5353
+udp 0.0.0.0:5355
+udp 127.0.0.1:10808
+udp 127.0.0.53%lo:53
+udp 127.0.0.54:53
+udp 224.0.0.251:5353
+udp [::]:5353
+udp [::]:5355
+
+-- dns servers --
+127.0.0.53
+
+-- latest 5 log entries --
+
+notes:
+- interfaces: wlp7s0 is the active wifi (192.168.54.244), docker bridges + singbox_tun visible too
+- connections/open ports read live from ss; dns from /etc/resolv.conf
+- log section falls back to journalctl sshd entries when /var/log/auth.log is not readable

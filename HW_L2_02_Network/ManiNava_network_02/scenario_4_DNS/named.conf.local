@@ -1,0 +1,7 @@
+// /etc/bind/named.conf.local
+// local zone declaration for example.local
+
+zone "example.local" {
+    type master;
+    file "/etc/bind/db.example.local";
+};

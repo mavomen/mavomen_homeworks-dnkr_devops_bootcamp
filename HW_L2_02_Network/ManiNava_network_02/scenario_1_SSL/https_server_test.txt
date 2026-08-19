@@ -1,0 +1,32 @@
+# start server
+$ python3 https_server.py
+Server running on https://localhost:8443
+
+# test with curl (-k because cert is self-signed)
+$ curl -k https://localhost:8443
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style type="text/css">
+:root {
+color-scheme: light dark;
+}
+</style>
+<title>Directory listing for /</title>
+</head>
+<body>
+<h1>Directory listing for /</h1>
+<hr>
+<ul>
+<li><a href="certs/">certs/</a></li>
+<li><a href="https_server.py">https_server.py</a></li>
+<li><a href="https_server_test.txt">https_server_test.txt</a></li>
+<li><a href="https_test_report.txt">https_test_report.txt</a></li>
+<li><a href="ssl_generation.txt">ssl_generation.txt</a></li>
+
+# verbose: check tls + presented certificate
+* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / X25519MLKEM768 / RSASSA-PSS
+*   subject: C=IR; ST=Tehran; L=Tehran; O=MyCompany; CN=myapp.local
+*   expire date: Aug 21 16:10:22 2027 GMT
+*   issuer: C=IR; ST=Tehran; L=Tehran; O=MyCompany; CN=myapp.local

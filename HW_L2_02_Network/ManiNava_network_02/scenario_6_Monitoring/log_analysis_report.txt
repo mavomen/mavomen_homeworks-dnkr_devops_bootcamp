@@ -1,0 +1,30 @@
+# network-related log files found in /var/log/
+
+# no readable auth log for this user -> using sample log (/tmp/opencode/sample_auth.log)
+
+# 2. last 10 events
+Aug 21 10:02:14 srv sshd[1306]: Failed password for root from 203.0.113.45 port 41244 ssh2
+Aug 21 10:02:18 srv sshd[1307]: Failed password for admin from 203.0.113.45 port 41260 ssh2
+Aug 21 10:03:22 srv sshd[1310]: Failed password for invalid user test from 198.51.100.77 port 55012 ssh2
+Aug 21 10:04:01 srv sshd[1320]: Accepted password for deploy from 192.168.1.51 port 51300 ssh2
+Aug 21 10:05:47 srv sshd[1331]: Failed password for root from 203.0.113.45 port 41300 ssh2
+Aug 21 10:06:15 srv sshd[1335]: Invalid user oracle from 198.51.100.77 port 55100
+Aug 21 10:07:29 srv sshd[1340]: Failed password for invalid user oracle from 198.51.100.77 port 55120 ssh2
+Aug 21 10:08:33 srv sshd[1351]: Connection closed by 192.168.1.50 port 51234 [preauth]
+Aug 21 10:09:41 srv sshd[1360]: Failed password for root from 203.0.113.45 port 41380 ssh2
+Aug 21 10:10:55 srv sshd[1371]: Failed password for root from 203.0.113.99 port 42000 ssh2
+
+# 3. ip addresses in the log (count per ip)
+      5 203.0.113.45
+      3 198.51.100.77
+      2 192.168.1.50
+      1 203.0.113.99
+      1 192.168.1.51
+
+# 4. suspicious: failed password attempts grouped by ip
+  WARNING: 5 failed attempts from 203.0.113.45
+
+# suspicious: invalid users
+Aug 21 10:03:22 srv sshd[1310]: Failed password for invalid user test from 198.51.100.77 port 55012 ssh2
+Aug 21 10:06:15 srv sshd[1335]: Invalid user oracle from 198.51.100.77 port 55100
+Aug 21 10:07:29 srv sshd[1340]: Failed password for invalid user oracle from 198.51.100.77 port 55120 ssh2

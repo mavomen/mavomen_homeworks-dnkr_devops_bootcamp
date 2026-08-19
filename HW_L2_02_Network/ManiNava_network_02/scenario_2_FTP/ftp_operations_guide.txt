@@ -1,0 +1,74 @@
+# 1+2. connect to ftp.gnu.org + list root directory
+$ ftp -invp ftp.gnu.org <<EOF
+user anonymous anonymous
+ls
+bye
+EOF
+
+Connected to ftp.gnu.org.
+220 GNU FTP server ready.
+230-NOTICE (Updated October 15 2021):
+230-
+230-If you maintain scripts used to access ftp.gnu.org over FTP,
+230-we strongly encourage you to change them to use HTTPS instead.
+230-
+230-Eventually we hope to shut down FTP protocol access, but plan
+230-to give notice here and other places for several months ahead
+230-of time.
+230-
+230----
+230-
+230-Due to U.S. Export Regulations, all cryptographic software on this
+230-site is subject to the following legal notice:
+230-
+230-    This site includes publicly available encryption source code
+230-    which, together with object code resulting from the compiling of
+230-    publicly available source code, may be exported from the United
+230-    States under License Exception "TSU" pursuant to 15 C.F.R. Section
+230-    740.13(e).
+230-
+230-This legal notice applies to cryptographic software only. Please see
+230-the Bureau of Industry and Security (www.bxa.doc.gov) for more
+230-information about current U.S. regulations.
+230 Login successful.
+227 Entering Passive Mode (209,51,188,20,82,253).
+150 Here comes the directory listing.
+lrwxrwxrwx    1 0        0               8 Aug 20  2004 CRYPTO.README -> .message
+-rw-r--r--    1 0        0           17864 Oct 23  2003 MISSING-FILES
+-rw-r--r--    1 0        0            4178 Aug 13  2003 MISSING-FILES.README
+-rw-r--r--    1 0        0            2814 Dec 31  2025 README
+-rw-r--r--    1 0        0          405121 Oct 23  2003 before-2003-08-01.md5sums.asc
+-rw-rw-r--    1 0        3003       260390 Aug 21 03:18 find.txt.gz
+drwxrwxr-x  326 0        3003        12288 Jan 21  2026 gnu
+drwxrwxr-x    3 0        3003         4096 Mar 10  2011 gnu+linux-distros
+-rw-rw-r--    1 0        3003       502139 Aug 21 03:18 ls-lrRt.txt.gz
+drwxr-xr-x    3 0        0            4096 Apr 20  2005 mirrors
+lrwxrwxrwx    1 0        0              11 Apr 15  2004 non-gnu -> gnu/non-gnu
+drwxr-xr-x  100 0        0            4096 Jun 16 21:50 old-gnu
+lrwxrwxrwx    1 0        0               1 Aug 05  2003 pub -> .
+-rw-r--r--    1 0        0            1674 Apr 23  2025 robots.txt
+drwxr-xr-x    2 0        0            4096 Nov 08  2007 savannah
+drwxr-xr-x    2 0        0            4096 Aug 02  2003 third-party
+drwxr-xr-x    2 0        0            4096 Apr 07  2009 tmp
+-rw-rw-r--    1 0        3003       592053 Aug 21 03:18 tree.json.gz
+drwxr-xr-x    2 0        0            4096 May 07  2013 video
+-rw-r--r--    1 0        0            1480 Dec 31  2025 welcome.msg
+226 Directory send OK.
+221 Goodbye.
+
+# 3. download a file (two ways)
+
+## classic client:
+$ cd /tmp && ftp -invp ftp.gnu.org -> user anonymous anonymous -> get MISSING-FILES.README
+-rw-r--r-- 1 mava mava 4178 Aug 21 19:54 /tmp/MISSING-FILES.README
+
+## same with wget:
+$ wget -q --timeout=20 ftp://ftp.gnu.org/MISSING-FILES.README
+
+# 4. upload attempt on public server
+anonymous ftp servers are read-only, upload gets refused:
+$ curl -T testfile ftp://ftp.gnu.org/incoming/
+curl: (9) Server denied you to change to the given directory
+
+upload only works on your own server (proved in setup_ftp.sh docker test):
+$ curl -T local.txt --user ftpuser:ftpuser123 ftp://SERVER/files/

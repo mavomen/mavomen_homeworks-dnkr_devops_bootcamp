@@ -1,0 +1,64 @@
+SSH Security Hardening - guide
+===============================
+
+1. what was changed and why (see sshd_config_hardened)
+
+   PasswordAuthentication no     the single most effective change. passwords
+                                 can be guessed/leaked/reused; a 2048+ bit
+                                 key cannot be brute forced over the network.
+   PermitRootLogin no            root is a known name on every system, so all
+                                 brute force attacks target it. logging in as
+                                 a normal user + sudo also leaves an audit
+                                 trail of WHO did something.
+   Port 2222                     doesn't make ssh "secure by itself", but cuts
+                                 99% of automated scanner noise from logs.
+   MaxAuthTries 3                kills slow brute force attempts per connection.
+   LoginGraceTime 20             unauthenticated connections get dropped fast.
+   modern Kex/Cipher/MAC lists   removes legacy SHA1/CBC/weak-DH options ->
+                                 no downgrade attacks.
+   X11Forwarding no              unused attack surface on servers.
+   AllowGroups sshusers          only listed users can even attempt login.
+
+2. why disable password authentication
+
+   - bots scan the whole internet for open ssh ports and try dictionary
+     attacks nonstop (check /var/log/auth.log or journalctl -u sshd)
+   - one weak password = server owned; keys are 2048+ bit random numbers
+   - with keys, leaked-password breaches elsewhere don't affect you
+   - requirement: you MUST copy your key BEFORE enabling it, otherwise you
+     lock yourself out:
+       ssh-copy-id -i ~/.ssh/mykey.pub user@server
+       # verify key login works in a second terminal, THEN set
+       # PasswordAuthentication no and restart sshd
+
+3. why disable root login
+
+   - attackers always try root (name costs nothing to guess)
+   - forces named accounts -> accountability: logs show which admin logged in,
+     sudo shows who escalated
+   - disables direct password guessing against the most powerful account
+
+4. how to monitor failed login attempts
+
+   # debian/ubuntu style
+   grep "Failed password" /var/log/auth.log
+   grep "Failed password" /var/log/auth.log | awk '{print $(NF-3)}' | sort | uniq -c | sort -rn | head
+
+   # systemd systems (arch)
+   journalctl -u sshd | grep -i failed
+   journalctl -u sshd --since today | grep "Failed password"
+
+   # count attempts per source ip (top offenders)
+   lastb | awk '{print $3}' | sort | uniq -c | sort -rn | head
+
+   # live follow
+   tail -f /var/log/auth.log | grep --line-buffered Failed
+
+   for real protection add fail2ban: reads those logs and firewall-bans
+   offending IPs automatically.
+
+5. applying safely
+
+   sshd -t                      # syntax check first!
+   systemctl reload sshd        # reload keeps existing sessions alive
+   # keep your current session open until you verified new logins work

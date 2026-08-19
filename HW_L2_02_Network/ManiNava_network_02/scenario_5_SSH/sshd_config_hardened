@@ -1,0 +1,48 @@
+# sshd_config_hardened - sample hardened sshd configuration
+# place at /etc/ssh/sshd_config.d/99-hardening.conf (or merge into sshd_config)
+# test with: sshd -t   then: systemctl restart sshd
+
+# --- authentication ---
+# keys only, no passwords (brute force becomes impossible)
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+ChallengeResponseAuthentication no
+PubkeyAuthentication yes
+
+# no direct root login - use a normal user + sudo
+PermitRootLogin no
+
+# limit guesses
+MaxAuthTries 3
+LoginGraceTime 20
+
+# --- network ---
+# move off port 22 to cut automated noise (security by obscurity, but it works)
+Port 2222
+
+# only listen where needed
+AddressFamily any
+ListenAddress 0.0.0.0
+
+# --- session limits ---
+ClientAliveInterval 300
+ClientAliveCountMax 2
+MaxSessions 5
+MaxStartups 3:30:10
+
+# --- crypto (drop legacy) ---
+# modern algorithms only; no ssh-rsa/SHA1, no CBC ciphers
+KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group16-sha512
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
+HostKeyAlgorithms ssh-ed25519,rsa-sha2-512,rsa-sha2-256
+
+# --- misc ---
+X11Forwarding no
+AllowAgentForwarding no
+AllowTcpForwarding yes        # needed for our tunneling use cases
+PrintMotd no
+UseDNS no
+
+# optional: restrict who can even try to log in
+AllowGroups sshusers

@@ -1,0 +1,57 @@
+SSL Certificate Generation - myapp.local
+=========================================
+
+1. generate private key + self-signed certificate (one command)
+
+openssl req -x509 -newkey rsa:2048 -nodes \
+  -keyout myapp.key -out myapp.crt -days 365 \
+  -subj "/C=IR/ST=Tehran/L=Tehran/O=MyCompany/CN=myapp.local"
+
+flags:
+  -x509        output a self-signed certificate instead of a CSR
+  -newkey rsa:2048   create a new 2048-bit RSA key
+  -nodes       do NOT encrypt the private key (needed for unattended server use)
+  -days 365    valid for one year
+  -subj        subject fields without interactive prompts (CN = myapp.local)
+
+files created (in certs/):
+  myapp.key  -> private key (1704 bytes, permission 600)
+  myapp.crt  -> self-signed certificate (1302 bytes)
+
+2. verify the certificate
+
+$ openssl x509 -in myapp.crt -text -noout | head -25
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            08:f6:6e:e0:17:a2:8e:f3:87:93:e4:90:ce:3b:e5:b7:51:db:91:7a
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=IR, ST=Tehran, L=Tehran, O=MyCompany, CN=myapp.local
+        Validity
+            Not Before: Aug 21 16:10:22 2026 GMT
+            Not After : Aug 21 16:10:22 2027 GMT
+        Subject: C=IR, ST=Tehran, L=Tehran, O=MyCompany, CN=myapp.local
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                ...
+
+notes:
+- issuer == subject -> confirms it is self-signed (no CA involved)
+- validity period is exactly 365 days as requested
+- signature algorithm sha256WithRSAEncryption (sha256 is the current standard)
+
+3. check the private key is valid
+
+$ openssl rsa -in myapp.key -check -noout
+RSA key ok
+
+4. quick sanity check that key and cert belong together
+(modulus of both must match)
+
+$ openssl x509 -noout -modulus -in myapp.crt | openssl md5
+MD5(stdin)= a4881b5341edc43e6c9948210a0482e1
+$ openssl rsa -noout -modulus -in myapp.key | openssl md5
+MD5(stdin)= a4881b5341edc43e6c9948210a0482e1
+same hash -> key and cert are a matching pair

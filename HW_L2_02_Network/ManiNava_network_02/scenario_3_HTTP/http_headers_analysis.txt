@@ -1,0 +1,68 @@
+HTTP Headers Analysis
+======================
+
+commands used:
+  curl -I https://github.com
+  curl -I https://google.com
+  curl -I https://stackoverflow.com
+
+raw headers (filtered to the interesting ones):
+
+--- github.com ---
+content-type: text/html; charset=utf-8
+cache-control: max-age=0, private, must-revalidate
+x-frame-options: deny
+content-security-policy: default-src 'none'; base-uri 'self'; ... (very long,
+  whitelists every asset domain github uses, frame-ancestors 'none',
+  upgrade-insecure-requests)
+server: github.com
+
+--- google.com ---
+content-type: text/html; charset=UTF-8
+cache-control: public, max-age=2592000
+server: gws
+x-frame-options: SAMEORIGIN
+
+--- stackoverflow.com ---
+cache-control: private
+server: cloudflare
+content-security-policy: upgrade-insecure-requests; frame-ancestors 'self' https://stackexchange.com
+x-frame-options: SAMEORIGIN
+
+what each header does:
+
+1. Content-Type
+   tells the browser what kind of data is coming and which encoding to use.
+   text/html; charset=utf-8 = render as html. if this is wrong the browser
+   misinterprets the body (e.g. json downloaded instead of displayed, or
+   broken unicode). also the base of XSS protection on downloads.
+
+2. Server
+   identifies the server software. google = gws (Google Web Server),
+   stackoverflow hides behind cloudflare, github just says "github.com".
+   showing exact versions here is considered bad practice because it helps
+   attackers pick known CVEs.
+
+3. Cache-Control
+   controls who may cache the response and for how long.
+   - google homepage: public, max-age=2592000 -> caches/CDNs may store it 30 days
+   - github: max-age=0, private, must-revalidate -> never cache without asking,
+     it's per-user dynamic content
+   - stackoverflow: private -> browser cache only, not shared proxies
+
+4. X-Frame-Options
+   anti-clickjacking: controls if the page can be embedded in an <iframe>.
+   - deny (github): nobody may frame it, not even github itself
+   - SAMEORIGIN (google, SO): only pages from the same domain may frame it
+   protects against invisible overlay attacks that steal clicks.
+
+5. Content-Security-Policy
+   whitelist of what the page is allowed to load/execute (scripts, styles,
+   frames, connections...). github's policy is extremely strict:
+   default-src 'none' + explicit allowlist per category, which massively
+   limits the damage of any injected script (XSS mitigation).
+   stackoverflow keeps it short: force https + only allow framing by itself
+   and stackexchange.
+
+summary: content-type = correctness, server = info leak (keep vague),
+cache-control = performance, x-frame-options + csp = security hardening.

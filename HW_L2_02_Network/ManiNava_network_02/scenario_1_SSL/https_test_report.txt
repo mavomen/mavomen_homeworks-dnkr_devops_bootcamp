@@ -1,0 +1,141 @@
+# 1. HTTPS request to google.com
+*   Trying [2607:f8b0:4023:1804::66]:443...
+* Immediate connect fail for 2607:f8b0:4023:1804::66: Network is unreachable
+* connect to 2607:f8b0:4023:1804::66 port 443 from :: port 0 failed: Success
+*   Trying [2607:f8b0:4023:1804::65]:443...
+* Immediate connect fail for 2607:f8b0:4023:1804::65: Network is unreachable
+* connect to 2607:f8b0:4023:1804::65 port 443 from :: port 0 failed: Success
+*   Trying [2607:f8b0:4023:1804::71]:443...
+* Immediate connect fail for 2607:f8b0:4023:1804::71: Network is unreachable
+* connect to 2607:f8b0:4023:1804::71 port 443 from :: port 0 failed: Success
+*   Trying [2607:f8b0:4023:1804::8a]:443...
+* Immediate connect fail for 2607:f8b0:4023:1804::8a: Network is unreachable
+* connect to 2607:f8b0:4023:1804::8a port 443 from :: port 0 failed: Success
+* Host google.com:443 was resolved.
+* IPv6: 2607:f8b0:4023:1804::66, 2607:f8b0:4023:1804::65, 2607:f8b0:4023:1804::71, 2607:f8b0:4023:1804::8a
+* IPv4: 142.250.137.139, 142.250.137.102, 142.250.137.101, 142.250.137.100, 142.250.137.138, 142.250.137.113
+*   Trying 142.250.137.139:443...
+* ALPN: curl offers h2,http/1.1
+} [5 bytes data]
+* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+} [1565 bytes data]
+* SSL Trust Anchors:
+*   CAfile: /etc/ssl/certs/ca-certificates.crt
+{ [5 bytes data]
+* TLSv1.3 (IN), TLS handshake, Server hello (2):
+{ [1210 bytes data]
+* TLSv1.3 (IN), TLS change cipher, Change cipher spec (1):
+{ [1 bytes data]
+* TLSv1.3 (IN), TLS handshake, Encrypted Extensions (8):
+{ [15 bytes data]
+* TLSv1.3 (IN), TLS handshake, Certificate (11):
+{ [4832 bytes data]
+* TLSv1.3 (IN), TLS handshake, CERT verify (15):
+{ [79 bytes data]
+* TLSv1.3 (IN), TLS handshake, Finished (20):
+{ [52 bytes data]
+* TLSv1.3 (OUT), TLS change cipher, Change cipher spec (1):
+} [1 bytes data]
+* TLSv1.3 (OUT), TLS handshake, Finished (20):
+} [52 bytes data]
+* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / X25519MLKEM768 / id-ecPublicKey
+* ALPN: server accepted h2
+* Server certificate:
+*   subject: CN=*.google.com
+*   start date: Aug  5 20:42:14 2026 GMT
+*   expire date: Oct 28 20:42:13 2026 GMT
+*   issuer: C=US; O=Google Trust Services; CN=WR2
+*   Certificate level 0: Public key type EC/prime256v1 (256/128 Bits/secBits), signed using sha256WithRSAEncryption
+*   Certificate level 1: Public key type RSA (2048/112 Bits/secBits), signed using sha256WithRSAEncryption
+*   Certificate level 2: Public key type RSA (4096/152 Bits/secBits), signed using sha384WithRSAEncryption
+*   subjectAltName: "google.com" matches cert's "google.com"
+* OpenSSL verify result: 0
+* SSL certificate verified via OpenSSL.
+* Established connection to google.com (142.250.137.139 port 443) from 172.18.0.1 port 54230 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0* using HTTP/2
+* [HTTP/2] [1] OPENED stream for https://google.com/
+* [HTTP/2] [1] [:method: HEAD]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: google.com]
+* [HTTP/2] [1] [:path: /]
+* [HTTP/2] [1] [user-agent: curl/8.20.0]
+* [HTTP/2] [1] [accept: */*]
+} [5 bytes data]
+> HEAD / HTTP/2
+> Host: google.com
+> User-Agent: curl/8.20.0
+> Accept: */*
+> 
+* Request completely sent off
+} [5 bytes data]
+* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+{ [283 bytes data]
+* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+{ [283 bytes data]
+< HTTP/2 301 
+< location: https://www.google.com/
+< content-type: text/html; charset=UTF-8
+< content-security-policy-report-only: object-src 'none';base-uri 'self';script-src 'nonce-OeFkW2H3Ik_RjmHd3zwJmA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp
+< date: Fri, 21 Aug 2026 16:12:14 GMT
+< expires: Sun, 20 Sep 2026 16:12:14 GMT
+< cache-control: public, max-age=2592000
+< server: gws
+< content-length: 220
+< x-xss-protection: 0
+< x-frame-options: SAMEORIGIN
+< alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+< 
+} [5 bytes data]
+  0    220   0      0   0      0      0      0           00:01              0  0    220   0      0   0      0      0      0           00:01              0  0    220   0      0   0      0      0      0           00:01              0
+* Connection #0 to host google.com:443 left intact
+HTTP/2 301 
+location: https://www.google.com/
+content-type: text/html; charset=UTF-8
+content-security-policy-report-only: object-src 'none';base-uri 'self';script-src 'nonce-OeFkW2H3Ik_RjmHd3zwJmA' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp
+date: Fri, 21 Aug 2026 16:12:14 GMT
+expires: Sun, 20 Sep 2026 16:12:14 GMT
+cache-control: public, max-age=2592000
+server: gws
+content-length: 220
+x-xss-protection: 0
+x-frame-options: SAMEORIGIN
+alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+
+
+# 2. SSL certificate chain (google.com)
+ 0 s:CN=*.google.com
+   i:C=US, O=Google Trust Services, CN=WR2
+   v:NotBefore: Aug  5 20:42:14 2026 GMT; NotAfter: Oct 28 20:42:13 2026 GMT
+ 1 s:C=US, O=Google Trust Services, CN=WR2
+   i:C=US, O=Google Trust Services LLC, CN=GTS Root R1
+   v:NotBefore: Dec 13 09:00:00 2023 GMT; NotAfter: Feb 20 14:00:00 2029 GMT
+ 2 s:C=US, O=Google Trust Services LLC, CN=GTS Root R1
+   i:C=BE, O=GlobalSign nv-sa, OU=Root CA, CN=GlobalSign Root CA
+   v:NotBefore: Jun 19 00:00:42 2020 GMT; NotAfter: Jan 28 00:00:42 2028 GMT
+
+# 3. TLS version
+* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+* TLSv1.3 (IN), TLS handshake, Server hello (2):
+* TLSv1.3 (IN), TLS change cipher, Change cipher spec (1):
+* TLSv1.3 (IN), TLS handshake, Encrypted Extensions (8):
+* TLSv1.3 (IN), TLS handshake, Certificate (11):
+* TLSv1.3 (IN), TLS handshake, CERT verify (15):
+* TLSv1.3 (IN), TLS handshake, Finished (20):
+* TLSv1.3 (OUT), TLS change cipher, Change cipher spec (1):
+* TLSv1.3 (OUT), TLS handshake, Finished (20):
+* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / X25519MLKEM768 / id-ecPublicKey
+* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+
+# 4. Certificate expiration (google.com)
+notBefore=Aug  5 20:42:14 2026 GMT
+notAfter=Oct 28 20:42:13 2026 GMT
+
+# 5. Negative test: expired.badssl.com (should fail verification)
+* Host expired.badssl.com:443 was resolved.
+*   expire date: Apr 12 23:59:59 2015 GMT
+*   subjectAltName: "expired.badssl.com" matches cert's "*.badssl.com"
+* SSL certificate OpenSSL verify result: certificate has expired (10)
+curl: (60) SSL certificate OpenSSL verify result: certificate has expired (10)

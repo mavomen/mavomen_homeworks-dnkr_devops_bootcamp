@@ -1,0 +1,26 @@
+# ~/.ssh/config - per-user ssh client config
+# chmod 600 this file
+
+# default key for everything not listed
+Host *
+    AddKeysToAgent yes
+    ServerAliveInterval 60
+
+Host myserver
+    HostName 192.168.1.10
+    User admin
+    Port 22
+    IdentityFile ~/.ssh/mykey
+    IdentitiesOnly yes
+
+Host webprod
+    HostName web.example.com
+    User deploy
+    Port 2222
+    IdentityFile ~/.ssh/deploy_key
+
+# jump through a bastion in one command: ssh db01
+Host db01
+    HostName 10.0.2.5
+    User admin
+    ProxyJump myserver

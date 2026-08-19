@@ -1,0 +1,70 @@
+HTTP Server Guide (scenario 3.1)
+=================================
+
+did both options: A (python) and B (nginx).
+
+--- Option A: python http server ---
+
+file: http_server.py
+- listens on port 8080
+- creates a small index.html on first run and serves it
+
+$ python3 http_server.py
+Server at http://localhost:8080
+
+$ curl -i http://localhost:8080
+HTTP/1.0 200 OK
+Server: SimpleHTTP/0.6 Python/3.14.6
+Date: Fri, 21 Aug 2026 16:25:31 GMT
+Content-type: text/html
+Content-Length: 157
+
+<!DOCTYPE html>
+<html>
+<head><title>MyApp</title></head>
+<body>
+  <h1>Hello from MyApp</h1>
+  <p>Simple HTTP server running on port 8080</p>
+</body>
+</html>
+
+good enough for testing, but single threaded and not for production.
+
+--- Option B: nginx virtual host ---
+
+file: nginx_config.conf
+- vhost for myapp.local, root /var/www/myapp
+- custom error pages (404 + 50x)
+- 7d cache header for static assets
+
+tested inside docker (nginx:alpine), config mounted as default.conf:
+
+$ docker run -d --name hw02-nginx \
+    -v "$PWD/nginx_config.conf:/etc/nginx/conf.d/default.conf:ro" nginx:alpine
+$ docker exec hw02-nginx nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+# create test content in the container
+# /var/www/myapp/index.html        -> <h1>myapp.local works</h1>
+# /var/www/myapp/errors/404.html   -> <h1>404 - page not found</h1>
+
+vhost responds to the Host header:
+
+$ curl -i -H "Host: myapp.local" http://localhost/
+HTTP/1.1 200 OK
+Server: nginx/1.31.2
+...
+<h1>myapp.local works</h1>
+
+custom error page kicks in for missing files:
+
+$ curl -i -H "Host: myapp.local" http://localhost/nope.html
+HTTP/1.1 404 Not Found
+...
+<h1>404 - page not found</h1>
+
+on a real server you would also add myapp.local to /etc/hosts:
+  echo "127.0.0.1 myapp.local" | sudo tee -a /etc/hosts
+
+cleanup: docker rm -f hw02-nginx

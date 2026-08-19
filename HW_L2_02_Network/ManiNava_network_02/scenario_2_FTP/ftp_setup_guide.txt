@@ -1,0 +1,77 @@
+FTP Server Setup Guide (vsftpd)
+================================
+
+since I don't have a dedicated server, the setup was tested inside a docker
+container (debian:bookworm-slim) - same commands apply on a real ubuntu/debian box.
+
+1. files
+   setup_ftp.sh  -> automated setup: install vsftpd, write config,
+                    create ftpuser, start service
+   vsftpd.conf   -> annotated sample config
+
+2. what the script does step by step
+
+   # install
+   sudo apt update && sudo apt install -y vsftpd
+
+   # config: backup original then write new one
+   cp /etc/vsftpd.conf /etc/vsftpd.conf.bak
+   # (see vsftpd.conf in this folder for the full annotated version)
+
+   key settings:
+     anonymous_enable=YES      # anonymous can download from /srv/ftp (read-only)
+     anon_root=/srv/ftp
+     local_enable=YES          # dedicated user can log in
+     write_enable=YES          # uploads allowed for local users
+     chroot_local_user=YES     # users jailed in their home dir
+
+   # dedicated ftp user
+   sudo useradd -m -d /home/ftpuser -s /bin/bash ftpuser
+   echo 'ftpuser:ftpuser123' | sudo chpasswd
+   sudo mkdir -p /home/ftpuser/files && sudo chown ftpuser:ftpuser /home/ftpuser/files
+
+   # anonymous download folder
+   sudo mkdir -p /srv/ftp/pub
+
+   # start / stop / status
+   sudo systemctl start|stop|restart|status vsftpd
+   # on systems without systemd (like the test container):
+   sudo service vsftpd start|stop
+
+3. test run inside docker
+
+   $ docker run -d --name hw02-vsftpd debian:bookworm-slim sleep infinity
+   $ docker cp setup_ftp.sh hw02-vsftpd:/root/
+   $ docker exec hw02-vsftpd bash /root/setup_ftp.sh
+   == 1. installing vsftpd ==
+   ...
+   == 3. creating dedicated ftp user ==
+   == 4. start / stop / status ==
+   Starting FTP server: vsftpd.
+   == done ==
+
+   note: systemctl is not available inside the container (no systemd running),
+   so the script falls back to `service vsftpd restart`.
+
+4. verification (from inside the container)
+
+   # anonymous download (no credentials)
+   $ curl ftp://localhost/pub/readme.txt
+   welcome to the test ftp server
+
+   # anonymous listing
+   $ curl ftp://localhost/pub/
+   -rw-r--r--    1 0        0              31 Aug 21 16:16 readme.txt
+
+   # login as ftpuser and upload
+   $ curl -T upload_test.txt --user ftpuser:ftpuser123 ftp://localhost/files/
+   uploaded
+
+   # list + download back
+   $ curl ftp://localhost/files/ --user ftpuser:ftpuser123
+   -rw-r--r--    1 1000     1000           23 Aug 21 16:16 upload_test.txt
+   $ curl ftp://localhost/files/upload_test.txt --user ftpuser:ftpuser123
+   hello from docker test
+
+5. cleanup
+   docker rm -f hw02-vsftpd

@@ -1,0 +1,58 @@
+SSH Key-Based Authentication - guide
+=====================================
+
+1. generate an RSA 2048-bit key pair
+
+$ ssh-keygen -t rsa -b 2048 -f ~/.ssh/mykey -N ""
+Generating public/private rsa key pair.
+Your identification has been saved in ~/.ssh/mykey
+Your public key has been saved in ~/.ssh/mykey.pub
+The key fingerprint is:
+SHA256:Q8ZXC/NGyyk7FiNelYX7noyc2czwKNOgWt0TbOKrkDg maninava@homework-demo
+
+(the demo pair is saved in this folder as demo_key / demo_key.pub)
+
+- -N "" = empty passphrase. for real servers use a passphrase +
+  ssh-agent, otherwise whoever steals the private key owns your servers.
+- fingerprint check: ssh-keygen -lf demo_key.pub
+  -> 2048 SHA256:Q8ZXC/NGyyk7FiNelYX7noyc2czwKNOgWt0TbOKrkDg (RSA)
+
+2. public key format
+
+demo_key.pub contains one line:
+  ssh-rsa AAAAB3NzaC1yc2E... maninava@homework-demo
+  ^type   ^base64 key material          ^comment (free text)
+
+this exact line is what gets appended to the server's
+~/.ssh/authorized_keys file.
+
+3. how passwordless login actually works
+
+1) client says: "i want to log in with my key"
+2) server generates a random challenge encrypted with the PUBLIC key
+   stored in authorized_keys and sends it
+3) only the holder of the PRIVATE key can decrypt it -> client proves
+   identity without ever sending a secret over the wire
+4) server lets the session through - no password involved at all
+
+setup on the server side:
+$ ssh-copy-id -i ~/.ssh/mykey.pub user@server
+# this just appends the pub key to /home/user/.ssh/authorized_keys
+# manual equivalent:
+$ cat ~/.ssh/mykey.pub | ssh user@server 'mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys'
+
+permissions matter or sshd refuses the keys:
+  ~/.ssh           -> 700
+  authorized_keys  -> 600
+  private key      -> 600
+
+4. ~/.ssh/config for convenience
+
+see ssh_config_sample in this folder. after adding it you can just type:
+$ ssh myserver
+instead of: ssh -i ~/.ssh/mykey -p 22 admin@192.168.1.10
+
+5. quick test that the whole thing works
+
+$ ssh -i demo_key user@server echo ok
+ok        <- logged in without being asked for a password

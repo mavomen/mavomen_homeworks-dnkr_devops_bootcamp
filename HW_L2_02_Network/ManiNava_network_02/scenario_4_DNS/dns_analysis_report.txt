@@ -1,0 +1,104 @@
+# DNS analysis - Fri Aug 21 07:58:43 PM +0330 2026
+# resolver: 127.0.0.53
+
+DOMAIN               IP               TTL    QUERY(ms)    AUTH NS
+------               --               ---    ---------    -------
+google.com           192.178.192.113  170    0 ms         ns2.google.com.
+github.com           140.82.114.3     2      0 ms         dns1.p08.nsone.net.
+stackoverflow.com    198.252.206.1    274    0 ms         damian.ns.cloudflare.com.
+linkedin.com         130.211.32.14    162    0 ms         dns1.p09.nsone.net.
+
+# raw dig output per domain
+
+== google.com ==
+
+; <<>> DiG 9.20.26 <<>> google.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 22856
+;; flags: qr rd ra; QUERY: 1, ANSWER: 6, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;google.com.			IN	A
+
+;; ANSWER SECTION:
+google.com.		168	IN	A	192.178.192.139
+google.com.		168	IN	A	192.178.192.102
+google.com.		168	IN	A	192.178.192.113
+google.com.		168	IN	A	192.178.192.138
+google.com.		168	IN	A	192.178.192.100
+google.com.		168	IN	A	192.178.192.101
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53) (UDP)
+;; WHEN: Fri Aug 21 19:58:45 +0330 2026
+;; MSG SIZE  rcvd: 135
+
+
+== github.com ==
+
+; <<>> DiG 9.20.26 <<>> github.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 6398
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;github.com.			IN	A
+
+;; ANSWER SECTION:
+github.com.		1	IN	A	140.82.114.3
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53) (UDP)
+;; WHEN: Fri Aug 21 19:58:45 +0330 2026
+;; MSG SIZE  rcvd: 55
+
+
+== stackoverflow.com ==
+
+; <<>> DiG 9.20.26 <<>> stackoverflow.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 9742
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;stackoverflow.com.		IN	A
+
+;; ANSWER SECTION:
+stackoverflow.com.	272	IN	A	198.252.206.1
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53) (UDP)
+;; WHEN: Fri Aug 21 19:58:46 +0330 2026
+;; MSG SIZE  rcvd: 62
+
+
+== linkedin.com ==
+
+; <<>> DiG 9.20.26 <<>> linkedin.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 35053
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;linkedin.com.			IN	A
+
+;; ANSWER SECTION:
+linkedin.com.		161	IN	A	130.211.32.14
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53) (UDP)
+;; WHEN: Fri Aug 21 19:58:46 +0330 2026
+;; MSG SIZE  rcvd: 57
+

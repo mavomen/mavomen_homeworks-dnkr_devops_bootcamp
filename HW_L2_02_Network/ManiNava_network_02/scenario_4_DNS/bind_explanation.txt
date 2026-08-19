@@ -1,0 +1,56 @@
+Bind DNS Server Configuration - explanation
+============================================
+
+(theoretical question - bind not installed, files are samples)
+
+1. how the two files work together
+
+   named.conf.local  -> tells the bind daemon "you are authoritative for
+                        example.local, the zone data lives in
+                        /etc/bind/db.example.local"
+
+   db.example.local  -> the actual zone file with all records
+
+2. zone file walkthrough
+
+   $TTL 604800            default TTL (1 week) for records without explicit TTL
+
+   SOA record             start of authority, mandatory first record:
+     ns1.example.local.   primary name server for this zone
+     admin.example.local. admin mailbox (admin@example.local)
+     Serial               version number of the zone - MUST be increased on
+                          every edit, secondaries compare it to detect changes
+     Refresh/Retry/Expire how often secondaries check + when to give up
+     Negative cache TTL   how long a "NXDOMAIN" answer is cached
+
+   NS record              declares ns1 as the name server
+                          (needs its own A record -> glue: ns1 A 192.168.1.10)
+
+   A records              @ = the domain itself, plus www/mail/ftp hosts
+
+   MX record              mail for example.local goes to mail.example.local,
+                          priority 10 (lower = preferred)
+
+3. applying + verifying on a real server
+
+   # install
+   sudo apt install bind9 bind9utils
+
+   # drop the files in place (paths from named.conf.local)
+   sudo cp named.conf.local /etc/bind/
+   sudo cp db.example.local /etc/bind/
+
+   # check syntax before restarting
+   named-checkconf
+   named-checkzone example.local /etc/bind/db.example.local
+
+   # restart + test
+   sudo systemctl restart named
+   dig @localhost www.example.local
+   dig @localhost example.local MX
+
+4. notes
+   - trailing dots in zone files are absolute names ("mail.example.local."
+     not "mail.example.local" which would expand to mail.example.local.example.local)
+   - for a LAN-only zone you would also add a reverse zone (PTR records),
+     and point client resolv.conf at this server
