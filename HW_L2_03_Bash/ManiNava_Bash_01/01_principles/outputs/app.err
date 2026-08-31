@@ -1,0 +1,2 @@
+ls: cannot access '/path/that/does/not/exists': No such file or directory
+ls: cannot access '/another/bad/path': No such file or directory

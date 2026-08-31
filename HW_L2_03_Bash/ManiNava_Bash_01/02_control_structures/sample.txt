@@ -1,0 +1,5 @@
+alpha
+beta
+error: disk full
+gamma
+ERROR: network down

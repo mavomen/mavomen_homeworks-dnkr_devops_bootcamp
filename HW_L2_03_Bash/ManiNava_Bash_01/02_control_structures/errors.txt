@@ -1,0 +1,2 @@
+error: disk full
+ERROR: network down

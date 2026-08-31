@@ -1,0 +1,2 @@
+/home/user/backup.sh
+/home/user/logrotate.sh

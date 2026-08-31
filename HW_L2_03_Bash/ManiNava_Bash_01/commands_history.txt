@@ -1,0 +1,34 @@
+# Commands History - ManiNava Bash Homework 01
+# Section 1 - Principles & File Descriptors
+bash 01_principles/run_redirect.sh
+cat 01_principles/outputs/app.log
+cat 01_principles/outputs/app.err
+bash 01_principles/syntax_checker.sh > 01_principles/syntax_report.txt
+cat 01_principles/syntax_report.txt
+# Section 2 - Control Structures
+bash 02_control_structures/system_checker.sh
+bash 02_control_structures/process_monitor.sh
+bash 02_control_structures/file_processor.sh
+cat 02_control_structures/errors.txt
+# Section 3 - Functions & Arguments
+bash 03_functions_args/utils.sh hello Ali
+bash 03_functions_args/utils.sh count ../02_control_structures/sample.txt
+bash 03_functions_args/utils.sh disk 80
+bash 03_functions_args/utils.sh disk 95
+bash 03_functions_args/cli_tool.sh -h
+bash 03_functions_args/cli_tool.sh -f ../02_control_structures/sample.txt
+bash 03_functions_args/cli_tool.sh -f /nope.txt
+bash 03_functions_args/cli_tool.sh -u Sara
+# Section 4 - Text Processing with sed
+bash 04_text_processing/clean_config.sh
+cat 04_text_processing/config.clean
+bash 04_text_processing/extract_errors.sh
+cat 04_text_processing/errors.log
+# Section 5 - Cron
+bash 05_cron/validate_cron.sh
+bash 05_cron/simulate_cron.sh
+cat 05_cron/would_run.txt
+# Section 6 - TCP Monitoring with Bash
+bash 06_tcp/tcp_count.sh
+bash 06_tcp/quick_scan.sh
+# (current / disk usage on this machine is 87%, so disk 80 -> ALERT, disk 95 -> ok)

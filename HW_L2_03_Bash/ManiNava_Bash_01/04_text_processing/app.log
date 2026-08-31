@@ -1,0 +1,4 @@
+2025-10-28 10:00:01 INFO App started
+2025-10-28 10:00:05 ERROR Database timeout
+2025-10-28 10:00:10 WARN Low memory
+2025-10-28 10:00:15 ERROR Connection refused

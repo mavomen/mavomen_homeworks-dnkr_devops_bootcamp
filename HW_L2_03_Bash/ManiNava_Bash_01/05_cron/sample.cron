@@ -1,0 +1,4 @@
+# Run backup every day at 02:00
+0 2 * * * /home/user/backup.sh
+# Rotate logs every Sunday at 00:15
+15 0 * * 0 /home/user/logrotate.sh

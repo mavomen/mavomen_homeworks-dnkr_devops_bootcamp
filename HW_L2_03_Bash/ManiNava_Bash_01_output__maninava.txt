@@ -1,0 +1,133 @@
+= ManiNava Bash Homework 01 - Run Transcript =
+= Date: Mon Aug 31 09:59:28 PM +0330 2026 =
+= User: mava =
+
+# S1.1 - run_redirect.sh
+$ bash 01_principles/run_redirect.sh
+exit code: 2
+--- outputs/app.log ---
+this is info
+second info message
+third info message
+--- outputs/app.err ---
+ls: cannot access '/path/that/does/not/exists': No such file or directory
+ls: cannot access '/another/bad/path': No such file or directory
+
+# S1.2 - syntax_checker.sh
+$ bash 01_principles/syntax_checker.sh > 01_principles/syntax_report.txt
+exit code: 0
+--- 01_principles/syntax_report.txt ---
+=== Bash Syntax Report ===
+Date: Mon Aug 31 09:59:28 PM +0330 2026
+Working dir: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/ManiNava_Bash_01
+
+OK: ./01_principles/run_redirect.sh
+OK: ./01_principles/syntax_checker.sh
+OK: ./04_text_processing/clean_config.sh
+OK: ./04_text_processing/extract_errors.sh
+OK: ./03_functions_args/cli_tool.sh
+OK: ./03_functions_args/utils.sh
+OK: ./05_cron/validate_cron.sh
+OK: ./05_cron/simulate_cron.sh
+OK: ./02_control_structures/system_checker.sh
+OK: ./02_control_structures/file_processor.sh
+OK: ./02_control_structures/process_monitor.sh
+OK: ./06_tcp/quick_scan.sh
+OK: ./06_tcp/tcp_count.sh
+
+=== End of Report ===
+
+# S2.1 - system_checker.sh
+$ bash 02_control_structures/system_checker.sh
+normal user
+sample.txt exists with 4 lines
+WARNING: 'error' found in sample.txt
+
+# S2.2 - process_monitor.sh (takes ~15s)
+$ bash 02_control_structures/process_monitor.sh
+check 1: 347 processes running
+check 2: 347 processes running
+check 3: 349 processes running
+monitoring finished
+
+# S2.3 - file_processor.sh
+$ bash 02_control_structures/file_processor.sh
+errors written to ./errors.txt:
+error: disk full
+ERROR: network down
+
+--- errors.txt ---
+error: disk full
+ERROR: network down
+
+# S3.1 - utils.sh
+$ bash 03_functions_args/utils.sh hello Ali
+Hello, Ali
+$ bash 03_functions_args/utils.sh count ../02_control_structures/sample.txt
+4
+$ bash 03_functions_args/utils.sh disk 80   # current / usage 87%
+ALERT
+$ bash 03_functions_args/utils.sh disk 95   # no alert expected
+ok (used 87%)
+
+# S3.2 - cli_tool.sh
+$ bash 03_functions_args/cli_tool.sh -h
+usage: cli_tool.sh [-f FILE] [-u USER] [-h]
+  -f FILE   print line count of FILE
+  -u USER   print welcome message
+  -h        show this help
+
+$ bash 03_functions_args/cli_tool.sh -f ../02_control_structures/sample.txt
+../02_control_structures/sample.txt has 4 lines
+$ bash 03_functions_args/cli_tool.sh -f /nope.txt
+error: file /nope.txt not found
+$ bash 03_functions_args/cli_tool.sh -u Sara
+Welcome, Sara
+
+# S4.1 - clean_config.sh
+$ bash 04_text_processing/clean_config.sh
+wrote config.clean
+PORT=8080
+DEBUG=false
+IP=127.0.0.1
+
+--- config.clean ---
+PORT=8080
+DEBUG=false
+IP=127.0.0.1
+
+# S4.2 - extract_errors.sh
+$ bash 04_text_processing/extract_errors.sh
+errors written to errors.log:
+2025-10-28 10:00:05 ERROR Database timeout
+2025-10-28 10:00:15 ERROR Connection refused
+
+--- errors.log ---
+2025-10-28 10:00:05 ERROR Database timeout
+2025-10-28 10:00:15 ERROR Connection refused
+
+# S5.1 - validate_cron.sh
+$ bash 05_cron/validate_cron.sh
+VALID: 0 2 * * * /home/user/backup.sh
+VALID: 15 0 * * 0 /home/user/logrotate.sh
+
+# S5.2 - simulate_cron.sh
+$ bash 05_cron/simulate_cron.sh
+commands that would run:
+/home/user/backup.sh
+/home/user/logrotate.sh
+
+--- would_run.txt ---
+/home/user/backup.sh
+/home/user/logrotate.sh
+
+# S6.1 - tcp_count.sh
+$ bash 06_tcp/tcp_count.sh
+LISTEN: 17
+ESTABLISHED: 121
+
+# S6.2 - quick_scan.sh
+$ bash 06_tcp/quick_scan.sh (scanning localhost 22/80/443)
+22 closed
+80 closed
+443 closed
