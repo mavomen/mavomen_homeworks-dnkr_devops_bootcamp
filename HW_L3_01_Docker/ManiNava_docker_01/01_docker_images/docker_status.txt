@@ -1,0 +1,29 @@
+# systemctl status docker
+● docker.service - Docker Application Container Engine
+     Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; preset: disabled)
+     Active: active (running) since Wed 2026-09-16 18:00:41 +0330; 1 day 11h ago
+ Invocation: 5ab6a7d495244c878c01a785c0ce5653
+TriggeredBy: ● docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 752 (dockerd)
+      Tasks: 45
+     Memory: 155.7M (peak: 187.1M, swap: 8.6M, swap peak: 12.2M)
+        CPU: 3min 58.882s
+     CGroup: /system.slice/docker.service
+             ├─ 752 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+             ├─1127 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 5433 -container-ip 172.19.0.2 -container-port 5432 -use-listen-fd
+             └─1134 /usr/bin/docker-proxy -proto tcp -host-ip :: -host-port 5433 -container-ip 172.19.0.2 -container-port 5432 -use-listen-fd
+
+
+# docker ps -a
+CONTAINER ID   IMAGE                  COMMAND                  CREATED        STATUS                      PORTS                                         NAMES
+d59bbf63536c   redis:7.4-alpine       "docker-entrypoint.s…"   4 weeks ago    Exited (0) 4 weeks ago                                                    fastapi_redis_dev
+212b7c45f3e9   postgres:18.3-alpine   "docker-entrypoint.s…"   4 weeks ago    Created                                                                   fastapi_postgres_dev
+f7a51ba134f4   postgres:17            "docker-entrypoint.s…"   5 weeks ago    Up 35 hours (healthy)       0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp   mavadev-postgres-1
+0c5f5e6fc511   9655978343a0           "/bin/sh -c 'tsc -b …"   2 months ago   Exited (127) 2 months ago                                                 nostalgic_mendel
+0cd1f9bd4d82   ed6c5d1a692f           "/bin/sh -c 'apk add…"   2 months ago   Exited (127) 2 months ago                                                 funny_spence
+4b7b12e588b1   4047fb0cbfb5           "/bin/sh -c 'npm run…"   2 months ago   Exited (127) 2 months ago                                                 gallant_elion
+4eb396dfbebf   8e9944e26896           "/bin/sh -c 'dotnet …"   2 months ago   Exited (1) 2 months ago                                                   fervent_williamson
+ffc441851a5f   01e25446bb99           "/bin/sh -c 'dotnet …"   2 months ago   Exited (1) 2 months ago                                                   nifty_hermann
+a22987ab4cf0   4ccf1ed589f1           "/bin/sh -c 'dotnet …"   2 months ago   Exited (145) 2 months ago                                                 festive_swanson
+5da45750976b   2df3dc82a8dc           "/bin/sh -c 'dotnet …"   2 months ago   Exited (145) 2 months ago                                                 epic_lewin

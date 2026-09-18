@@ -1,0 +1,1 @@
+-rw-r--r-- 1 root root 175 Sep 18 05:05 /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/04_volumes_network_1/volume_backup.tar.gz

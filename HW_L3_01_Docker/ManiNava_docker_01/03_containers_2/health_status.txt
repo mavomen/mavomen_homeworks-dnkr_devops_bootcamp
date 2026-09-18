@@ -1,0 +1,3 @@
+healthy
+NAMES         STATUS
+health-test   Up 10 seconds (healthy)

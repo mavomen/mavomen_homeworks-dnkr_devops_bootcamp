@@ -1,0 +1,362 @@
+= ManiNava Docker Homework 01 - Run Transcript =
+= Date: Fri Sep 18 05:04:44 AM +0330 2026 =
+= User: mava =
+= Docker: Docker version 29.6.0, build fb59821d45 =
+
+# S1.1 - install_docker.sh
+$ bash 01_docker_images/install_docker.sh
+Install/status check completed.
+  -> docker_version.txt
+  -> docker_status.txt
+exit code: 0
+
+# S1.2 - image_operations.sh
+$ bash 01_docker_images/image_operations.sh
+Image operations completed. Report saved to /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/01_docker_images/image_operations.txt
+exit code: 0
+
+# S1.3 - image_layers.sh
+$ bash 01_docker_images/image_layers.sh
+Layers check completed.
+  -> image_history.txt
+  -> image_rootfs.txt
+  -> image_size_bytes.txt
+exit code: 0
+
+# S2.1 - container_basics.sh
+$ bash 02_containers_1/container_basics.sh
+149e629d10ba8dc1c7a1a2d2c9d23f43b7b8b3e41ced7a555d26e687daff0f93
+149e629d10ba   nginx:alpine   "/docker-entrypoint.…"   3 seconds ago   Up 2 seconds            80/tcp                                        test-nginx
+2026/09/18 01:35:07 [notice] 1#1: using the "epoll" event method
+2026/09/18 01:35:07 [notice] 1#1: nginx/1.31.6
+2026/09/18 01:35:07 [notice] 1#1: built by gcc 15.2.0 (Alpine 15.2.0) 
+2026/09/18 01:35:07 [notice] 1#1: OS: Linux 7.0.13-arch1-1
+2026/09/18 01:35:07 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1024:524288
+2026/09/18 01:35:07 [notice] 1#1: start worker processes
+2026/09/18 01:35:07 [notice] 1#1: start worker process 30
+2026/09/18 01:35:07 [notice] 1#1: start worker process 31
+2026/09/18 01:35:07 [notice] 1#1: start worker process 32
+2026/09/18 01:35:07 [notice] 1#1: start worker process 33
+2026/09/18 01:35:07 [notice] 1#1: start worker process 34
+2026/09/18 01:35:07 [notice] 1#1: start worker process 35
+2026/09/18 01:35:07 [notice] 1#1: start worker process 36
+2026/09/18 01:35:07 [notice] 1#1: start worker process 37
+2026/09/18 01:35:07 [notice] 1#1: start worker process 38
+2026/09/18 01:35:07 [notice] 1#1: start worker process 39
+2026/09/18 01:35:07 [notice] 1#1: start worker process 40
+2026/09/18 01:35:07 [notice] 1#1: start worker process 41
+test-nginx
+149e629d10ba   nginx:alpine           "/docker-entrypoint.…"   3 seconds ago   Exited (0) Less than a second ago                                                 test-nginx
+Container basics completed.
+  -> nginx_logs.txt
+  -> container_state.txt
+exit code: 0
+
+# S2.2 - env_check.sh
+$ bash 02_containers_1/env_check.sh
+a4269017dcf0cbdca25c6bc08f66ecd8e11f28f19639e454d218e4929c616680
+Env check completed. Output saved to env_output.txt
+exit code: 0
+
+# S2.3 - port_test.sh
+$ bash 02_containers_1/port_test.sh
+c50ecd2993205ce77b04f3892741f72df4e1056ea0ec3b3a72fd11c4c6f6f33a
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0  0    896   0      0   0      0      0      0                              0  0    896   0      0   0      0      0      0                              0  0    896   0      0   0      0      0      0                              0
+Port mapping test completed. Output saved to port_mapping_test.txt
+exit code: 0
+
+# S2.4 - exec_operations.sh
+$ bash 02_containers_1/exec_operations.sh
+d1af29f198208864399923d751efe063caf676592ad125063bfed347a28219b2
+Exec operations completed.
+  -> exec_output.txt
+  -> exec_processes.txt
+exit code: 0
+
+# S3.1 - log_operations.sh
+$ bash 03_containers_2/log_operations.sh
+878c0fe80d433b7c51de837f8cbaff04db8b8e1e2188f33d309f405671e626b1
+Log operations completed.
+  -> all_logs.txt
+  -> last_5_logs.txt
+  -> recent_logs.txt
+exit code: 0
+
+# S3.2 - restart_policy_test.sh
+$ bash 03_containers_2/restart_policy_test.sh
+e757b79f1cf788a91fe5055a445a6f003d10d0d1c6a086e451727cdcb8c9212f
+a0d394fb6057a7230dce4cbaa6d94699053d8111263245109484f29a15dae769
+efb6f57984edadb1148236d0794ae6ae426201485e2de5546b554eb9caa70e69
+Restart policy test completed. Output saved to restart_status.txt
+exit code: 0
+
+# S3.3 - resource_check.sh
+$ bash 03_containers_2/resource_check.sh
+65972d83d7f6b571fd1b87b38ab14cb119682125d10356287b3648b1501183d0
+Resource check completed. Output saved to resource_stats.txt
+exit code: 0
+
+# S3.4 - health_check.sh
+$ bash 03_containers_2/health_check.sh
+45c0de9fc0fbde77a55059ac35d6c420e03f83581ee8e90c624e68f5d3be7db0
+Health check completed.
+  -> health_status.txt
+  -> health_details.txt
+exit code: 0
+
+# S4.1 - volume_operations.sh
+$ bash 04_volumes_network_1/volume_operations.sh
+my-data
+17aacc5fd47be4ae9eb1233e05721afb8f3d00e1c665b14f557edbcb56ac5ad6
+volume-test
+97b4fc7630bf85c192092a202a6499c83b264a73e9fbaa1dcfb81e69c9360019
+Volume operations completed.
+  -> volume_content.txt
+  -> volume_info.txt
+exit code: 0
+
+# S4.2 - bind_mount_test.sh
+$ bash 04_volumes_network_1/bind_mount_test.sh
+aa5208dca861b37ba52743b629b21bfac8380d712b0480c87edb0e17b76c6bc7
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100    144 100    144   0      0  60125      0                              0100    144 100    144   0      0  53491      0                              0100    144 100    144   0      0  47824      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100    166 100    166   0      0 149.6k      0                              0100    166 100    166   0      0 130.7k      0                              0100    166 100    166   0      0 118.1k      0                              0
+Bind mount test completed.
+  -> bind_mount_output.html
+  -> bind_mount_output_modified.html
+exit code: 0
+
+# S4.3 - volume_backup.sh
+$ bash 04_volumes_network_1/volume_backup.sh
+backup-test
+restore-test
+Volume backup/restore completed.
+  -> volume_backup.tar.gz
+  -> backup_info.txt
+  -> restored_data.txt
+exit code: 0
+
+# S5.1 - network_operations.sh
+$ bash 05_volumes_network_2/network_operations.sh
+d0a952288a3d2f1f2c32c3eadfb153cab76d0c0008a7a753b5b653f7ab8abf39
+176b603a0f9bd41d3de6762deab404f2d882ba867495a2b1f63ccfac5f22d9df
+Network operations completed.
+  -> network_info.txt
+  -> ping_test.txt
+exit code: 0
+
+# S5.2 - container_communication.sh
+$ bash 05_volumes_network_2/container_communication.sh
+48702d325858b782b49ac9d03e459c68a07a97de80dc447cc2ec27ea7854e0d8
+252035bef062cca222b93b8a15198ea9b2616098c3f79e01c5628d9c95e1764e
+Container communication completed.
+  -> db_connectivity.txt
+  -> all_networks.txt
+exit code: 0
+
+# S5.3 - network_isolation.sh
+$ bash 05_volumes_network_2/network_isolation.sh
+12e1bf6ec0dd1e480f562fa09877d29899439b4bf2fd8ac845b3df31357258b7
+94c0680bc40868f6cd2396b311ffcd09f1744da86ac65b9d0a1a12d8974fff48
+ping: bad address 'container-b'
+Network isolation completed.
+  -> isolation_test.txt
+  -> network_a_containers.txt
+  -> bridge_network_info.txt
+exit code: 0
+
+# S6.1 - compose_operations.sh
+$ bash 06_docker_compose/compose_operations.sh
+time="2026-09-18T05:06:10+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/06_docker_compose/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Network 06_docker_compose_default Creating 
+ Network 06_docker_compose_default Created 
+ Container 06_docker_compose-db-1 Creating 
+ Container 06_docker_compose-app-1 Creating 
+ Container 06_docker_compose-app-1 Created 
+ Container 06_docker_compose-web-1 Creating 
+ Container 06_docker_compose-db-1 Created 
+ Container 06_docker_compose-web-1 Created 
+ Container 06_docker_compose-db-1 Starting 
+ Container 06_docker_compose-app-1 Starting 
+ Container 06_docker_compose-app-1 Started 
+ Container 06_docker_compose-web-1 Starting 
+ Container 06_docker_compose-db-1 Started 
+ Container 06_docker_compose-web-1 Started 
+time="2026-09-18T05:06:16+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/06_docker_compose/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+time="2026-09-18T05:06:16+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/06_docker_compose/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     20 100     20   0      0  24301      0                              0100     20 100     20   0      0  21344      0                              0100     20 100     20   0      0  19512      0                              0
+time="2026-09-18T05:06:16+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/06_docker_compose/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Container 06_docker_compose-db-1 Stopping 
+ Container 06_docker_compose-web-1 Stopping 
+ Container 06_docker_compose-web-1 Stopped 
+ Container 06_docker_compose-web-1 Removing 
+ Container 06_docker_compose-web-1 Removed 
+ Container 06_docker_compose-app-1 Stopping 
+ Container 06_docker_compose-db-1 Stopped 
+ Container 06_docker_compose-db-1 Removing 
+ Container 06_docker_compose-db-1 Removed 
+ Container 06_docker_compose-app-1 Stopped 
+ Container 06_docker_compose-app-1 Removing 
+ Container 06_docker_compose-app-1 Removed 
+ Network 06_docker_compose_default Removing 
+ Network 06_docker_compose_default Removed 
+Compose operations completed.
+  -> compose_status.txt
+  -> web_logs.txt
+  -> web_response.html
+exit code: 0
+
+# S6.2 - compose_inspect.sh
+$ bash 06_docker_compose/compose_inspect.sh
+time="2026-09-18T05:06:26+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/06_docker_compose/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Network 06_docker_compose_default Creating 
+ Network 06_docker_compose_default Created 
+ Container 06_docker_compose-db-1 Creating 
+ Container 06_docker_compose-app-1 Creating 
+ Container 06_docker_compose-app-1 Created 
+ Container 06_docker_compose-web-1 Creating 
+ Container 06_docker_compose-db-1 Created 
+ Container 06_docker_compose-web-1 Created 
+ Container 06_docker_compose-app-1 Starting 
+ Container 06_docker_compose-db-1 Starting 
+ Container 06_docker_compose-db-1 Started 
+ Container 06_docker_compose-app-1 Started 
+ Container 06_docker_compose-web-1 Starting 
+ Container 06_docker_compose-web-1 Started 
+time="2026-09-18T05:06:32+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/06_docker_compose/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+time="2026-09-18T05:06:33+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/06_docker_compose/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Container 06_docker_compose-db-1 Stopping 
+ Container 06_docker_compose-web-1 Stopping 
+ Container 06_docker_compose-web-1 Stopped 
+ Container 06_docker_compose-web-1 Removing 
+ Container 06_docker_compose-web-1 Removed 
+ Container 06_docker_compose-app-1 Stopping 
+ Container 06_docker_compose-db-1 Stopped 
+ Container 06_docker_compose-db-1 Removing 
+ Container 06_docker_compose-db-1 Removed 
+ Container 06_docker_compose-app-1 Stopped 
+ Container 06_docker_compose-app-1 Removing 
+ Container 06_docker_compose-app-1 Removed 
+ Volume 06_docker_compose_db-data Removing 
+ Network 06_docker_compose_default Removing 
+ Volume 06_docker_compose_db-data Removed 
+ Network 06_docker_compose_default Removed 
+Compose inspect completed.
+  -> service_communication.txt
+  -> compose_networks.txt
+  -> compose_volumes.txt
+exit code: 0
+
+# S6.3 - env_test.sh
+$ bash 06_docker_compose/env_test.sh
+time="2026-09-18T05:06:44+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/06_docker_compose/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+time="2026-09-18T05:06:44+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/06_docker_compose/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Network 06_docker_compose_default Creating 
+ Network 06_docker_compose_default Created 
+ Volume 06_docker_compose_db-data Creating 
+ Volume 06_docker_compose_db-data Created 
+ Container 06_docker_compose-web-1 Creating 
+ Container 06_docker_compose-db-1 Creating 
+ Container 06_docker_compose-db-1 Created 
+ Container 06_docker_compose-web-1 Created 
+ Container 06_docker_compose-db-1 Starting 
+ Container 06_docker_compose-web-1 Starting 
+ Container 06_docker_compose-db-1 Started 
+ Container 06_docker_compose-web-1 Started 
+time="2026-09-18T05:06:50+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/06_docker_compose/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+time="2026-09-18T05:06:50+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/06_docker_compose/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Container 06_docker_compose-db-1 Stopping 
+ Container 06_docker_compose-web-1 Stopping 
+ Container 06_docker_compose-web-1 Stopped 
+ Container 06_docker_compose-web-1 Removing 
+ Container 06_docker_compose-web-1 Removed 
+ Container 06_docker_compose-db-1 Stopped 
+ Container 06_docker_compose-db-1 Removing 
+ Container 06_docker_compose-db-1 Removed 
+ Network 06_docker_compose_default Removing 
+ Network 06_docker_compose_default Removed 
+Env test completed.
+  -> compose_with_env.txt
+  -> db_env_vars.txt
+exit code: 0
+
+# S7.1 - run_project.sh
+$ bash 07_sample_project/run_project.sh
+time="2026-09-18T05:07:00+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/07_sample_project/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Image 07_sample_project-python-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 736B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 111B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.9-alpine
+#3 DONE 0.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 28B done
+#5 DONE 0.0s
+
+#6 [1/3] FROM docker.io/library/python:3.9-alpine@sha256:c99b6eb43b3ac4d750db3d6e8b22268d5ea9a99deead7218ce3deda7f2ca029c
+#6 resolve docker.io/library/python:3.9-alpine@sha256:c99b6eb43b3ac4d750db3d6e8b22268d5ea9a99deead7218ce3deda7f2ca029c 0.0s done
+#6 DONE 0.0s
+
+#7 [2/3] WORKDIR /app
+#7 CACHED
+
+#8 [3/3] COPY app.py .
+#8 CACHED
+
+#9 exporting to image
+#9 exporting layers done
+#9 exporting manifest sha256:c0dc431a58b8d2bd507ec5091d07aa8a3d791430c3ae138f016ec26dece54de6 done
+#9 exporting config sha256:65a22d0d86254c05444c991fb9bd18900e26ef32926acf7cc2e8e2b7be4707ea done
+#9 exporting attestation manifest sha256:9c41014cd159e3d9be1eea9e217e5977d012d96897eebeb67fa1973f4f3611d7 0.0s done
+#9 exporting manifest list sha256:2848391e88ac198abf5127284d225059d287b06a8fda68bc5ca8126c07507da8 0.0s done
+#9 naming to docker.io/library/07_sample_project-python-app:latest
+#9 naming to docker.io/library/07_sample_project-python-app:latest done
+#9 unpacking to docker.io/library/07_sample_project-python-app:latest 0.0s done
+#9 DONE 0.1s
+
+#10 resolving provenance for metadata file
+#10 DONE 0.0s
+ Image 07_sample_project-python-app Built 
+ Network sample-project-network Creating 
+ Network sample-project-network Created 
+ Container 07_sample_project-python-app-1 Creating 
+ Container 07_sample_project-python-app-1 Created 
+ Container 07_sample_project-nginx-1 Creating 
+ Container 07_sample_project-nginx-1 Created 
+ Container 07_sample_project-python-app-1 Starting 
+ Container 07_sample_project-python-app-1 Started 
+ Container 07_sample_project-nginx-1 Starting 
+ Container 07_sample_project-nginx-1 Started 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100    229 100    229   0      0 217.5k      0                              0100    229 100    229   0      0 191.3k      0                              0100    229 100    229   0      0 170.0k      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     36   0     36   0      0  25917      0                              0100     36   0     36   0      0  24226      0                              0100     36   0     36   0      0  22886      0                              0
+time="2026-09-18T05:07:06+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/07_sample_project/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+time="2026-09-18T05:07:06+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/07_sample_project/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+Project run completed.
+  -> frontend_test.html
+  -> api_test.json
+  -> project_status.txt
+  -> project_logs.txt
+exit code: 0
+
+= END of transcript =

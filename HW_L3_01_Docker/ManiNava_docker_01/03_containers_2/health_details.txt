@@ -1,0 +1,12 @@
+{
+    "Status": "healthy",
+    "FailingStreak": 0,
+    "Log": [
+        {
+            "Start": "2026-09-18T05:05:41.233230368+03:30",
+            "End": "2026-09-18T05:05:41.309288232+03:30",
+            "ExitCode": 0,
+            "Output": "  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current\n                                 Dload  Upload  Total   Spent   Left   Speed\n\r  0      0   0      0   0      0      0      0                              0\r100    896 100    896   0      0  1.33M      0               <!DOCTYPE html>\n<html>\n<head>\n<title>Welcome to nginx!</title>\n<style>\nhtml { color-scheme: light dark; }\nbody { width: 35em; margin: 0 auto;\nfont-family: Tahoma, Verdana, Arial, sans-serif; }\n</style>\n</head>\n<body>\n<h1>Welcome to nginx!</h1>\n<p>If you see this page, nginx is successfully installed and working.\nFurther configuration is required for the web server, reverse proxy, \nAPI gateway, load balancer, content cache, or other features.</p>\n\n<p>For online documentation and support please refer to\n<a href=\"https://nginx.org/\">nginx.org</a>.<br/>\nTo engage with the community please visit\n<a href=\"https://community.nginx.org/\">community.nginx.org</a>.<br/>\nFor enterprise grade support, professional services, additional \nsecurity features and capabilities please refer to\n<a href=\"https://f5.com/nginx\">f5.com/nginx</a>.</p>\n\n<p><em>Thank you for using nginx.</em></p>\n</body>\n</html>\n               0\r100    896 100    896   0      0  1.11M      0                              0\r100    896 100    896   0      0  0.99M      0                              0\n"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+NETWORK ID     NAME                                 DRIVER    SCOPE
+17dfce368fff   async-fastapi-template_dev-network   bridge    local
+15c90c59b338   bridge                               bridge    local
+ed02c54f5260   host                                 host      local
+449f3bae092e   mavadev_default                      bridge    local
+82ca524674ec   my-network                           bridge    local
+b158312d0729   none                                 null      local
+        "Containers": {
+            "45c0de9fc0fbde77a55059ac35d6c420e03f83581ee8e90c624e68f5d3be7db0": {
+                "Name": "health-test",
+                "EndpointID": "f13677be151b0d05b48a333a565a5be881efb58a5ad2c323cde823573e056f83",
+                "MacAddress": "4a:09:02:a4:94:0c",
+                "IPv4Address": "172.17.0.9/16",
+                "IPv6Address": ""
+            },
+            "65972d83d7f6b571fd1b87b38ab14cb119682125d10356287b3648b1501183d0": {
+                "Name": "limited-container",
+                "EndpointID": "53c8800d5d0273fa8fa97099557b9683bbcba449fcd8acd4cbe11822ae4d2cae",

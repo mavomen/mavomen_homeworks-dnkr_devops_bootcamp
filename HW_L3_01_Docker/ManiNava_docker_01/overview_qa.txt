@@ -1,0 +1,89 @@
+# Docker Homework Overview - Q&A Recap
+
+Quick answers to the main docker questions this homework touches. All
+numbers are real, measured while running the scenarios on my machine.
+
+## 1. Image vs container - what is the difference?
+
+- An image is a read-only template (layers + config). Nothing runs from it,
+  it just defines what a container will be. `nginx:alpine` is 103 MB here.
+- A container is one running instance of that image: a process with its own
+  writable layer, namespaces and network.
+- Sloppy analogy: image = program on disk, container = program while it
+  runs.
+
+## 2. Why do layers matter, and why prefer small images?
+
+- Layers make images shareable: a base alpine layer is downloaded once and
+  reused by every image built on it, and each Dockerfile instruction adds
+  one layer.
+- `nginx:alpine` has 8 RootFS layers. The biggest is the RUN that installs
+  nginx (52.3 MB), then the nginx package (11.8 MB), then the alpine rootfs
+  (9.07 MB).
+- Alpine = musl + busybox without glibc, so pulls are fast and there is
+  less to break. My pull barely used any bandwith compared to what the full
+  nginx image would need.
+
+## 3. Named volume vs bind mount - when to use which?
+
+- Named volume (`docker volume create`, `-v my-data:/app/data`): docker
+  manages the storage, it survives container removal and backup is easy
+  (tar from a helper container, like in 4.3). Use it for data you must keep
+  - databases, uploads.
+- Bind mount (`-v $(pwd)/web:/usr/share/nginx/html`): points straight at a
+  host folder, so changes show up on both sides instantly. Great for dev:
+  in 4.2 I edited index.html on the host and the served page updated with
+  no rebuild.
+- What I ended up doing: bind mount while developing, named volumes for
+  state.
+
+## 4. Why can containers reach each other by name on a custom network?
+
+- Custom bridge networks (my-network, network-a...) come with embedded DNS
+  (127.0.0.11), so a container resolves another one by name.
+- The default bridge has no such DNS - containers there can only talk by IP.
+  In 5.3 the ping from container-a to container-b failed at first, then
+  worked after I connected container-b to network-a. I thought I broke
+  something until I realized it's just isolation.
+
+## 5. What does docker-compose add over raw docker run?
+
+- Declarative: services, ports, volumes, env and networks live in one
+  docker-compose.yml instead of a long list of docker run flags.
+- `docker-compose up -d` starts the whole stack (the full run had
+  web/app/db).
+- `.env` + `${VAR:-default}` puts config in one place: in 6.3 APP_PORT=3000
+  and the mysql credentials came from .env.
+- It also created network `06_docker_compose_default` and volume
+  `06_docker_compose_db-data` for me - things I would have made by hand
+  before.
+- Note: step 6.3 rewrote the compose file to the .env web+db version, which
+  is the committed state (validated in compose_with_env.txt).
+
+## 6. Restart policies - what did I see?
+
+- `--restart always`: comes back no matter why it stopped. My `sleep 5`
+  container was already restarting (restarts=1) 7 s after start.
+- `--restart unless-stopped`: same, except if you stopped it manually.
+- `no-restart`: exited once and stayed dead (restarts=0).
+- Gotcha: docker 29.x removed `{{.RestartCount}}` from `docker ps --format`,
+  so I read the counter via `docker inspect -f '{{.RestartCount}}'`. Took
+  me a minute to notice the format string printed nothing.
+
+## 7. Why are health checks useful?
+
+- They tell docker if the app actually *works*, not just "process is
+  alive". Docker runs the probe (curl -f here) every 5 s with a 3 s
+  timeout; after 3 failures in a row the status goes `unhealthy`.
+- My health-test container ended up `healthy` (health_status.txt).
+- In real deployments this is the hook that restarts dead containers and
+  pulls them out of load balancers, so traffic never hits a broken service.
+
+## 8. How does the sample project (nginx + python) work?
+
+- nginx serves the static page on :3000 and proxies /api to
+  `python-app:8000` (nginx/nginx.conf).
+- Both containers sit on sample-project-network, so nginx resolves
+  python-app through docker DNS, no hardcoded IPs.
+- Verified live: the page loads and /api returns
+  {"message": "Hello from Python API"}.

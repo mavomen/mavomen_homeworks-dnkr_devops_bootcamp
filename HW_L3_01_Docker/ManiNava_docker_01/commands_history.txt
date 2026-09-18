@@ -1,0 +1,120 @@
+# Commands History - ManiNava Docker Homework 01
+# (all docker commands used, grouped by scenario)
+# ===================================================
+# S1.1 install & version
+docker --version
+docker info | head -n 20
+systemctl status docker --no-pager | head -n 15
+docker ps -a
+# S1.2 images: pull / tag / inspect
+docker pull nginx:alpine
+docker images | grep nginx
+docker tag nginx:alpine my-nginx:v1.0
+docker images | grep -E 'nginx|my-nginx'
+docker inspect nginx:alpine | grep -A 5 "Architecture"
+docker rmi my-nginx:v1.0
+# S1.3 layers & history
+docker history nginx:alpine --no-trunc
+docker inspect nginx:alpine | grep -A 10 "RootFS"
+docker image inspect nginx:alpine --format '{{.Size}}'
+# S2.1 simple container
+docker run -d --name test-nginx nginx:alpine
+docker ps | grep test-nginx
+docker logs test-nginx | head -n 10
+docker stop test-nginx
+docker inspect test-nginx | grep -A 3 "State"
+# S2.2 env vars
+docker run -d --name env-test -e MY_VAR="Hello Docker" -e PORT=8080 alpine:latest sleep 3600
+docker exec env-test env | grep -E 'MY_VAR|PORT'
+docker exec env-test sh -c 'echo "MY_VAR=$MY_VAR, PORT=$PORT"'
+# S2.3 port mapping
+docker run -d --name web-server -p 8888:80 nginx:alpine
+curl -I http://localhost:8888
+docker port web-server
+ss -tuln | grep 8888
+# S2.4 exec
+docker run -d --name exec-test alpine:latest sleep 3600
+docker exec exec-test sh -c 'echo "Hello from exec" > /tmp/test.txt'
+docker exec exec-test sh -c 'ps aux'
+docker exec -it exec-test sh -c 'echo "Interactive exec test" >> /tmp/test.txt'
+# S3.1 logs
+docker run -d --name log-test alpine:latest sh -c 'for i in $(seq 1 10); do echo "Log line $i"; sleep 1; done; sleep 3600'
+docker logs log-test
+docker logs --tail 5 log-test
+docker logs --since 5s log-test
+# S3.2 restart policies
+docker run -d --name always-restart --restart always alpine:latest sleep 5
+docker run -d --name unless-stopped --restart unless-stopped alpine:latest sleep 5
+docker run -d --name no-restart alpine:latest sleep 5
+docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.RestartCount}}"
+docker inspect always-restart | grep -A 2 "RestartPolicy"
+# S3.3 resource limits
+docker run -d --name limited-container --memory="128m" --cpus="0.5" alpine:latest sleep 3600
+docker stats --no-stream limited-container
+docker inspect limited-container | grep -A 5 "Memory\|CpuShares"
+# S3.4 health checks
+docker run -d --name health-test --health-cmd="curl -f http://localhost:80 || exit 1" --health-interval=5s --health-timeout=3s --health-retries=3 nginx:alpine
+docker inspect --format='{{.State.Health.Status}}' health-test
+docker inspect --format='{{json .State.Health}}' health-test | python3 -m json.tool
+docker ps --filter "name=health-test"
+# S4.1 named volume
+docker volume create my-data
+docker run -d --name volume-test -v my-data:/app/data alpine:latest sleep 3600
+docker exec volume-test sh -c 'echo "Hello from container" > /app/data/test.txt'
+docker volume inspect my-data
+docker run -d --name volume-test-2 -v my-data:/app/data alpine:latest sleep 3600
+# S4.2 bind mount
+docker run -d --name bind-mount-test -p 9000:80 -v $(pwd)/04_volumes_network_1/web:/usr/share/nginx/html:ro nginx:alpine
+curl http://localhost:9000
+# S4.3 backup & restore
+docker volume create backup-test
+docker run --rm -v backup-test:/data alpine:latest sh -c 'echo "Important data" > /data/file.txt && echo "More data" > /data/file2.txt'
+docker run --rm -v backup-test:/data -v $(pwd):/backup alpine:latest tar czf /backup/volume_backup.tar.gz -C /data .
+docker volume create restore-test
+docker run --rm -v restore-test:/data -v $(pwd):/backup alpine:latest tar xzf /backup/volume_backup.tar.gz -C /data
+# S5.1 custom network
+docker network create my-network
+docker run -d --name container1 --network my-network alpine:latest sleep 3600
+docker run -d --name container2 --network my-network alpine:latest sleep 3600
+docker network inspect my-network
+docker exec container1 ping -c 3 container2
+docker exec container1 nslookup container2
+# S5.2 container communication
+docker run -d --name db --network my-network -e MYSQL_ROOT_PASSWORD=test123 mysql:8.0
+docker run -d --name client --network my-network alpine:latest sleep 3600
+docker exec client ping -c 2 db
+docker exec client nslookup db
+docker network ls
+docker network inspect bridge | grep -A 10 "Containers"
+# S5.3 isolation
+docker network create network-a
+docker network create network-b
+docker run -d --name container-a --network network-a alpine:latest sleep 3600
+docker run -d --name container-b --network network-b alpine:latest sleep 3600
+docker exec container-a ping -c 2 container-b
+docker network connect network-a container-b
+docker exec container-a ping -c 2 container-b
+docker network inspect network-a | grep -A 5 "Containers"
+docker network inspect bridge | grep -A 10 "IPAM"
+# S6.1 docker-compose up
+docker-compose up -d
+docker-compose ps
+docker-compose logs web | head -n 10
+curl http://localhost:8080
+docker-compose down
+# S6.2 compose networks & volumes
+docker-compose exec web ping -c 2 app
+docker network ls | grep docker_compose
+docker volume ls | grep docker_compose
+docker-compose down -v
+# S6.3 .env vars
+docker-compose config
+docker-compose up -d
+docker-compose exec db env | grep MYSQL
+docker-compose down
+# S7.1 sample project
+docker-compose up -d --build
+curl http://localhost:3000
+curl http://localhost:3000/api
+docker-compose ps
+docker-compose logs --tail 20

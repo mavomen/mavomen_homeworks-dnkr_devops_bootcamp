@@ -1,0 +1,6 @@
+/always-restart restarts=1 status=running
+/unless-stopped restarts=1 status=running
+/no-restart restarts=0 status=exited
+            "RestartPolicy": {
+                "Name": "always",
+                "MaximumRetryCount": 0

@@ -1,0 +1,23 @@
+# Image Summary - nginx:alpine
+
+All values below are from my machine (docker 29.6.0).
+
+## 1. How big is the image?
+
+103 MB (`docker images`; exact bytes in image_size_bytes.txt). Small
+compared to the full nginx image because it is built on Alpine - musl and
+busybox, no glibc or systemd to drag in.
+
+## 2. What is the architechture of this image?
+
+amd64/linux on my box. The same manifest carries variants for other chips
+(arm64, ...), so one pull works across hosts - the host picks the right
+variant when running it.
+
+## 3. docker pull vs docker run?
+
+- `docker pull nginx:alpine` only downloads the layers and stores them
+  locally. Nothing executes - useful to prefetch or update an image.
+- `docker run` pulls first if missing, then creates the container and
+  starts its main process.
+- So: pull = get the image, run = get + create + start.

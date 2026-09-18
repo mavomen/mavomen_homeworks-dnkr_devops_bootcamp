@@ -1,0 +1,4 @@
+NAME                      IMAGE           COMMAND                  SERVICE   CREATED         STATUS         PORTS
+06_docker_compose-app-1   alpine:latest   "sh -c 'apk add --no…"   app       6 seconds ago   Up 5 seconds   0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp
+06_docker_compose-db-1    mysql:8.0       "docker-entrypoint.s…"   db        6 seconds ago   Up 5 seconds   3306/tcp, 33060/tcp
+06_docker_compose-web-1   nginx:alpine    "/docker-entrypoint.…"   web       6 seconds ago   Up 5 seconds   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp

@@ -1,0 +1,24 @@
+# Docker version
+Docker version 29.6.0, build fb59821d45
+
+# docker info (head)
+Client:
+ Version:    29.6.0
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  v0.36.1
+    Path:     /usr/lib/docker/cli-plugins/docker-buildx
+  compose: Docker Compose (Docker Inc.)
+    Version:  5.1.4
+    Path:     /usr/lib/docker/cli-plugins/docker-compose
+
+Server:
+ Containers: 10
+  Running: 1
+  Paused: 0
+  Stopped: 9
+ Images: 158
+ Server Version: 29.6.0
+ Storage Driver: overlayfs

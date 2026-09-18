@@ -1,0 +1,27 @@
+# Compose Summary
+
+## 1. What networks did docker-compose create?
+
+One default bridge named after the project folder:
+`06_docker_compose_default` (compose_networks.txt). In the full 3-service
+run, web/app/db all hang off it - that's why they can reach each other by
+service name instead of IP.
+
+## 2. What volumes did it create?
+
+`06_docker_compose_db-data` (compose_volumes.txt). It comes from
+`volumes: - db-data:/var/lib/mysql` in the db service plus `db-data:` under
+the top-level `volumes:` key. Its what keeps mysql data alive across
+`docker-compose down`/`up` - only `down -v` removes it. I learned that the
+hard way: wiped the db once with down -v out of habit.
+
+## 3. How does web reach app?
+
+- web declares `depends_on: app`, so compose starts app first.
+- Both sit on the same compose network, so web just uses the service name -
+  e.g. `ping app` from inside the web container, or any client connecting
+  to `app:5000` (the app service runs python's http.server on 5000).
+- Same mechanism the sample project uses later with `python-app:8000`.
+- Note: after step 6.3 the committed compose is the .env web+db version
+  (no app service) - see compose_with_env.txt / db_env_vars.txt for the
+  resolved values.

@@ -1,0 +1,25 @@
+# docker pull nginx:alpine
+alpine: Pulling from library/nginx
+Digest: sha256:c8497b180665e631ec92a5091125bec5b214f0e2b99409e30653a125b37557da
+Status: Image is up to date for nginx:alpine
+docker.io/library/nginx:alpine
+
+# docker images | grep nginx
+nginx:alpine                             c8497b180665        103MB         29.7MB        
+
+# docker tag nginx:alpine my-nginx:v1.0
+
+# docker images | grep -E 'nginx|my-nginx'
+my-nginx:v1.0                            c8497b180665        103MB         29.7MB        
+nginx:alpine                             c8497b180665        103MB         29.7MB        
+
+# docker inspect nginx:alpine (Architecture)
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 28797795,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+
+# docker rmi my-nginx:v1.0
+Untagged: my-nginx:v1.0

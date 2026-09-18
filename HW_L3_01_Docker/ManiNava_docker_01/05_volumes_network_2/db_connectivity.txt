@@ -1,0 +1,16 @@
+PING db (172.21.0.4): 56 data bytes
+64 bytes from 172.21.0.4: seq=0 ttl=64 time=0.096 ms
+64 bytes from 172.21.0.4: seq=1 ttl=64 time=0.281 ms
+
+--- db ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.096/0.188/0.281 ms
+Server:		127.0.0.11
+Address:	127.0.0.11:53
+
+Non-authoritative answer:
+
+Non-authoritative answer:
+Name:	db
+Address: 172.21.0.4
+

@@ -1,0 +1,37 @@
+name: 06_docker_compose
+services:
+  db:
+    environment:
+      MYSQL_DATABASE: mydb
+      MYSQL_ROOT_PASSWORD: mysecretpassword
+    image: mysql:8.0
+    networks:
+      default: null
+    volumes:
+      - type: volume
+        source: db-data
+        target: /var/lib/mysql
+        volume: {}
+  web:
+    environment:
+      APP_NAME: MyApp
+    image: nginx:alpine
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "3000"
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_01_Docker/ManiNava_docker_01/06_docker_compose/web
+        target: /usr/share/nginx/html
+        read_only: true
+        bind: {}
+networks:
+  default:
+    name: 06_docker_compose_default
+volumes:
+  db-data:
+    name: 06_docker_compose_db-data

@@ -1,0 +1,16 @@
+# Exec Explanation - docker exec vs docker attach
+
+Used both in section 2. They look similar but do different things:
+
+- `docker exec` starts a **new** process inside a running container. That
+  process gets its own PID but shares the container's namespaces. You pick
+  the command: `docker exec <name> <cmd>` (`-it` for interactive). PID 1,
+  the container's main process, is untouched.
+- `docker attach` connects your terminal to the **already running** main
+  process (PID 1). Nothing new is spawned, you just join its
+  stdin/stdout/stderr. Detach with Ctrl-P Ctrl-Q. If PID 1 exits, the
+  container stops.
+
+So: exec for "run something inside", attach for "watch/feed the main
+process" - e.g. a seperate interactive console. exec -it gives you a shell,
+which is handy since the alpine containers don't run sshd.

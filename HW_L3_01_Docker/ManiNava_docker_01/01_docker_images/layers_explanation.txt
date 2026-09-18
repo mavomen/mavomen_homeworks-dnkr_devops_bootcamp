@@ -1,0 +1,22 @@
+# Layers Explanation - nginx:alpine
+
+## 1. How many layers does it have?
+
+8 RootFS layers (image_rootfs.txt). `docker history` prints more rows
+(20 in image_history.txt) because ENV/CMD/EXPOSE/... add thin metadata
+steps that only touch the config, not the filesystem. That confused me at
+first - I expected history to match the layer count.
+
+## 2. Which layer is the biggest?
+
+The RUN step that installs nginx itself: 52.3 MB. Second is teh nginx
+package layer (11.8 MB), third the alpine rootfs (9.07 MB). So most of the
+image is really just nginx.
+
+## 3. Why are small images (like alpine) better?
+
+- Less disk space and bandwidth - faster pull/push.
+- Fewer packages means a smaller attack surface.
+- Containers start faster.
+- Your own Dockerfiles benefit too: fewer instructions = fewer layers =
+  smaller image.

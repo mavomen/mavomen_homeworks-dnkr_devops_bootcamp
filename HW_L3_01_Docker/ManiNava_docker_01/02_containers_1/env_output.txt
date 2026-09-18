@@ -1,0 +1,3 @@
+MY_VAR=Hello Docker
+PORT=8080
+MY_VAR=Hello Docker, PORT=8080

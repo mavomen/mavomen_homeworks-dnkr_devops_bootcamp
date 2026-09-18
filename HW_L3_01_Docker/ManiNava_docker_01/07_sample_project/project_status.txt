@@ -1,0 +1,3 @@
+NAME                             IMAGE                          COMMAND                  SERVICE      CREATED         STATUS         PORTS
+07_sample_project-nginx-1        nginx:alpine                   "/docker-entrypoint.…"   nginx        5 seconds ago   Up 5 seconds   0.0.0.0:3000->80/tcp, [::]:3000->80/tcp
+07_sample_project-python-app-1   07_sample_project-python-app   "python app.py"          python-app   5 seconds ago   Up 5 seconds   

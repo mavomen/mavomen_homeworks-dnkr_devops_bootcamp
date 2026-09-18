@@ -1,0 +1,27 @@
+# Network Isolation Explanation
+
+## 1. Why couldn't container-a ping container-b?
+
+They were on two differnet custom networks (network-a and network-b).
+Bridge networks are isolated from each other by default: no route between
+them and no DNS for the other side. So neither name nor IP resolved, and
+ping failed - which is the expected behavior once you realize what's going
+on. I first thought I misconfigured something.
+
+## 2. What happened after docker network connect?
+
+`docker network connect network-a container-b` adds a second interface to
+container-b, giving it an IP on network-a as well. After that,
+container-a resolved container-b via network-a's DNS and the ping went
+through. A container can join several networks at once, each with its own
+interface/IP (network_a_containers.txt shows container-b listed under
+network-a).
+
+## 3. Default bridge vs custom network?
+
+- Default `bridge`: created automatically for containers that don't pick a
+  network. NAT to the host works, but containers can't reach each other by
+  name - IP only, and only if they share that bridge.
+- Custom bridge (my-network, network-a...): automatic name resolution,
+  better isolation (only attached containers share it), you control the
+  subnet, and one container can be on several of them.

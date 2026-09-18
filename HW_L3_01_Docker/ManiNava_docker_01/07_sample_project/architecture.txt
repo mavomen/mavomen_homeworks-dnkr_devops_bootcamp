@@ -1,0 +1,27 @@
+# Architecture - how the pieces talk
+
+## 1. How does nginx connect to the python app?
+
+In nginx/nginx.conf, the /api block has
+`proxy_pass http://python-app:8000;`. Both containers are on
+sample-project-network, so nginx resolves `python-app` through docker's
+embedded DNS, gets the python container's IP and reverse-proxies the
+request to port 8000. The JSON responce goes back through nginx to the
+browser.
+
+## 2. Which networks are used?
+
+One custom network: sample-project-network (declared in docker-compose.yml
+under networks.default.name). Both nginx and python-app join it
+automatically - that's the whole trick behind name-based communication. The
+host only sees it through the published port 3000 -> nginx:80.
+
+## 3. If I wanted to add a database?
+
+- Add a db service (mysql:8.0 or similar) with env vars
+  (MYSQL_ROOT_PASSWORD, MYSQL_DATABASE), a named volume for persistence,
+  and probably a healthcheck so the app waits for it.
+- Give python-app `depends_on: db`.
+- Point the app at host `db` on 3306 (pymysql / mysql-connector) - no new
+  network needed, it's already on sample-project-network.
+- Only publish 3306 to the host if local tooling needs it, not by default.

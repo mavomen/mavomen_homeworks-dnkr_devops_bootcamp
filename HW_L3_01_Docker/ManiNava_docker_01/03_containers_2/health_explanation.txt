@@ -1,0 +1,28 @@
+# Health Checks Explanation
+
+My test container: health-test, interval 5 s, timeout 3 s, 3 retries.
+
+## 1. What do the statuses mean?
+
+- `starting`: probe not run yet, still in the grace period.
+- `healthy`: the last probe succeeded within the interval.
+- `unhealthy`: failed more than `--health-retries` times in a row.
+- No healthcheck configured => no status shown at all ("none").
+
+## 2. When does the probe run?
+
+First run right after the container starts, then every `--health-interval`
+(5 s here) with a per-run `--health-timeout` (3 s). 3 consecutive failures
+flip it to `unhealthy`. In health_status.txt you can see it went `healthy`
+shortly after start - the flip occured right after the third failed probe.
+(I let it keep running and watched it settle.)
+
+## 3. Why are health checks important?
+
+- Docker and orchestrators on top (swarm, k8s, compose) can restart
+  unhealthy containers or stop routing traffic to them.
+- LB / service discovery can drop unhealthy instances.
+- Most importantly it reflects application readiness, not just "process
+  alive" - catches hangs, deadlocks and missing dependencies early. In a
+  homework demo it's a nice touch; in production it's what keeps the
+  rollout sane.

@@ -1,0 +1,1 @@
+1a7492d8098b   06_docker_compose_default            bridge    local
