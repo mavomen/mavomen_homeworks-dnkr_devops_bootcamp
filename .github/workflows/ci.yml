@@ -15,8 +15,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install ShellCheck
-        uses: koalaman/shellcheck@v0.10.0
+      - name: Install ShellCheck (pinned release binary)
+        shell: bash
+        run: |
+          wget -q https://github.com/koalaman/shellcheck/releases/download/v0.10.0/shellcheck-v0.10.0.linux.x86_64.tar.xz
+          tar -xJf shellcheck-v0.10.0.linux.x86_64.tar.xz
+          sudo mv shellcheck-v0.10.0/shellcheck /usr/local/bin/shellcheck
+          shellcheck --version | head -2
 
       - name: Collect shell scripts
         id: collect
