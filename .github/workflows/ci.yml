@@ -1,0 +1,117 @@
+name: homeworks-ci
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  shell:
+    name: Shell syntax & lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ShellCheck
+        uses: koalaman/shellcheck@v0.10.0
+
+      - name: Collect shell scripts
+        id: collect
+        shell: bash
+        run: |
+          mapfile -d '' scripts < <(find . -path ./.git -prune -o -type f -name '*.sh' -print0)
+          printf 'Found %d shell scripts\n' "${#scripts[@]}"
+          # persist for later steps
+          : > /tmp/shell_scripts.txt
+          printf '%s\0' "${scripts[@]}" >> /tmp/shell_scripts.txt
+
+      - name: bash -n (blocking syntax gate)
+        shell: bash
+        run: |
+          mapfile -d '' scripts < /tmp/shell_scripts.txt
+          bash -n "${scripts[@]}"
+
+      # Severity policy: error severity BLOCKS the run; warning severity is
+      # reported as advisory. Day-one findings are warnings only (SC2164 'cd'
+      # guards, and the SC1010 false positive on `ping -M do`), so the hard
+      # gate stays green while keeping genuine warning findings visible.
+      - name: ShellCheck error severity (blocking gate)
+        shell: bash
+        run: |
+          mapfile -d '' scripts < /tmp/shell_scripts.txt
+          shellcheck -S error "${scripts[@]}"
+
+      - name: ShellCheck warning severity (advisory)
+        shell: bash
+        run: |
+          mapfile -d '' scripts < /tmp/shell_scripts.txt
+          shellcheck -S warning -e SC2164,SC1010 "${scripts[@]}" || true
+        continue-on-error: true
+
+  configs:
+    name: Config validation (Python / YAML / Compose / nginx / haproxy / Ansible)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python venv (PEP 668-safe for pip tools)
+        shell: bash
+        run: |
+          python3 -m venv /tmp/ci-venv
+          /tmp/ci-venv/bin/pip install --quiet --disable-pip-version-check \
+            yamllint ansible-core
+
+      - name: Python compile
+        shell: bash
+        run: |
+          mapfile -d '' py < <(find . -path ./.git -prune -o -type f -name '*.py' -print0)
+          echo "Compiling ${#py[@]} python files"
+          PYTHONPYCACHEPREFIX="${RUNNER_TEMP}/pycache" python3 -m py_compile "${py[@]}"
+
+      - name: yamllint
+        shell: bash
+        run: |
+          mapfile -d '' yml < <(find . -path ./.git -prune -o -type f \( -name '*.yml' -o -name '*.yaml' \) -print0)
+          echo "Linting ${#yml[@]} YAML files"
+          /tmp/ci-venv/bin/yamllint -c .yamllint "${yml[@]}"
+
+      - name: docker compose config
+        shell: bash
+        run: |
+          for c in $(find . -path ./.git -prune -o -type f -name 'docker-compose*.yml' -print); do
+            echo "== $c"
+            (cd "$(dirname "$c")" && docker compose -f "$(basename "$c")" config -q)
+          done
+
+      - name: nginx -t
+        shell: bash
+        run: bash scripts/validate-nginx.sh
+
+      - name: haproxy -c
+        shell: bash
+        run: |
+          docker run --rm \
+            --add-host backend1:127.0.0.1 \
+            --add-host backend2:127.0.0.1 \
+            -v "$PWD/HW_L3_02_ReverseProxy/ManiNava_reverseproxy_02/06_haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro" \
+            haproxy:2.9-alpine haproxy -c -f /usr/local/etc/haproxy/haproxy.cfg
+
+      - name: Ansible inventory parse
+        shell: bash
+        run: |
+          for i in $(find . -path ./.git -prune -o -type f -name inventory -print); do
+            echo "== $i"
+            /tmp/ci-venv/bin/ansible-inventory -i "$i" --list >/dev/null
+          done
+
+  structure:
+    name: Homework structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check homework structure
+        shell: bash
+        run: bash scripts/check_homework_structure.sh

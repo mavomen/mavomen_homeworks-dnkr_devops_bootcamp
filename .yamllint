@@ -1,0 +1,16 @@
+---
+# Relaxed yamllint config for this homework repo: focus on YAML validity
+# (duplicate keys, broken indentation, tabs), not on editorial style.
+extends: default
+
+rules:
+  line-length: disable
+  document-start: disable
+  comments: disable
+  comments-indentation: disable
+  truthy: disable
+  key-duplicates: enable
+  new-line-at-end-of-file: disable
+  indentation:
+    spaces: consistent
+    indent-sequences: whatever
