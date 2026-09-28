@@ -1,0 +1,21 @@
+=== Test without client certificate ===
+* SSL Trust: peer verification disabled
+* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / X25519MLKEM768 / RSASSA-PSS
+* Server certificate:
+* OpenSSL verify result: 14
+*  SSL certificate verification failed, continuing anyway!
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+> GET / HTTP/1.1
+< HTTP/1.1 400 Bad Request
+<head><title>400 No required SSL certificate was sent</title></head>
+<center>No required SSL certificate was sent</center>
+
+=== Test with client certificate ===
+* SSL Trust: peer verification disabled
+* SSL connection using TLSv1.3 / TLS_AES_256_GCM_SHA384 / X25519MLKEM768 / RSASSA-PSS
+* Server certificate:
+* OpenSSL verify result: 14
+*  SSL certificate verification failed, continuing anyway!
+  0      0   0      0   0      0      0      0                              0* using HTTP/1.x
+> GET / HTTP/1.1
+< HTTP/1.1 200 OK

@@ -1,0 +1,19 @@
+=== Load Balancing Test ===
+Request 1:
+<h1>Backend Server 1</h1>
+
+Request 2:
+<h1>Backend Server 2</h1>
+
+Request 3:
+<h1>Backend Server 1</h1>
+
+Request 4:
+<h1>Backend Server 2</h1>
+
+Request 5:
+<h1>Backend Server 1</h1>
+
+Request 6:
+<h1>Backend Server 2</h1>
+

@@ -1,0 +1,7 @@
+07_sample_project-python-app:latest      2848391e88ac       79.7MB         19.7MB        
+haproxy:alpine                           7ffdd3845020       66.2MB         20.7MB        
+nginx:alpine                             df221db836e1       94.4MB         27.2MB        
+python:3.12-slim                         2c941e860699        179MB         45.4MB        
+python:3.9-alpine                        c99b6eb43b3a       80.4MB         20.4MB        
+traefik/whoami:latest                    c4717a8d1f01       19.2MB         5.17MB        
+traefik:v3.6                             31267173a15b        251MB         55.6MB        

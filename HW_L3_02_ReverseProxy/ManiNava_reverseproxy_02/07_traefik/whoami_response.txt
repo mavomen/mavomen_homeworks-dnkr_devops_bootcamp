@@ -1,0 +1,17 @@
+Hostname: 2eb13661fbcd
+IP: 127.0.0.1
+IP: ::1
+IP: 172.21.0.3
+RemoteAddr: 172.21.0.2:52144
+GET / HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/8.20.0
+Accept: */*
+Accept-Encoding: gzip
+X-Forwarded-For: 172.21.0.1
+X-Forwarded-Host: localhost:8080
+X-Forwarded-Port: 8080
+X-Forwarded-Proto: http
+X-Forwarded-Server: 4882aea76fa1
+X-Real-Ip: 172.21.0.1
+

@@ -1,0 +1,60 @@
+=== Testing web1 ===
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, nginx is successfully installed and working.
+Further configuration is required for the web server, reverse proxy, 
+API gateway, load balancer, content cache, or other features.</p>
+
+<p>For online documentation and support please refer to
+<a href="https://nginx.org/">nginx.org</a>.<br/>
+To engage with the community please visit
+<a href="https://community.nginx.org/">community.nginx.org</a>.<br/>
+For enterprise grade support, professional services, additional 
+security features and capabilities please refer to
+<a href="https://f5.com/nginx">f5.com/nginx</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+
+=== Testing web2 ===
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, nginx is successfully installed and working.
+Further configuration is required for the web server, reverse proxy, 
+API gateway, load balancer, content cache, or other features.</p>
+
+<p>For online documentation and support please refer to
+<a href="https://nginx.org/">nginx.org</a>.<br/>
+To engage with the community please visit
+<a href="https://community.nginx.org/">community.nginx.org</a>.<br/>
+For enterprise grade support, professional services, additional 
+security features and capabilities please refer to
+<a href="https://f5.com/nginx">f5.com/nginx</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+
+=== Traefik Dashboard ===
+[{"entryPoints":["traefik"],"service":"api@internal","rule":"PathPrefix(`/api`)","ruleSyntax":"default","priority":9223372036854775806,"observability":{"accessLogs":true,"metrics":true,"tracing":true,"traceVerbosity":"minimal"},"status":"enabled","using":["traefik"],"name":"api@internal","provider":"internal","priorityStr":"9223372036854775806"},{"entryPoints":["traefik"],"middlewares":["dashboard_redirect@internal","dashboard_stripprefix@internal"],"service":"dashboard@internal","rule":"PathPrefix(`/`)","ruleSyntax":"default","priority":9223372036854775805,"observability":{"accessLogs":true,"metrics":true,"tracing":true,"traceVerbosity":"minimal"},"status":"enabled","using":["traefik"],"name":"dashboard@internal","provider":"internal","priorityStr":"9223372036854775805"},{"entryPoints":["web"],"service":"web1-07-traefik","rule":"Host(`web1.localhost`)","priority":22,"observability":{"accessLogs":true,"metrics":true,"tracing":true,"traceVerbosity":"minimal"},"status":"enabled","using":["web"],"name":"web1@docker","provider":"docker","priorityStr":"22"},{"entryPoints":["web"],"service":"web2-07-traefik","rule":"Host(`web2.localhost`)","priority":22,"observability":{"accessLogs":true,"metrics":true,"tracing":true,"traceVerbosity":"minimal"},"status":"enabled","using":["web"],"name":"web2@docker","provider":"docker","priorityStr":"22"}]

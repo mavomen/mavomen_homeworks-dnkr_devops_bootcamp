@@ -1,0 +1,38 @@
+# Load Balancing Explanation
+
+## 1. Which load balancing algorithm was used?
+
+`balance roundrobin` (from haproxy.cfg). With roundrobin each new
+connection is assigned to the next server in the list in turn, wrapping
+around at the end - if all servers are healthy the traffic is split
+evenly. In the 6-request test below you can see the requests alternating
+between backend1 and backend2.
+
+## 2. How does the HAProxy health check work?
+
+Every server line ends with `check`:
+`server server1 backend1:80 check`. That option makes HAProxy send a
+periodic health-check connection to each backend (by default an HTTP
+OPTIONS/HEAD request on the given port). While a server responds, HAProxy
+marks it UP and includes it in the rotation. After `inter` (default) time
+the check fails, the server is marked DOWN and removed from rotation, so
+clients never hit a dead backend; when it starts responding again it goes
+back UP automatically. That is what makes the LB resilient to a failing
+backend without any manual action.
+
+## 3. What is the difference between HAProxy and Nginx as a load balancer?
+
+- HAProxy is a dedicated L4/L7 proxy built for load balancing: richest
+  balancing algorithms (roundrobin, leastconn, source/hash...), very high
+  connection throughput, built-in health checks, stickiness and a stats
+  page (we saw the stats endpoint concept; the image exposes it via the
+  stats socket/counters).
+- Nginx is primarily a web server / reverse proxy which can also load
+  balance (`upstream` + `proxy_pass`) and has its own health-check
+  support. It excels when you also need caching, static file serving,
+  rate limiting, TLS termination at the same point.
+- For pure high-connection-volume LB with fine health-check tuning,
+  HAProxy is often preferred; when the box must also serve content/cache,
+  Nginx does both jobs in one process. This homework uses HAProxy for the
+  LB demo (6.x) and Nginx for content/reverse-proxy (2.x/3.x/4.x/5.x),
+  which mirrors real-life separation of roles.

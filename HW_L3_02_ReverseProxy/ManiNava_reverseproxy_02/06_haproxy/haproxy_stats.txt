@@ -1,0 +1,4 @@
+CONTAINER ID   NAME         CPU %     MEM USAGE / LIMIT     MEM %     NET I/O           BLOCK I/O     PIDS
+983333c3ff02   haproxy-lb   0.01%     25.76MiB / 15.48GiB   0.16%     9.21kB / 6.11kB   36.9kB / 0B   13
+7d74a55e11f3   backend1     0.00%     10.25MiB / 15.48GiB   0.06%     8.11kB / 2.68kB   0B / 8.19kB   13
+193495bc6ee4   backend2     0.00%     10.53MiB / 15.48GiB   0.07%     7.28kB / 2.68kB   0B / 8.19kB   13

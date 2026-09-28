@@ -1,0 +1,47 @@
+# Log Analysis
+
+## 1. What is the difference between `docker logs` and filesystem logs?
+
+Nginx inside the container writes its logs to files in the container
+filesystem (`/var/log/nginx/access.log` and `error.log`). Those files live
+in the container's writable layer and die with the container.
+
+`docker logs <container>` instead reads the container's stdout/stderr
+streams. Nginx (and most services in official images) are configured to
+log to stdout/stderr, Docker captures that stream (json-file driver by
+default), and `docker logs` replays it. So:
+
+- filesystem logs = what the process wrote to files (only reachable while
+  the container exists, unless you mount a volume);
+- `docker logs` = what the process wrote to stdout/stderr (retrieved by
+  Docker itself, survives until the container is removed).
+
+This run showed both: `latest_logs.txt` (last 20 lines via docker logs)
+and the error grep - the 404 from `/nonexistent` shows up in the access
+log stream, and with a default nginx image there was no actual "error"
+line, hence the "No errors found" fallback.
+
+## 2. How can you redirect container logs to the filesystem?
+
+Three common ways:
+
+- run the container with a name and use `docker logs <name> > file.txt`
+  (what this homework does - the scripts capture stdout into *.txt);
+- configure the container to write to a bind-mounted or volume-mounted
+  directory, e.g. `-v /var/log/nginx:/var/log/nginx:ro` - then the nginx
+  log files land on the host directly;
+- set the logging driver to a file/journald/external syslog driver in
+  `daemon.json`, e.g. `"log-driver": "json-file"` plus `max-size`/`max-file`
+  rotation options - Docker then manages the log files for you.
+
+## 3. What are the advantages of `docker logs`?
+
+- No need to know the application's internal log format or paths - one
+  command works for every container;
+- works even if the container has no shell/ssh access;
+- time filtering flags: `--since`, `--until`, `--tail`, and `-f` to follow
+  logs in real time;
+- central tooling (docker compose logs, logspout, Fluentd, Loki...) can
+  consume the same stream, so containers integrate with centralized log
+  collection without changing the app;
+- events are timestamped by Docker itself, which helps debugging.

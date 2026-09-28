@@ -1,0 +1,54 @@
+# HTTP vs HTTPS
+
+## 1. What is the main difference between HTTP and HTTPS?
+
+HTTP sends everything in plain text - headers, body, even the URL - so
+anyone on the path (router, ISP, wifi snooper) can read and even modify it.
+HTTPS is HTTP inside a TLS tunnel: the client and server first do a
+handshake, verify the server certificate, derive session keys, and only
+then exchange encrypted data. So HTTPS gives you:
+
+- confidentiality - nobody can read the traffic;
+- integrity - the data cannot be modified in transit (MAC/authenticated
+  encryption);
+- authentication - the client can verify who the server is via its
+  certificate chain.
+
+For this homework both sides are on localhost, so encryption is not
+strictly needed, but it shows the exact same mechanism a real site uses.
+
+## 2. Why should we use different ports for HTTP and HTTPS in Docker?
+
+The protocols are separate by convention. HTTP has a default port 80 and
+HTTPS 443, and clients open one or the other by scheme (http:// vs
+https://). In Docker you publish container ports on the host, so mapping a
+container that listens on 443 to a different host port (here 8443) lets
+you run HTTP and HTTPS side by side at the same time, or run several TLS
+services on one host. A single host port can only be bound by one
+container, so different ports = no conflict. We mapped 8443 -> 443 instead
+of 443 directly because 443 usually needs root permissions and 80/443 may
+already be in use on the host.
+
+## 3. How can you enable both HTTP and HTTPS in one container?
+
+One nginx server (container) can listen on several ports at once:
+
+- one `server` block with `listen 80;` for HTTP;
+- another `server` block with `listen 443 ssl;` + certificate/key for
+  HTTPS (a common production pattern is to redirect all traffic from 80 to
+  443, or serve different content per scheme);
+- on the host you then publish both ports, e.g.
+  `-p 8080:80 -p 8443:443`, so the same container answers on both.
+
+That is exactly what the final homework container does with `listen 80`
+(2.x) and `listen 443 ssl` (3.2) - each gets its own published host port.
+
+
+
+=== docker port nginx-https ===
+443/tcp -> 0.0.0.0:8443
+443/tcp -> [::]:8443
+
+=== ss -tuln | grep ':8443' ===
+tcp   LISTEN 0      4096         0.0.0.0:8443       0.0.0.0:*
+tcp   LISTEN 0      4096            [::]:8443          [::]:*

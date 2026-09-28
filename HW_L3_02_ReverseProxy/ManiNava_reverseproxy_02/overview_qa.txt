@@ -1,0 +1,93 @@
+# ManiNava Reverse Proxy Homework 02 - Overview & Q&A Recap
+
+Quick answers to the main reverse-proxy questions this homework touches.
+All numbers are real, measured while running the scenarios on my machine.
+
+## 1. What does a reverse proxy actually do?
+
+- It sits in front of the real servers, takes the client request, forwards
+  it to the right backend and passes the answer back - the client never
+  talks to a backend directly. I did this three times, differently each
+  time: nginx on 8080 (2.3), haproxy on 9000 (6.2) and traefik on 8080
+  (7.1).
+- It also gives a single entry point. In section 7.2 two different sites
+  (web1 / web2) share the same port 8080 and the proxy picks the backend
+  from the Host header. No port per service any more.
+
+## 2. Why did I need a custom network for nginx -> python?
+
+- The PDF used the default `bridge` network in 2.3 and 6.x, but the
+  default bridge does not resolve container names. Nginx would not have
+  found `backend-api` or `backend1/backend2` by name.
+- I created `rp-net` / `hb-net` and both sides join it, so
+  `proxy_pass http://backend-api:5000` works exactly as the configs
+  intend. Same files, same addresses, just working name resolution.
+
+## 3. Nginx as a content server vs as a proxy?
+
+- Content server: serves files from the container (2.1) or from a
+  bind-mounted host folder (2.2). I edited `index.html` on the host and
+  the next curl already showed the new page - no rebuild, instant. The
+  static demo page answers with `<h1>Demo Site 01</h1>`.
+- Reverse proxy: `nginx-proxy` forwards `/` and `/api` to the python
+  backend and returns its answer. Every server header I checked says
+  `nginx/1.31.6`.
+
+## 4. HTTP vs HTTPS - what really changed?
+
+- The served content is identical; what changes is the wire. Section 3.2
+  runs the same nginx with a self-signed cert on container port 443,
+  published as host `:8443`, and `curl -k https://localhost:8443/status`
+  answers `HTTPS OK`.
+- `docker port nginx-https` shows `443/tcp -> :8443` and `ss` confirms
+  nothing extra is listening - only the published 8443.
+
+## 5. Why stub_status and log monitoring?
+
+- `stub_status` gives live counters without extra tooling: on
+  `nginx-status` (:8090/basic_status) I got `Active connections: 1` and
+  `6 accepts / 6 handled / 6 requests`.
+- For logs: `docker logs` (with `--tail 20`) gives the recent lines in
+  `latest_logs.txt`, the full stream in `recent_logs.txt`, and the error
+  log in `error_logs.txt`. The important detail I noted in
+  `log_analysis.txt`: filesystem logs inside the container die with the
+  container, `docker logs` survives.
+
+## 6. mTLS - how did I prove both sides?
+
+- I built a tiny CA (`rootCA`), signed a server cert and a client cert
+  with it, and set `ssl_verify_client on` in nginx.
+- Without a client certificate the server answers `400 No required SSL
+  certificate was sent`; with `client.crt` it answers `200 OK`.
+- `openssl verify -CAfile ca/rootCA.crt client/client.crt` prints
+  `client/client.crt: OK` - the chain holds.
+
+## 7. HAProxy roundrobin - did it actually alternate?
+
+- Two nginx backends (`backend1` / `backend2`), haproxy in front on
+  `:9000`. I hit the LB several times and the requests alternate between
+  them: `Backend Server 1`, `Backend Server 2`, `Backend Server 1`, ... -
+  exactly roundrobin. The haproxy log shows the connections accepted on
+  the `http_front` frontend.
+
+## 8. Traefik - what is "service discovery"?
+
+- There is no routing config file for traefik. The containers carry
+  labels (`traefik.http.routers.whoami.rule=Host(\`localhost\`)`) and the
+  Docker provider watches the docker socket, sees them and builds routers
+  on the fly - `whoami@docker` shows up in `/api/rawdata` with no restart.
+- Same for the vhosts: labels on web1/web2 create `web1@docker` and
+  `web2@docker` routers, and `Host: web1.localhost` / `Host:
+  web2.localhost` on the same 8080 each serve its own site, found in the
+  router list on the dashboard api (`:8081/api/http/routers`).
+
+## 9. Version bumps I had to make
+
+- The PDF pins `traefik:v3.0`, but this machine runs Docker 29.6 which
+  dropped API support below 1.40 and traefik < v3.5 never registers
+  routers, so I pinned `traefik:v3.6` (labels and ports unchanged).
+- HAProxy keeps the PDF's `daemon` mode in the config, but I start the
+  container with `-db` (foreground) so it stays up. Details in README.
+
+That's the whole picture - the raw outputs live next to each scenario
+script, and `commands_history.txt` has every docker command I ran.

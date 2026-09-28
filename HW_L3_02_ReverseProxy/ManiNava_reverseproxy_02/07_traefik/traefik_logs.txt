@@ -1,0 +1,1 @@
+time="2026-09-28T18:18:24+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_02_ReverseProxy/ManiNava_reverseproxy_02/07_traefik/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"

@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  traefik:
+    # Docker 29 raised the API floor to 1.40; traefik < v3.5 ships a docker
+    # SDK stuck on API 1.24 so its provider errors out. v3.6 negotiates fine.
+    image: traefik:v3.6
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "8080:80"
+      - "8081:8080" # Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - traefik-net
+
+  whoami:
+    image: traefik/whoami
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`localhost`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+    networks:
+      - traefik-net
+
+networks:
+  traefik-net:
+    driver: bridge

@@ -1,0 +1,38 @@
+=== docker system df ===
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          51        10        15.92GB   7.17GB (45%)
+Containers      10        1         782.8MB   782.7MB (99%)
+Local Volumes   8         4         706.9MB   630.9MB (89%)
+Build Cache     100       0         6.935GB   4.329GB
+
+=== docker network inspect bridge | head -n 30 ===
+[
+    {
+        "Name": "bridge",
+        "Id": "8e6d2186e9b13202d5f05130f973bfa434b69318f3ce3cf4569d637a3e2d75fa",
+        "Created": "2026-09-28T13:10:05.619787888+03:30",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {
+            "com.docker.network.bridge.default_bridge": "true",
+            "com.docker.network.bridge.enable_icc": "true",
+            "com.docker.network.bridge.enable_ip_masquerade": "true",

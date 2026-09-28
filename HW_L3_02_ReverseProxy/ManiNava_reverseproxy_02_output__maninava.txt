@@ -1,0 +1,336 @@
+= ManiNava Reverse Proxy Homework 02 - Run Transcript =
+= Date: Mon Sep 28 06:16:08 PM +0330 2026 =
+= User: mava =
+= Docker: Docker version 29.6.0, build fb59821d45 =
+
+
+# S1.1 - check_docker.sh
+$ bash 01_docker_setup/check_docker.sh
+1.1 check_docker completed. Reports: docker_version.txt, docker_status.txt
+exit code: 0
+
+# S1.2 - pull_images.sh
+$ bash 01_docker_setup/pull_images.sh
+alpine: Pulling from library/nginx
+Digest: sha256:df221db836e1754089190208cee7eeda94f233197056426eda74a43ab1abeac2
+Status: Image is up to date for nginx:alpine
+docker.io/library/nginx:alpine
+alpine: Pulling from library/haproxy
+Digest: sha256:7ffdd3845020aa4c97ffaa56c8cab3ad473ecae0b8ea5e55d2378d663755e092
+Status: Image is up to date for haproxy:alpine
+docker.io/library/haproxy:alpine
+v3.6: Pulling from library/traefik
+Digest: sha256:31267173a15b4944e797a76ffd9c419707c8d8b32fe5b610f80cd0cfa05f372d
+Status: Image is up to date for traefik:v3.6
+docker.io/library/traefik:v3.6
+3.9-alpine: Pulling from library/python
+Digest: sha256:c99b6eb43b3ac4d750db3d6e8b22268d5ea9a99deead7218ce3deda7f2ca029c
+Status: Image is up to date for python:3.9-alpine
+docker.io/library/python:3.9-alpine
+1.2 pull_images completed. Reports: pulled_images.txt, images_summary.txt
+exit code: 0
+
+# S2.1 - basic_nginx.sh
+$ bash 02_nginx_basics/basic_nginx.sh
+873f3cb1f0db95c812473aa9ba939e939b83bf00e82f1dbc45c38bde163202cf
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0  0    896   0      0   0      0      0      0                              0  0    896   0      0   0      0      0      0                              0  0    896   0      0   0      0      0      0                              0
+2026/09/28 14:47:41 [notice] 1#1: using the "epoll" event method
+2026/09/28 14:47:41 [notice] 1#1: nginx/1.31.6
+2026/09/28 14:47:41 [notice] 1#1: built by gcc 15.2.0 (Alpine 15.2.0) 
+2026/09/28 14:47:41 [notice] 1#1: OS: Linux 7.0.13-arch1-1
+2026/09/28 14:47:41 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1024:524288
+2026/09/28 14:47:41 [notice] 1#1: start worker processes
+2026/09/28 14:47:41 [notice] 1#1: start worker process 30
+2026/09/28 14:47:41 [notice] 1#1: start worker process 31
+2026/09/28 14:47:41 [notice] 1#1: start worker process 32
+2026/09/28 14:47:41 [notice] 1#1: start worker process 33
+2026/09/28 14:47:41 [notice] 1#1: start worker process 34
+2026/09/28 14:47:41 [notice] 1#1: start worker process 35
+2026/09/28 14:47:41 [notice] 1#1: start worker process 36
+2026/09/28 14:47:41 [notice] 1#1: start worker process 37
+2026/09/28 14:47:41 [notice] 1#1: start worker process 38
+2026/09/28 14:47:41 [notice] 1#1: start worker process 39
+2026/09/28 14:47:41 [notice] 1#1: start worker process 40
+2026/09/28 14:47:41 [notice] 1#1: start worker process 41
+nginx-basic
+nginx-basic
+2.1 basic_nginx completed. Reports: nginx_response.txt, nginx_logs.txt, nginx_network.txt
+exit code: 0
+
+# S2.2 - static_test.sh
+$ bash 02_nginx_basics/static_test.sh
+f8dd6ff9a3f6c4f53d18985f3ef17533b44661d767ce7b9e37418f3fcc184c68
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     85 100     85   0      0  97926      0                              0100     85 100     85   0      0  87268      0                              0100     85 100     85   0      0  78485      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     99 100     99   0      0 109.2k      0                              0100     99 100     99   0      0  99397      0                              0100     99 100     99   0      0  89592      0                              0
+nginx-static
+nginx-static
+2.2 static_test completed. Report: static_check.txt
+exit code: 0
+
+# S2.3 - proxy_test.sh
+$ bash 02_nginx_basics/proxy_test.sh
+b23f6e4b0f36b517d85250e775dae8277e94dc5632c878870ea4b1404a657648
+ca5b631d9675885fc49a4d875584ae5c468f4970f0725fccaa0edec94bdb16d9
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     85 100     85   0      0  95291      0                              0100     85 100     85   0      0  87628      0                              0100     85 100     85   0      0  81339      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100    915 100    915   0      0 397.4k      0                              0100    915 100    915   0      0 382.6k      0                              0100    915 100    915   0      0 371.0k      0                              0
+nginx-proxy
+backend-api
+nginx-proxy
+backend-api
+2.3 proxy_test completed. Reports: frontend_test.txt, api_test.txt, proxy_logs.txt
+exit code: 0
+
+# S3.1 - generate_certs.sh
+$ bash 03_nginx_certs/generate_certs.sh
+.+....+.....+++++++++++++++++++++++++++++++++++++++*.+....+..+....+..............+.+.....+..........+........+++++++++++++++++++++++++++++++++++++++*.......+.+.....+.+...+.....+............+....+.........+............+..+......+.+......+........+.+......+............+..+......+...+.+...+..+....+.....+......+....+.........+..+......+.......+...+..+.+...........+....+...........+.+............+.....+......+...................+.....+.+...........................+........+......+...+.+......+......+..+...+....+...+...+.....+....++++++
+...+..+.............+...........+...+...............+............+.+..+.+......+......+...+..+....+..............+......+......+.......+..+.+..+.......+...+..+...+...+..........+..+.+++++++++++++++++++++++++++++++++++++++*.....+....+.....+......+...+....+......+++++++++++++++++++++++++++++++++++++++*.+...+.........+...+....+......+...+......+......+..+.+..+.........+.........+.......+...+..+.............+...........++++++
+-----
+3.1 generate_certs completed. Reports: certs/demo.key, certs/demo.crt, certs_info.txt
+exit code: 0
+
+# S3.2 - https_test.sh
+$ bash 03_nginx_certs/https_test.sh
+8a2f0b668364a0c116ccb374d905088492aa79725668e8cebfeab805e5c56c15
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100      8 100      8   0      0   1190      0                              0100      8 100      8   0      0   1173      0                              0100      8 100      8   0      0   1159      0                              0
+nginx-https
+nginx-https
+3.2 https_test completed. Reports: https_response.txt, https_logs.txt (3.3 evidence appended to http_vs_https.txt)
+exit code: 0
+
+# S4.1 - status_test.sh
+$ bash 04_nginx_admin/status_test.sh
+aab36c8459106e44cb147aa274cca4a8be708a9a472a7ace87876cccfde88113
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     17 100     17   0      0  22818      0                              0100     17 100     17   0      0  20531      0                              0100     17 100     17   0      0  18418      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     17 100     17   0      0  25993      0                              0100     17 100     17   0      0  23035      0                              0100     17 100     17   0      0  20681      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     17 100     17   0      0  31481      0                              0100     17 100     17   0      0  26856      0                              0100     17 100     17   0      0  23513      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     17 100     17   0      0  27331      0                              0100     17 100     17   0      0  24011      0                              0100     17 100     17   0      0  21250      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     17 100     17   0      0  27375      0                              0100     17 100     17   0      0  24460      0                              0100     17 100     17   0      0  22164      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     97 100     97   0      0 152.2k      0                              0100     97 100     97   0      0 131.5k      0                              0100     97 100     97   0      0 116.6k      0                              0
+nginx-status
+nginx-status
+4.1 status_test completed. Reports: status_output.txt, status_logs.txt
+exit code: 0
+
+# S4.2 - log_monitoring.sh
+$ bash 04_nginx_admin/log_monitoring.sh
+33fa0778fb5d97f98a3a17a17bf85bf5e8dccc8dabbb59f0f0ce3a8bd9a1723a
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100    896 100    896   0      0  1.17M      0                              0100    896 100    896   0      0  1.05M      0                              0100    896 100    896   0      0 970.0k      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100    153 100    153   0      0 225.3k      0                              0100    153 100    153   0      0 198.9k      0                              0100    153 100    153   0      0 177.2k      0                              0
+2026/09/28 14:48:05 [notice] 1#1: nginx/1.31.6
+2026/09/28 14:48:05 [notice] 1#1: built by gcc 15.2.0 (Alpine 15.2.0) 
+2026/09/28 14:48:05 [notice] 1#1: OS: Linux 7.0.13-arch1-1
+2026/09/28 14:48:05 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1024:524288
+2026/09/28 14:48:05 [notice] 1#1: start worker processes
+2026/09/28 14:48:05 [notice] 1#1: start worker process 30
+2026/09/28 14:48:05 [notice] 1#1: start worker process 31
+2026/09/28 14:48:05 [notice] 1#1: start worker process 32
+2026/09/28 14:48:05 [notice] 1#1: start worker process 33
+2026/09/28 14:48:05 [notice] 1#1: start worker process 34
+2026/09/28 14:48:05 [notice] 1#1: start worker process 35
+2026/09/28 14:48:05 [notice] 1#1: start worker process 36
+2026/09/28 14:48:05 [notice] 1#1: start worker process 37
+2026/09/28 14:48:05 [notice] 1#1: start worker process 38
+2026/09/28 14:48:05 [notice] 1#1: start worker process 39
+2026/09/28 14:48:05 [notice] 1#1: start worker process 40
+2026/09/28 14:48:05 [notice] 1#1: start worker process 41
+2026/09/28 14:48:07 [error] 31#31: *2 open() "/usr/share/nginx/html/nonexistent" failed (2: No such file or directory), client: 172.17.0.1, server: localhost, request: "GET /nonexistent HTTP/1.1", host: "localhost:8091"
+2026/09/28 14:48:05 [notice] 1#1: using the "epoll" event method
+2026/09/28 14:48:05 [notice] 1#1: nginx/1.31.6
+2026/09/28 14:48:05 [notice] 1#1: built by gcc 15.2.0 (Alpine 15.2.0) 
+2026/09/28 14:48:05 [notice] 1#1: OS: Linux 7.0.13-arch1-1
+2026/09/28 14:48:05 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1024:524288
+2026/09/28 14:48:05 [notice] 1#1: start worker processes
+2026/09/28 14:48:05 [notice] 1#1: start worker process 30
+2026/09/28 14:48:05 [notice] 1#1: start worker process 31
+2026/09/28 14:48:05 [notice] 1#1: start worker process 32
+2026/09/28 14:48:05 [notice] 1#1: start worker process 33
+2026/09/28 14:48:05 [notice] 1#1: start worker process 34
+2026/09/28 14:48:05 [notice] 1#1: start worker process 35
+2026/09/28 14:48:05 [notice] 1#1: start worker process 36
+2026/09/28 14:48:05 [notice] 1#1: start worker process 37
+2026/09/28 14:48:05 [notice] 1#1: start worker process 38
+2026/09/28 14:48:05 [notice] 1#1: start worker process 39
+2026/09/28 14:48:05 [notice] 1#1: start worker process 40
+2026/09/28 14:48:05 [notice] 1#1: start worker process 41
+2026/09/28 14:48:07 [error] 31#31: *2 open() "/usr/share/nginx/html/nonexistent" failed (2: No such file or directory), client: 172.17.0.1, server: localhost, request: "GET /nonexistent HTTP/1.1", host: "localhost:8091"
+nginx-logs
+nginx-logs
+4.2 log_monitoring completed. Reports: latest_logs.txt, error_logs.txt, recent_logs.txt
+exit code: 0
+
+# S5.1 - generate_certs.sh
+$ bash 05_nginx_mtls/generate_certs.sh
+..+++++++++++++++++++++++++++++++++++++++*........+..+.......+++++++++++++++++++++++++++++++++++++++*..........+.........+....+......+........+..........+...+..+...+..................+.......+..+............+.+........+.+.....+................+.................................+..+.........+....+...........+.+...+..+.......+............+.........+..+...+......+...+.......+...+.....+...+.......+.....+.....................+.+........+..........+..+................+.....+.........+.+...+......+........+...+............+...+...++++++
+............+..........+..+......+...............+.+...+...+..+++++++++++++++++++++++++++++++++++++++*....+.....+...+...............+......+.+++++++++++++++++++++++++++++++++++++++*..+..............+......+..............................+......+.+..+.......+..............+....+.....+.+..+...............+...+.......+..+......+.......+...+...........+...++++++
+-----
+......+......+...+......+..+....+.....+....+......+......+.....+++++++++++++++++++++++++++++++++++++++*...+....+......+......+...+++++++++++++++++++++++++++++++++++++++*....+........+......+.+...........+...+....+......+.....+......+......+.........+.+.........+.....+.+..............+.+..+.+..+.............+......+........+.+.........+..+.+..+............+.........................+...+...+........+....+...............+..+...+..........+.....+......+................+.....+....+..+....+...+...+.....+...+............+.........+......+....+.....+......+..........+.........+.....+.+...+.....+.......+.........+...+...........+......+.........+....+..+...+...+.............+......+........+.+..+...+....+.....................+............++++++
+........+++++++++++++++++++++++++++++++++++++++*...+..+.+.....+.+....................+.+............+..+...............+...+++++++++++++++++++++++++++++++++++++++*.................+.............+..+....+.....+.........+.+.........+..+.........+.............+...........+............+....+........+...+..........+..............+....+.....+......+.+...+.........+........+....+.........+........................+.....+......+....+...+........+.++++++
+-----
+Certificate request self-signature ok
+subject=C=IR, O=DevOpsClass, CN=mtls.local
+..+.+...........+.............+...........+....+..+...........................+...+...+....+...+++++++++++++++++++++++++++++++++++++++*.+...+....+........+.+..+.......+++++++++++++++++++++++++++++++++++++++*..+.............+..+...+.......+..+......+...+.......+.....+...+......+.+.................+......+.+...+...+.....+...+.+........+.......+......+..+......+.+........+..........+...+...+..+.......+..+...+...+....+..............+..........+......+.....+.+...+......+.....+.........+......+.+........+......+....+.....+......+.+...........................+.....+.+..+...+.+.....+...+............+..........+...........+....+...+........+...+....+...+...+..............+.+.........+...+........+.++++++
+......+...+.+..+.......+...+++++++++++++++++++++++++++++++++++++++*.+++++++++++++++++++++++++++++++++++++++*..+...............+..+..........+.....+..........+.....+...............+.+...........+....+..+....+..................+...+...+..+.........+.+.....+.............+......+...........+....+...+...+...+.....+......+...+.+.........+...........+....+.................+.+..+...+.......+......+...............+..+....+...+...+..+...............+.............+.....+.......+..+.+........+....+........+.......+..+....+..+.......+...+..+............+....+.....+.+......+..+.......+...+...+..+.......+..............+............+............+......+.+...............+......+..+......+.......+.........+...+..+.+............+......+............+..+...+....+........+...............+.+..+...+.+...+......+.....+............+...+.+......+..+...+...............+...+.......++++++
+-----
+Certificate request self-signature ok
+subject=C=IR, O=DevOpsClass, CN=client1
+Certificates generated successfully
+5.1 generate_certs completed. Reports: ca/, server/, client/, certs_structure.txt
+exit code: 0
+
+# S5.2 - mtls_test.sh
+$ bash 05_nginx_mtls/mtls_test.sh
+fb992e18823cc7fd9c6be16d2c8d0ab0b20b457a822d171f52d795f7f967f0f0
+nginx-mtls
+nginx-mtls
+5.2 mtls_test completed. Reports: mtls_test.txt, mtls_logs.txt (5.3 verify appended to mtls_explanation.txt)
+exit code: 0
+
+# S6.1 - setup_backends.sh
+$ bash 06_haproxy/setup_backends.sh
+7d74a55e11f3b77034cd989277c7f496a3956c00f7ed94eb144cfc151c1eac4d
+193495bc6ee49bc069b09e61a47447060855205750cd1139f7b6e21456f3677a
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     26 100     26   0      0  30624      0                              0100     26 100     26   0      0  27600      0                              0100     26 100     26   0      0  25515      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     26 100     26   0      0  34805      0                              0100     26 100     26   0      0  30057      0                              0100     26 100     26   0      0  27339      0                              0
+6.1 setup_backends completed. Reports: backend1_response.txt, backend2_response.txt, backends_status.txt
+exit code: 0
+
+# S6.2 - haproxy_test.sh
+$ bash 06_haproxy/haproxy_test.sh
+983333c3ff02c9b9e990aab1c2ed2edd94caf4ce5b0bad0d4394890f51202d52
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     26 100     26   0      0  20186      0                              0100     26 100     26   0      0  18909      0                              0100     26 100     26   0      0  17627      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     26 100     26   0      0  22867      0                              0100     26 100     26   0      0  21224      0                              0100     26 100     26   0      0  19771      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     26 100     26   0      0  26052      0                              0100     26 100     26   0      0  24051      0                              0100     26 100     26   0      0  22146      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     26 100     26   0      0  23339      0                              0100     26 100     26   0      0  21294      0                              0100     26 100     26   0      0  19504      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     26 100     26   0      0  23508      0                              0100     26 100     26   0      0  22015      0                              0100     26 100     26   0      0  20750      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     26 100     26   0      0  27777      0                              0100     26 100     26   0      0  25440      0                              0100     26 100     26   0      0  23131      0                              0
+[NOTICE]   (1) : Initializing new worker (8)
+[NOTICE]   (1) : Loading success.
+haproxy-lb
+backend1
+backend2
+haproxy-lb
+backend1
+backend2
+6.2 haproxy_test completed. Reports: haproxy_test.log, haproxy_logs.txt, haproxy_stats.txt
+exit code: 0
+
+# S7.1 - run_traefik.sh
+$ bash 07_traefik/run_traefik.sh
+time="2026-09-28T18:18:19+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_02_ReverseProxy/ManiNava_reverseproxy_02/07_traefik/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Network 07_traefik_traefik-net Creating 
+ Network 07_traefik_traefik-net Created 
+ Container 07_traefik-whoami-1 Creating 
+ Container 07_traefik-traefik-1 Creating 
+ Container 07_traefik-whoami-1 Created 
+ Container 07_traefik-traefik-1 Created 
+ Container 07_traefik-whoami-1 Starting 
+ Container 07_traefik-traefik-1 Starting 
+ Container 07_traefik-traefik-1 Started 
+ Container 07_traefik-whoami-1 Started 
+time="2026-09-28T18:18:24+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_02_ReverseProxy/ManiNava_reverseproxy_02/07_traefik/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100    359 100    359   0      0 226.1k      0                              0100    359 100    359   0      0 214.1k      0                              0100    359 100    359   0      0 205.1k      0                              0
+time="2026-09-28T18:18:24+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_02_ReverseProxy/ManiNava_reverseproxy_02/07_traefik/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Container 07_traefik-traefik-1 Stopping 
+ Container 07_traefik-whoami-1 Stopping 
+ Container 07_traefik-whoami-1 Stopped 
+ Container 07_traefik-whoami-1 Removing 
+ Container 07_traefik-whoami-1 Removed 
+ Container 07_traefik-traefik-1 Stopped 
+ Container 07_traefik-traefik-1 Removing 
+ Container 07_traefik-traefik-1 Removed 
+ Network 07_traefik_traefik-net Removing 
+ Network 07_traefik_traefik-net Removed 
+7.1 run_traefik completed. Reports: traefik_status.txt, whoami_response.txt, traefik_api.txt, traefik_logs.txt
+exit code: 0
+
+# S7.2 - advanced_test.sh
+$ bash 07_traefik/advanced_test.sh
+time="2026-09-28T18:18:25+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_02_ReverseProxy/ManiNava_reverseproxy_02/07_traefik/docker-compose-advanced.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Network 07_traefik_traefik-net Creating 
+ Network 07_traefik_traefik-net Created 
+ Container 07_traefik-traefik-1 Creating 
+ Container 07_traefik-web2-1 Creating 
+ Container 07_traefik-web1-1 Creating 
+ Container 07_traefik-traefik-1 Created 
+ Container 07_traefik-web1-1 Created 
+ Container 07_traefik-web2-1 Created 
+ Container 07_traefik-web1-1 Starting 
+ Container 07_traefik-web2-1 Starting 
+ Container 07_traefik-traefik-1 Starting 
+ Container 07_traefik-web2-1 Started 
+ Container 07_traefik-web1-1 Started 
+ Container 07_traefik-traefik-1 Started 
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100    896 100    896   0      0 218.5k      0                              0100    896 100    896   0      0 207.1k      0                              0100    896 100    896   0      0 195.4k      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100    896 100    896   0      0 237.4k      0                              0100    896 100    896   0      0 223.8k      0                              0100    896 100    896   0      0 212.6k      0                              0
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100   1356 100   1356   0      0 539.8k      0                              0100   1356 100   1356   0      0 485.2k      0                              0100   1356 100   1356   0      0 441.1k      0                              0
+time="2026-09-28T18:18:30+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_02_ReverseProxy/ManiNava_reverseproxy_02/07_traefik/docker-compose-advanced.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Container 07_traefik-web1-1 Stopping 
+ Container 07_traefik-web2-1 Stopping 
+ Container 07_traefik-traefik-1 Stopping 
+ Container 07_traefik-traefik-1 Stopped 
+ Container 07_traefik-traefik-1 Removing 
+ Container 07_traefik-web1-1 Stopped 
+ Container 07_traefik-web1-1 Removing 
+ Container 07_traefik-web2-1 Stopped 
+ Container 07_traefik-web2-1 Removing 
+ Container 07_traefik-traefik-1 Removed 
+ Container 07_traefik-web1-1 Removed 
+ Container 07_traefik-web2-1 Removed 
+ Network 07_traefik_traefik-net Removing 
+ Network 07_traefik_traefik-net Removed 
+7.2 advanced_test completed. Report: advanced_test.txt
+exit code: 0
+
+= END of transcript =

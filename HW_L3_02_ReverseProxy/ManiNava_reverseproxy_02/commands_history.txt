@@ -1,0 +1,81 @@
+# Commands History - ManiNava Reverse Proxy Homework 02
+# (all docker commands used, grouped by scenario)
+# ===================================================
+# S1.1 env check & version
+docker --version
+docker info | head -n 20
+docker ps -a
+docker network ls
+docker volume ls
+docker system df
+docker network inspect bridge | head -n 30
+# S1.2 pull images
+docker pull nginx:alpine
+docker pull haproxy:alpine
+docker pull traefik:v3.6
+docker pull python:3.9-alpine
+docker images | grep -E 'nginx|haproxy|traefik|python' > pulled_images.txt
+docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}" \
+# S2.1 basic nginx container
+docker run -d --name nginx-basic -p 8080:80 nginx:alpine
+docker logs nginx-basic | head -n 10 > nginx_logs.txt
+docker inspect nginx-basic | grep -A 5 "NetworkSettings" > nginx_network.txt
+docker stop nginx-basic
+docker rm nginx-basic
+# S2.2 static bind-mount site
+docker run -d --name nginx-static \
+docker stop nginx-static
+docker rm nginx-static
+# S2.3 nginx reverse proxy
+docker network create rp-net > /dev/null 2>&1 || true
+docker run -d --name backend-api \
+docker run -d --name nginx-proxy \
+docker logs nginx-proxy | tail -n 10 > proxy_logs.txt
+docker stop nginx-proxy backend-api
+docker rm nginx-proxy backend-api
+docker network rm rp-net > /dev/null 2>&1 || true
+# S3.1 self-signed certs
+# S3.2 https server + http_vs_https
+docker run -d --name nginx-https \
+docker logs nginx-https | tail -n 10 > https_logs.txt
+docker port nginx-https
+docker stop nginx-https
+docker rm nginx-https
+# S4.1 stub_status endpoint
+docker run -d --name nginx-status \
+docker logs nginx-status | tail -n 15 > status_logs.txt
+docker stop nginx-status
+docker rm nginx-status
+# S4.2 log monitoring
+docker run -d --name nginx-logs \
+docker logs nginx-logs --tail 20 > latest_logs.txt
+docker logs nginx-logs 2>&1 | grep -i error > error_logs.txt || echo "No errors found" > error_logs.txt
+docker logs nginx-logs --since 1m > recent_logs.txt
+docker stop nginx-logs
+docker rm nginx-logs
+# S5.1 ca/server/client certs
+# S5.2 mtls nginx + verify
+docker run -d --name nginx-mtls \
+docker logs nginx-mtls | tail -n 10 > mtls_logs.txt
+docker stop nginx-mtls
+docker rm nginx-mtls
+# S6.1 backend containers
+docker network create hb-net > /dev/null 2>&1 || true
+docker run -d --name backend1 \
+docker run -d --name backend2 \
+docker ps | grep backend > backends_status.txt
+# S6.2 haproxy load balancer
+docker run -d --name haproxy-lb \
+docker logs haproxy-lb | tail -n 20 > haproxy_logs.txt
+docker stats --no-stream haproxy-lb backend1 backend2 > haproxy_stats.txt
+docker stop haproxy-lb backend1 backend2
+docker rm haproxy-lb backend1 backend2
+docker network rm hb-net > /dev/null 2>&1 || true
+# S7.1 traefik + whoami discovery
+docker-compose up -d
+docker-compose ps > traefik_status.txt
+docker-compose logs --no-color traefik 2>&1 | tail -n 30 > traefik_logs.txt
+docker-compose down
+# S7.2 virtual hosts + dashboard
+docker-compose -f docker-compose-advanced.yml up -d
+docker-compose -f docker-compose-advanced.yml down

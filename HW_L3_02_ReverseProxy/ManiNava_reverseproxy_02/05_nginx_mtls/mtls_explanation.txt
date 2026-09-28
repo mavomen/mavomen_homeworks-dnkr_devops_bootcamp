@@ -1,0 +1,55 @@
+# mTLS Explanation
+
+## 1. What is the difference between TLS and mTLS?
+
+Plain TLS authenticates only one side: the client verifies the *server*
+certificate against a CA (that is the "padlock" in the browser). The
+server does not verify the client - anyone with the URL can connect.
+
+mTLS (mutual TLS) authenticates **both** sides. The server asks the
+client to present a client certificate, verifies it against a CA it
+trusts (`ssl_client_certificate` + `ssl_verify_client on` in nginx), and
+only then serves the request. So:
+
+|            | TLS                | mTLS                          |
+|------------|--------------------|-------------------------------|
+| who is verified | client -> server | client <-> server (both)      |
+| client cert needed | no            | yes                           |
+
+That is why in 5.2 the first request (no client cert) fails at the TLS
+handshake and the second one (with `--cert client/client.crt`) succeeds.
+
+## 2. Why does the client have to trust rootCA.crt?
+
+Nginx verifies the presented client certificate by building a chain up to
+a trusted root: client cert -> issuer -> root. The server only trusts CAs
+you explicitly give it via `ssl_client_certificate` (here our own
+`rootCA.crt`). If the client's certificate was not issued by a CA the
+server trusts, the chain is not trusted and the handshake fails.
+
+We prove the relationship in 5.3:
+`openssl verify -CAfile ca/rootCA.crt client/client.crt` -> OK, which
+means the client cert fully chains to our CA. It also demonstrates our
+server certificate chains to the same CA the same way.
+
+## 3. How can you securely manage certificates in Docker?
+
+Bad practice would be baking private keys into the image (they end up in
+every layer and in registries). Better options:
+
+- **Volumes / secrets**: mount certs read-only at runtime instead of
+  copying them into the image - e.g. `-v ./certs:/etc/nginx/certs:ro`
+  (used in 3.2/5.2). Keys never enter the image; updating a cert = just
+  replacing the file.
+- **Docker secrets (Swarm)**: store the key/cert as a secret and mount it
+  at `/run/secrets/...`; secrets are only decrypted when a task runs and
+  are never stored in plaintext on the node filesystem.
+- Generate short-lived certs and rotate them automatically (ACME/Let's
+  Encrypt with certbot) instead of long static ones.
+- Restrict file permissions (private keys 0600), use separate keys per
+  service, and never commit `.key` files to git.
+
+
+
+=== openssl verify -CAfile ca/rootCA.crt client/client.crt ===
+client/client.crt: OK

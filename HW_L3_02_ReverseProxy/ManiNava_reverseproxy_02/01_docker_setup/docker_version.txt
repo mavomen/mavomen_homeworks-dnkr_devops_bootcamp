@@ -1,0 +1,54 @@
+Docker version 29.6.0, build fb59821d45
+
+Client:
+ Version:    29.6.0
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  v0.36.1
+    Path:     /usr/lib/docker/cli-plugins/docker-buildx
+  compose: Docker Compose (Docker Inc.)
+    Version:  5.1.4
+    Path:     /usr/lib/docker/cli-plugins/docker-compose
+
+Server:
+ Containers: 10
+  Running: 1
+  Paused: 0
+  Stopped: 9
+ Images: 163
+ Server Version: 29.6.0
+ Storage Driver: overlayfs
+
+=== docker ps -a ===
+CONTAINER ID   IMAGE                  COMMAND                  CREATED        STATUS                      PORTS                                         NAMES
+d59bbf63536c   redis:7.4-alpine       "docker-entrypoint.s…"   6 weeks ago    Exited (0) 5 weeks ago                                                    fastapi_redis_dev
+212b7c45f3e9   postgres:18.3-alpine   "docker-entrypoint.s…"   6 weeks ago    Created                                                                   fastapi_postgres_dev
+f7a51ba134f4   postgres:17            "docker-entrypoint.s…"   6 weeks ago    Up 5 hours (healthy)        0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp   mavadev-postgres-1
+0c5f5e6fc511   9655978343a0           "/bin/sh -c 'tsc -b …"   2 months ago   Exited (127) 2 months ago                                                 nostalgic_mendel
+0cd1f9bd4d82   ed6c5d1a692f           "/bin/sh -c 'apk add…"   2 months ago   Exited (127) 2 months ago                                                 funny_spence
+4b7b12e588b1   4047fb0cbfb5           "/bin/sh -c 'npm run…"   2 months ago   Exited (127) 2 months ago                                                 gallant_elion
+4eb396dfbebf   8e9944e26896           "/bin/sh -c 'dotnet …"   2 months ago   Exited (1) 2 months ago                                                   fervent_williamson
+ffc441851a5f   01e25446bb99           "/bin/sh -c 'dotnet …"   2 months ago   Exited (1) 2 months ago                                                   nifty_hermann
+a22987ab4cf0   4ccf1ed589f1           "/bin/sh -c 'dotnet …"   2 months ago   Exited (145) 2 months ago                                                 festive_swanson
+5da45750976b   2df3dc82a8dc           "/bin/sh -c 'dotnet …"   3 months ago   Exited (145) 3 months ago                                                 epic_lewin
+
+=== docker network ls ===
+NETWORK ID     NAME                                 DRIVER    SCOPE
+17dfce368fff   async-fastapi-template_dev-network   bridge    local
+8e6d2186e9b1   bridge                               bridge    local
+ed02c54f5260   host                                 host      local
+449f3bae092e   mavadev_default                      bridge    local
+b158312d0729   none                                 null      local
+
+=== docker volume ls ===
+DRIVER    VOLUME NAME
+local     3d4cda640158ddc8ce959d84fa5ef4395048b33abc5c96464dc81f3965046a21
+local     4cba086b4a8745e0c29abd9da68a9f40d66a000163988f844e40ad8ef7f2d4d3
+local     6c148408296acdc6e6608de94abc38ef0df4cc7cf7490efaa7dcb71f508f34f7
+local     87b87883455f2a9d73e49657ccfbcce2d14e064243911df4c53659680cb79c80
+local     async-fastapi-template_postgres_dev_data
+local     async-fastapi-template_redis_dev_data
+local     mavadev_media_data
+local     mavadev_postgres_data

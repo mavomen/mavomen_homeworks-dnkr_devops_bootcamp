@@ -1,0 +1,48 @@
+# Traefik Explanation
+
+## 1. What are the advantages of using Traefik with Docker?
+
+- Automatic service discovery: Traefik watches the Docker API (via the
+  docker socket) and creates routes automatically from container labels -
+  no config reload, no manual upstream lists (unlike nginx/haproxy where
+  every backend must be added by hand).
+- Labels instead of config files: a service "self-advertises" with
+  `traefik.enable=true` + router rules; adding a service = adding labels
+  and restarting the stack.
+- Built-in dashboard + REST API (`--api.insecure=true`, port 8081 here) to
+  inspect routers/services live.
+- First-class HTTPS: automatic Let's Encrypt / certificate management via
+  entrypoints (`websecure` in 7.2), which the other proxies don't do out
+  of the box.
+- Single binary, dynamic config, works the same on swarm/k8s providers.
+
+## 2. How does Traefik detect routing automatically?
+
+Through the Docker provider: Traefik mounts `/var/run/docker.sock` (read
+only) and listens for container/compose events. When a container tagged
+with `traefik.enable=true` appears, Traefik reads its labels:
+
+- `traefik.http.routers.<name>.rule=Host(...)` -> which Host header (or
+  path) this router matches;
+- `traefik.http.routers.<name>.entrypoints=web` -> which entrypoint
+  (`:80`) it binds to.
+
+Then it builds the routing table on the fly. In 7.1, `whoami` with
+`Host(\`localhost\`)` became reachable at :8080 without editing any proxy
+config; in 7.2, `web1.localhost` and `web2.localhost` each got their own
+router automatically, and the dashboard showed them.
+
+## 3. What is the difference between Traefik and Nginx/HAProxy?
+
+- Nginx/HAProxy are configured with static files (nginx.conf / haproxy.cfg)
+  where backends are listed explicitly, and reloading config is needed
+  when backends change.
+- Traefik is dynamic: it discovers backends itself through provider
+  integrations (docker, k8s, consul, file...) and re-configures itself on
+  the fly. This makes Traefik a natural fit for dynamic environments
+  (containers starting/stopping constantly).
+- Nginx is still the strongest plain web server / content + caching;
+  HAProxy is the strongest dedicated high-throughput LB with the deepest
+  balancing/health-check knobs; Traefik wins on automation, service
+  discovery and zero-config TLS. Real setups often mix them - e.g.
+  Nginx/HAProxy in front, Traefik inside a k8s/docker mesh.

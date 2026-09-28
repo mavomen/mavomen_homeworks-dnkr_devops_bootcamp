@@ -1,0 +1,31 @@
+HTTP/1.1 200 OK
+Server: nginx/1.31.6
+Date: Mon, 28 Sep 2026 14:47:45 GMT
+Content-Type: text/html
+Content-Length: 85
+Last-Modified: Mon, 28 Sep 2026 10:36:28 GMT
+Connection: keep-alive
+ETag: "6aba432c-55"
+Accept-Ranges: bytes
+
+<html>
+<body>
+<h1>Demo Site 01</h1>
+<p>Served by Nginx in Docker.</p>
+</body>
+</html>HTTP/1.1 200 OK
+Server: nginx/1.31.6
+Date: Mon, 28 Sep 2026 14:47:45 GMT
+Content-Type: text/html
+Content-Length: 99
+Last-Modified: Mon, 28 Sep 2026 14:47:45 GMT
+Connection: keep-alive
+ETag: "6aba7e11-63"
+Accept-Ranges: bytes
+
+<html>
+<body>
+<h1>Demo Site 01</h1>
+<p>Served by Nginx in Docker.</p>
+</body>
+</html>File modified

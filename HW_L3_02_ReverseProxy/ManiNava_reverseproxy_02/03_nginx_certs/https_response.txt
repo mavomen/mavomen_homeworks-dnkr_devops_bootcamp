@@ -1,0 +1,5 @@
+=== curl -k https://localhost:8443/status ===
+HTTPS OK
+=== server certificate validity dates ===
+notBefore=Sep 28 14:48:00 2026 GMT
+notAfter=Sep 28 14:48:00 2027 GMT
