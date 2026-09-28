@@ -1,0 +1,143 @@
+=== Ping Test ===
+localhost | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+
+=== Gather Facts ===
+localhost | SUCCESS => {
+    "ansible_facts": {
+        "ansible_distribution": "Archlinux",
+        "ansible_distribution_file_path": "/etc/arch-release",
+        "ansible_distribution_file_variety": "Archlinux",
+        "ansible_distribution_major_version": "rolling",
+        "ansible_distribution_release": "n/a",
+        "ansible_distribution_version": "rolling"
+    },
+    "changed": false
+}
+
+=== File Operations ===
+localhost | SUCCESS => {
+    "changed": false,
+    "gid": 1000,
+    "group": "mava",
+    "mode": "0755",
+    "owner": "mava",
+    "path": "/tmp/ansible_test",
+    "size": 40,
+    "state": "directory",
+    "uid": 1000
+}
+localhost | SUCCESS => {
+    "changed": false,
+    "stat": {
+        "atime": 1790590990.745141,
+        "attr_flags": "",
+        "attributes": [],
+        "block_size": 4096,
+        "blocks": 0,
+        "charset": "binary",
+        "ctime": 1790590990.745141,
+        "dev": 45,
+        "device_type": 0,
+        "disk_usage_bytes": 0,
+        "executable": true,
+        "exists": true,
+        "gid": 1000,
+        "gr_name": "mava",
+        "inode": 6811,
+        "isblk": false,
+        "ischr": false,
+        "isdir": true,
+        "isfifo": false,
+        "isgid": false,
+        "islnk": false,
+        "isreg": false,
+        "issock": false,
+        "isuid": false,
+        "mimetype": "inode/directory",
+        "mode": "0755",
+        "mtime": 1790590990.745141,
+        "nlink": 2,
+        "path": "/tmp/ansible_test",
+        "pw_name": "mava",
+        "readable": true,
+        "rgrp": true,
+        "roth": true,
+        "rusr": true,
+        "size": 40,
+        "uid": 1000,
+        "version": null,
+        "wgrp": false,
+        "woth": false,
+        "writeable": true,
+        "wusr": true,
+        "xgrp": true,
+        "xoth": true,
+        "xusr": true
+    }
+}
+
+=== Command Execution ===
+localhost | CHANGED | rc=0 >>
+ 18:18:16 up  5:08,  1 user,  load average: 1.10, 1.12, 0.94
+localhost | CHANGED | rc=0 >>
+/home/mava
+mava
+
+=== Copy File ===
+localhost | SUCCESS => {
+    "changed": false,
+    "checksum": "31e179f65d8d69e747aa5daf93ad269c1b015ca7",
+    "dest": "/tmp/test_dest.txt",
+    "gid": 1000,
+    "group": "mava",
+    "mode": "0644",
+    "owner": "mava",
+    "path": "/tmp/test_dest.txt",
+    "size": 25,
+    "state": "file",
+    "uid": 1000
+}
+
+=== Get URL ===
+localhost | CHANGED => {
+    "changed": true,
+    "checksum_dest": "9575acbc27be04aa0029e0ff7454a76df9423e56",
+    "checksum_src": "cf99347a23e6b280b3eff3c9ca81f6c4671465f3",
+    "dest": "/tmp/google.html",
+    "elapsed": 1,
+    "gid": 1000,
+    "group": "mava",
+    "md5sum": "3b740311b7121b724be9033f6f51ef4f",
+    "mode": "0644",
+    "msg": "OK (unknown bytes)",
+    "owner": "mava",
+    "size": 84446,
+    "src": "/home/mava/.ansible/tmp/ansible-tmp-1790606900.183029-398078-102099918071174/tmpv3r5s87p",
+    "state": "file",
+    "status_code": 200,
+    "uid": 1000,
+    "url": "https://www.google.com"
+}
+
+=== Package Management ===
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: Updating cache and auto-installing missing dependency: python3-apt
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: <adhoc 'apt' task>
+
+{'action': 'apt', 'args': {'name': 'curl', 'state': 'present', 'update_cache': 'yes'}, 'timeout': 0, 'async_val': [...]
+
+localhost | FAILED! => {
+    "changed": false,
+    "cmd": "update",
+    "msg": "Error executing command.",
+    "rc": 2,
+    "stderr": "",
+    "stderr_lines": [],
+    "stdout": "",
+    "stdout_lines": []
+}
+Skipped no sudo access

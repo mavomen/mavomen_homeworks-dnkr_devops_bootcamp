@@ -1,0 +1,377 @@
+=== All Modules ===
+amazon.aws.autoscaling_group                                                                                Create or del...                 
+amazon.aws.autoscaling_group_info                                                                           Gather information about EC2 ... 
+amazon.aws.autoscaling_instance                                                                             manage instances associated w... 
+amazon.aws.autoscaling_instance_info                                                                        describe instances associated w...
+amazon.aws.autoscaling_instance_refresh                                                                     Start or cancel an EC2 Auto Scaling Gr...
+amazon.aws.autoscaling_instance_refresh_info                                                                Gather information about EC2 Auto Scaling Grou...
+amazon.aws.aws_az_info                                                                                      Gather informatio...             
+amazon.aws.aws_caller_info                                                                                  Get information about the user and acc...
+amazon.aws.aws_region_info                                                                                  Gat...                           
+amazon.aws.backup_plan                                                                                      ...                              
+amazon.aws.backup_plan_info                                                                                 ...                              
+amazon.aws.backup_restore_job_info                                                                          List info...                     
+amazon.aws.backup_selection                                                                                 Create, delet...                 
+amazon.aws.backup_selection_info                                                                            ...                              
+amazon.aws.backup_tag                                                                                       Manage tags on backup p...       
+amazon.aws.backup_tag_info                                                                                  ...                              
+amazon.aws.backup_vault                                                                                     ...                              
+amazon.aws.backup_vault_info                                                                                ...                              
+amazon.aws.cloudformation                                                                                   Create or d...                   
+amazon.aws.cloudformation_info                                                                              Obtain information ...           
+amazon.aws.cloudtrail                                                                                       manage ...                       
+amazon.aws.cloudtrail_info                                                                                  Gather informatio...             
+amazon.aws.cloudwatch_metric_alarm                                                                          Create/update or dele...         
+amazon.aws.cloudwatch_metric_alarm_info                                                                     Gather information about th...   
+amazon.aws.cloudwatchevent_rule                                                                             Manage C...                      
+amazon.aws.cloudwatchlogs_log_group                                                                         create or d...                   
+amazon.aws.cloudwatchlogs_log_group_info                                                                    Get information ...              
+amazon.aws.cloudwatchlogs_log_group_metric_filter                                                           Manage C...                      
+amazon.aws.ec2_ami                                                                                          Create...                        
+amazon.aws.ec2_ami_info                                                                                     ...                              
+amazon.aws.ec2_dedicated_host                                                                               Create, update or de...          
+amazon.aws.ec2_dedicated_host_info                                                                          Gather information...            
+amazon.aws.ec2_eip                                                                                          manag...                         
+amazon.aws.ec2_eip_info                                                                                     ...                              
+amazon.aws.ec2_eni                                                                                          Create and optionally attach an Elastic Netwo...
+amazon.aws.ec2_eni_info                                                                                     Gather informatio...             
+amazon.aws.ec2_import_image                                                                                 ...                              
+amazon.aws.ec2_import_image_info                                                                            Gather information a...          
+amazon.aws.ec2_instance                                                                                     ...                              
+amazon.aws.ec2_instance_info                                                                                Gather infor...                  
+amazon.aws.ec2_instance_type_info                                                                           Retrieve inf...                  
+amazon.aws.ec2_key                                                                                          ...                              
+amazon.aws.ec2_key_info                                                                                     Gather infor...                  
+amazon.aws.ec2_launch_template                                                                              ...                              
+amazon.aws.ec2_launch_template_info                                                                         Gather information ab...         
+amazon.aws.ec2_metadata_facts                                                                               Gathers facts (instance metada...
+amazon.aws.ec2_placement_group                                                                              Create...                        
+amazon.aws.ec2_placement_group_info                                                                         Li...                            
+amazon.aws.ec2_security_group                                                                               ...                              
+amazon.aws.ec2_security_group_info                                                                          Gather information...            
+
+=== apt Module Documentation ===
+> MODULE [1mansible.builtin.apt[0m (/usr/lib/python3.14/site-packages/ansible/modules/apt.py)
+
+  Manages [4mapt[0m packages (such as for Debian/Ubuntu).
+
+[1mOPTIONS[0m (red indicates it is required):
+
+   allow_change_held_packages  Allows changing the version of a
+                               package which is on the apt hold list.
+        default: 'no'
+        type: bool
+
+   allow_downgrade  Corresponds to the `--allow-downgrades' option for
+                    [4mapt[0m.
+                    This option enables the named package and version
+                    to replace an already installed higher version of
+                    that package.
+                    Note that setting `allow_downgrade=true' can make
+                    this module behave in a non-idempotent way.
+                    (The task could end up with a set of packages that
+                    does not match the complete list of specified
+                    packages to install).
+                    `allow_downgrade' is only supported by `apt' and
+                    will be ignored if `aptitude' is detected or
+                    specified.
+        aliases: [allow-downgrade, allow_downgrades, allow-downgrades]
+        default: 'no'
+        type: bool
+
+   allow_unauthenticated  Ignore if packages cannot be authenticated.
+                          This is useful for bootstrapping
+                          environments that manage their own apt-key
+                          setup.
+                          `allow_unauthenticated' is only supported
+                          with `state': `install'/`present'.
+        aliases: [allow-unauthenticated]
+        default: 'no'
+        type: bool
+
+   auto_install_module_deps  Automatically install dependencies
+                             required to run this module.
+        default: true
+        type: bool
+
+   autoclean  If `true', cleans the local repository of retrieved
+              package files that can no longer be downloaded.
+        default: 'no'
+        type: bool
+
+   autoremove  If `true', remove unused dependency packages for all
+               module states except `build-dep'. It can also be used
+               as the only option.
+               Previous to version 2.4, `autoclean' was also an alias
+               for `autoremove', now it is its own separate command.
+               See documentation for further information.
+        default: 'no'
+        type: bool
+
+   cache_valid_time  Update the apt cache if it is older than the
+                     `cache_valid_time'. This option is set in
+                     seconds.
+                     As of Ansible 2.4, if explicitly set, this sets
+                     `update_cache=yes'.
+        default: 0
+        type: int
+
+   clean   Run the equivalent of `apt-get clean' to clear out the
+           local repository of retrieved package files. It removes
+           everything but the lock file from
+           `/var/cache/apt/archives/' and
+           `/var/cache/apt/archives/partial/'.
+           Can be run as part of the package installation (clean runs
+           before install) or as a separate step.
+        default: 'no'
+        type: bool
+
+   deb     Path to a .deb package on the remote machine.
+           If `://' in the path, ansible will attempt to download deb
+           before installing. (Version added 2.1)
+           Requires the `xz-utils' package to extract the control file
+           of the deb package to install.
+        default: null
+        type: path
+
+   default_release  Corresponds to the `-t' option for [4mapt[0m and
+                    sets pin priorities.
+        aliases: [default-release]
+        default: null
+        type: str
+
+   dpkg_options  Add `dpkg' options to `apt' command. Defaults to `-o
+                 "Dpkg::Options::=--force-confdef" -o
+                 "Dpkg::Options::=--force-confold"'.
+                 Options should be supplied as comma separated list.
+        default: force-confdef,force-confold
+        type: str
+
+   fail_on_autoremove  Corresponds to the `--no-remove' option for
+                       `apt'.
+                       If `true', it is ensured that no packages will
+                       be removed or the task will fail.
+
+=== file Module Documentation ===
+> MODULE [1mansible.builtin.file[0m (/usr/lib/python3.14/site-packages/ansible/modules/file.py)
+
+  Set attributes of files, directories, or symlinks and their targets.
+  Alternatively, remove files, symlinks or directories.
+  Many other modules support the same options as the
+  ansible.builtin.file module - including ansible.builtin.copy,
+  ansible.builtin.template, and ansible.builtin.assemble.
+  For Windows targets, use the ansible.windows.win_file module
+  instead.
+
+[1mOPTIONS[0m (red indicates it is required):
+
+   access_time  This parameter indicates the time the file's access
+                time should be set to.
+                Should be `preserve' when no modification is required,
+                `YYYYMMDDHHMM.SS' when using default time format, or
+                `now'.
+                Default is `None' meaning that `preserve' is the
+                default for `state=[file,directory,link,hard]' and
+                `now' is default for `state=touch'.
+        default: null
+        type: str
+
+   access_time_format  When used with `access_time', indicates the
+                       time format that must be used.
+                       Based on default Python format (see
+                       time.strftime doc).
+        default: '%Y%m%d%H%M.%S'
+        type: str
+
+   attributes  The attributes the resulting filesystem object should
+               have.
+               To get supported flags look at the man page for
+               `chattr' on the target system.
+               This string should contain the attributes in the same
+               order as the one displayed by `lsattr'.
+               The `=' operator is assumed as default, otherwise `+'
+               or `-' operators need to be included in the string.
+        aliases: [attr]
+        default: null
+        type: str
+
+   follow  This flag indicates that filesystem links, if they exist,
+           should be followed.
+           `follow=yes' and `state=link' can modify `src' when
+           combined with parameters such as `mode'.
+           Previous to Ansible 2.5, this was `false' by default.
+           While creating a symlink with a non-existent destination,
+           set `follow=false' to avoid a warning message related to
+           permission issues. The warning message is added to notify
+           the user that we can not set permissions to the
+           non-existent destination.
+        default: true
+        type: bool
+
+   force   Force the creation of the links in two cases: if the link
+           type is symbolic and the source file does not exist (but
+           will appear later); the destination exists and is a file
+           (so, we need to unlink the `path' file and create a link to
+           the `src' file in place of it).
+        default: false
+        type: bool
+
+   group   Name of the group that should own the filesystem object, as
+           would be fed to `chown'.
+           When left unspecified, it uses the current group of the
+           current user unless you are root, in which case it can
+           preserve the previous ownership.
+           Specifying a numeric group name (for example, "1000") will
+           be assumed to be a group ID (GID) and not a group name. To
+           prevent confusion, avoid using purely numeric group names.
+        default: null
+        type: str
+
+   mode    The permissions the resulting filesystem object should
+           have.
+           For those used to `/usr/bin/chmod' remember that modes are
+           actually octal numbers. You must give Ansible enough
+           information to parse them correctly. For consistent
+           results, quote octal numbers (for example, `'644'' or
+           `'1777'') so Ansible receives a string and can do its own
+           conversion from string into number. Adding a leading zero
+           (for example, `0755') works sometimes, but can fail in
+           loops and some other circumstances.
+           Giving Ansible a number without following either of these
+           rules will end up with a decimal number which will have
+           unexpected results.
+           As of Ansible 1.8, the mode may be specified as a symbolic
+           mode (for example, `u+rwx' or `u=rw,g=r,o=r').
+           If `mode' is not specified and the destination filesystem
+           object [1mdoes not[0m exist, the default `umask' on the
+           system will be used when setting the mode for the newly
+           created filesystem object.
+           If `mode' is not specified and the destination filesystem
+           object [1mdoes[0m exist, the mode of the existing
+           filesystem object will be used.
+           Specifying `mode' is the best way to ensure filesystem
+           objects are created with the correct permissions. See
+           CVE-2020-1736 for further details.
+        default: null
+
+=== copy Module Documentation ===
+> MODULE [1mansible.builtin.copy[0m (/usr/lib/python3.14/site-packages/ansible/modules/copy.py)
+
+  The ansible.builtin.copy module copies a file or a directory
+  structure from the local or remote machine to a location on the
+  remote machine. File system meta-information (permissions,
+  ownership, etc.) may be set, even when the file or directory already
+  exists on the target system. Some meta-information may be copied on
+  request.
+  Get meta-information with the ansible.builtin.stat module.
+  Set meta-information with the ansible.builtin.file module.
+  Use the ansible.builtin.fetch module to copy files from remote
+  locations to the local box.
+  If you need variable interpolation in copied files, use the
+  ansible.builtin.template module. Using a variable with the `content'
+  parameter produces unpredictable results.
+  For Windows targets, use the ansible.windows.win_copy module
+  instead.
+
+[1m  * note:[0m This module has a corresponding action plugin.
+
+[1mOPTIONS[0m (red indicates it is required):
+
+   attributes  The attributes the resulting filesystem object should
+               have.
+               To get supported flags look at the man page for
+               `chattr' on the target system.
+               This string should contain the attributes in the same
+               order as the one displayed by `lsattr'.
+               The `=' operator is assumed as default, otherwise `+'
+               or `-' operators need to be included in the string.
+        aliases: [attr]
+        default: null
+        type: str
+
+   backup  Create a backup file including the timestamp information so
+           you can get the original file back if you somehow clobbered
+           it incorrectly.
+        default: false
+        type: bool
+
+   checksum  SHA1 checksum of the file being transferred.
+             Used to validate that the copy of the file was
+             successful.
+             If this is not provided, ansible will use the local
+             calculated checksum of the src file.
+        default: null
+        type: str
+
+   content  When used instead of `src', sets the contents of a file
+            directly to the specified value.
+            Works only when `dest' is a file. Creates the file if it
+            does not exist.
+            For advanced formatting or if `content' contains a
+            variable, use the ansible.builtin.template module.
+        default: null
+        type: str
+
+   decrypt  This option controls the auto-decryption of source files
+            using vault.
+        default: true
+        type: bool
+
+   [1mdest[0m    Remote absolute path where the file should be copied to.
+           If `src' is a directory, this must be a directory too.
+           If `dest' is a non-existent path and if either `dest' ends
+           with `/' or `src' is a directory, `dest' is created.
+           If `dest' is a relative path, the starting directory is
+           determined by the remote host.
+           If `src' and `dest' are files, the parent directory of
+           `dest' is not created and the task fails if it does not
+           already exist.
+        type: path
+
+   directory_mode  Set the access permissions of newly created
+                   directories to the given mode. Permissions on
+                   existing directories do not change.
+                   See `mode' for the syntax of accepted values.
+                   The target system's defaults determine permissions
+                   when this parameter is not set.
+        default: null
+        type: raw
+
+   follow  This flag indicates that filesystem links in the
+           destination, if they exist, should be followed.
+        default: false
+        type: bool
+
+   force   Influence whether the remote file must always be replaced.
+           If `true', the remote file will be replaced when contents
+           are different than the source.
+           If `false', the file will only be transferred if the
+           destination does not exist.
+        default: true
+        type: bool
+
+   group   Name of the group that should own the filesystem object, as
+           would be fed to `chown'.
+           When left unspecified, it uses the current group of the
+           current user unless you are root, in which case it can
+           preserve the previous ownership.
+
+=== ping Module Examples ===
+[1mEXAMPLES:[0m
+# Test we can logon to 'webservers' and execute python with json lib.
+# ansible webservers -m ansible.builtin.ping
+
+- name: Example from an Ansible Playbook
+  ansible.builtin.ping:
+
+- name: Induce an exception to see what happens
+  ansible.builtin.ping:
+    data: crash
+
+[1mRETURN VALUES:[0m
+
+   ping    Value provided with the `data' parameter.
+        returned: success
+        sample: pong
+        type: str
+

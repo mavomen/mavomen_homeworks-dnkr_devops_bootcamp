@@ -1,0 +1,58 @@
+# Ansible Architecture - diagram with explanation
+
+```
+                          CONTROL NODE
+                 (Arch box - ansible installed via pip)
+   +---------------------------------------------------------+
+   |  ansible / ansible-playbook / ansible-inventory         |
+   |  ansible-doc / ansible-config                           |
+   |  playbooks, inventory files, ansible.cfg                |
+   |  inventory plugin reads inventory files                 |
+   +----------------------------+----------------------------+
+                                |
+        pushes module payloads over SSH (or local connector)
+                                |
+                                v
+                +---------------+---------------+
+                |          INVENTORY           |
+                |  [local]         -> localhost  |
+                |  [webservers]    -> web1 web2  |
+                |  [dbservers]     -> db1        |
+                |  [appservers]    -> app1       |
+                |  [production]    -> webservers + dbservers (children) |
+                +---------------+---------------+
+                                |
+                    targets (managed nodes)
+   +----------------+  +----------------+  +----------------+
+   |  localhost     |  |  web1/web2     |  |  db1/app1     |
+   |  (this machine)|  |  (same box,    |  |  (local conn) |
+   |                |  |   local conn)  |  |               |
+   +----------------+  +----------------+  +----------------+
+```
+
+How a run works (step by step):
+
+1. You run e.g. `ansible all -i inventory -m ping`.
+2. The control node reads `ansible.cfg` (inventory path, callbacks, etc.)
+   and the inventory: hosts, groups (`webservers`, `dbservers`,
+   `appservers`, parent group `production`), and variables (`http_port`,
+   `db_port`, `ansible_user`...).
+3. For every host matching the pattern, Ansible selects the connection
+   plugin - for us `ansible_connection=local`, so no network is used and
+   the module runs against the box itself.
+4. The module code (tiny Python program) is executed on the "target"; it
+   inspects the current state, changes only what is needed, and returns a
+   JSON result (`ok/changed/failed`).
+5. The callback (`stdout_callback = yaml`) renders that result nicely and
+   you see exactly what changed on each host.
+
+Building blocks in the diagram:
+
+- Control Node - where ansible lives and where every run starts.
+- Managed Nodes - the targets (here: our own localhost).
+- Inventory - the source of truth about hosts, groups and variables.
+- Modules - executables that do one task on a target.
+- Plugins - extensions: connection, inventory, callback, filter, lookup.
+
+This homework connects only to `localhost`, but the exact same flow works
+for real remote boxes - only the connection type changes to SSH.

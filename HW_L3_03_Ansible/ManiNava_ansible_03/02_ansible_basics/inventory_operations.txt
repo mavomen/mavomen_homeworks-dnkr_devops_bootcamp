@@ -1,0 +1,154 @@
+=== Inventory as JSON ===
+{
+    "_meta": {
+        "hostvars": {
+            "app1": {
+                "ansible_connection": "local",
+                "ansible_host": "localhost",
+                "ansible_python_interpreter": "/usr/bin/python3",
+                "ansible_user": "ubuntu"
+            },
+            "db1": {
+                "ansible_connection": "local",
+                "ansible_host": "localhost",
+                "ansible_python_interpreter": "/usr/bin/python3",
+                "ansible_user": "ubuntu",
+                "db_port": 3306
+            },
+            "web1": {
+                "ansible_connection": "local",
+                "ansible_host": "localhost",
+                "ansible_python_interpreter": "/usr/bin/python3",
+                "ansible_user": "ubuntu",
+                "http_port": 80,
+                "max_clients": 200
+            },
+            "web2": {
+                "ansible_connection": "local",
+                "ansible_host": "localhost",
+                "ansible_python_interpreter": "/usr/bin/python3",
+                "ansible_user": "ubuntu",
+                "http_port": 80,
+                "max_clients": 200
+            }
+        },
+        "profile": "inventory_legacy"
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "appservers",
+            "production"
+        ]
+    },
+    "appservers": {
+        "hosts": [
+            "app1"
+        ]
+    },
+    "dbservers": {
+        "hosts": [
+            "db1"
+        ]
+    },
+    "production": {
+        "children": [
+            "webservers",
+            "dbservers"
+        ]
+    },
+    "webservers": {
+        "hosts": [
+            "web1",
+            "web2"
+        ]
+    }
+}
+
+=== Inventory as YAML ===
+all:
+  children:
+    appservers:
+      hosts:
+        app1:
+          ansible_connection: local
+          ansible_host: localhost
+          ansible_python_interpreter: /usr/bin/python3
+          ansible_user: ubuntu
+    production:
+      children:
+        dbservers:
+          hosts:
+            db1:
+              ansible_connection: local
+              ansible_host: localhost
+              ansible_python_interpreter: /usr/bin/python3
+              ansible_user: ubuntu
+              db_port: 3306
+        webservers:
+          hosts:
+            web1:
+              ansible_connection: local
+              ansible_host: localhost
+              ansible_python_interpreter: /usr/bin/python3
+              ansible_user: ubuntu
+              http_port: 80
+              max_clients: 200
+            web2:
+              ansible_connection: local
+              ansible_host: localhost
+              ansible_python_interpreter: /usr/bin/python3
+              ansible_user: ubuntu
+              http_port: 80
+              max_clients: 200
+
+=== Webservers Group ===
+{
+    "ansible_connection": "local",
+    "ansible_host": "localhost",
+    "ansible_python_interpreter": "/usr/bin/python3",
+    "ansible_user": "ubuntu",
+    "http_port": 80,
+    "max_clients": 200
+}
+
+=== All Hosts ===
+  hosts (4):
+    app1
+    web1
+    web2
+    db1
+
+=== Production Group Children ===
+  hosts (3):
+    web1
+    web2
+    db1
+
+=== Variables for web1 ===
+{
+    "ansible_connection": "local",
+    "ansible_host": "localhost",
+    "ansible_python_interpreter": "/usr/bin/python3",
+    "ansible_user": "ubuntu",
+    "http_port": 80,
+    "max_clients": 200
+}
+
+=== Ping All Hosts ===
+web1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+web2 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+db1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+app1 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}

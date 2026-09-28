@@ -1,0 +1,60 @@
+=== which ansible ===
+/usr/sbin/ansible
+
+=== ansible --version ===
+ansible [core 2.21.1]
+  config file = None
+  configured module search path = ['/home/mava/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3.14/site-packages/ansible
+  ansible collection location = /home/mava/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/sbin/ansible
+  python version = 3.14.6 (main, Jun 15 2026, 11:36:54) [GCC 16.1.1 20260430] (/usr/bin/python)
+  jinja version = 3.1.6
+  pyyaml version = 6.0.3 (with libyaml v0.2.5)
+
+=== ansible-config dump | head -30 ===
+ACTION_WARNINGS(default) = True
+AGNOSTIC_BECOME_PROMPT(default) = True
+ALLOW_BROKEN_CONDITIONALS(default) = False
+ALLOW_EMBEDDED_TEMPLATES(default) = True
+ANSIBLE_CONNECTION_PATH(default) = None
+ANSIBLE_COW_ACCEPTLIST(default) = ['bud-frogs', 'bunny', 'cheese', 'daemon', 'default', 'dragon', 'elephant-in-snake', 'elephant', 'eyes', 'hellokitty', 'kitty', 'luke-koala', 'meow', 'milk', 'moofasa', 'moose', 'ren', 'sheep', 'small', 'stegosaurus', 'stimpy', 'supermilker', 'three-eyes', 'turkey', 'turtle', 'tux', 'udder', 'vader-koala', 'vader', 'www']
+ANSIBLE_COW_PATH(default) = None
+ANSIBLE_COW_SELECTION(default) = default
+ANSIBLE_FORCE_COLOR(default) = False
+ANSIBLE_HOME(default) = /home/mava/.ansible
+ANSIBLE_NOCOLOR(default) = False
+ANSIBLE_NOCOWS(default) = False
+ANSIBLE_PIPELINING(default) = False
+ANY_ERRORS_FATAL(default) = False
+BECOME_ALLOW_SAME_USER(default) = False
+BECOME_PASSWORD_FILE(default) = None
+BECOME_PLUGIN_PATH(default) = ['/home/mava/.ansible/plugins/become', '/usr/share/ansible/plugins/become']
+CACHE_PLUGIN(default) = memory
+CACHE_PLUGIN_CONNECTION(default) = None
+CACHE_PLUGIN_PREFIX(default) = ansible_facts
+CACHE_PLUGIN_TIMEOUT(default) = 86400
+CALLBACKS_ENABLED(default) = []
+COLLECTIONS_ON_ANSIBLE_VERSION_MISMATCH(default) = warning
+COLLECTIONS_PATHS(default) = ['/home/mava/.ansible/collections', '/usr/share/ansible/collections']
+COLLECTIONS_SCAN_SYS_PATH(default) = True
+COLOR_CHANGED(default) = yellow
+COLOR_CONSOLE_PROMPT(default) = white
+COLOR_DEBUG(default) = dark gray
+COLOR_DEPRECATE(default) = purple
+COLOR_DIFF_ADD(default) = green
+
+=== python3 --version ===
+Python 3.14.6
+
+=== pip3 show ansible ===
+Name: ansible
+Version: 14.1.0
+Summary: Radically simple IT automation
+Home-page: https://ansible.com/
+Author: Ansible, Inc.
+Author-email: info@ansible.com
+License: GPL-3.0-or-later
+Location: /usr/lib/python3.14/site-packages
+Requires: ansible-core
+Required-by: 

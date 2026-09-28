@@ -1,0 +1,38 @@
+=== First Run should create ===
+localhost | SUCCESS => {
+    "changed": false,
+    "gid": 1000,
+    "group": "mava",
+    "mode": "0755",
+    "owner": "mava",
+    "path": "/tmp/ansible_idempotency",
+    "size": 40,
+    "state": "directory",
+    "uid": 1000
+}
+
+=== Second Run should NOT create, changed=false ===
+localhost | SUCCESS => {
+    "changed": false,
+    "gid": 1000,
+    "group": "mava",
+    "mode": "0755",
+    "owner": "mava",
+    "path": "/tmp/ansible_idempotency",
+    "size": 40,
+    "state": "directory",
+    "uid": 1000
+}
+
+=== Third Run should NOT create, changed=false ===
+localhost | SUCCESS => {
+    "changed": false,
+    "gid": 1000,
+    "group": "mava",
+    "mode": "0755",
+    "owner": "mava",
+    "path": "/tmp/ansible_idempotency",
+    "size": 40,
+    "state": "directory",
+    "uid": 1000
+}

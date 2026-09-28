@@ -1,0 +1,72 @@
+= ManiNava Ansible Homework 03 - Run Transcript =
+= Date: Mon Sep 28 06:17:30 PM +0330 2026 =
+= User: mava =
+
+
+# S1.1 - install_ansible.sh
+$ bash 01_ansible_install/install_ansible.sh
+PEP 668 refused the plain command; retrying with the documented override flag
+Requirement already satisfied: ansible in /usr/lib/python3.14/site-packages (14.1.0)
+Requirement already satisfied: ansible-core~=2.21.1 in /usr/lib/python3.14/site-packages (from ansible) (2.21.1)
+Requirement already satisfied: jinja2>=3.1.0 in /usr/lib/python3.14/site-packages (from ansible-core~=2.21.1->ansible) (3.1.6)
+Requirement already satisfied: PyYAML>=5.1 in /usr/lib/python3.14/site-packages (from ansible-core~=2.21.1->ansible) (6.0.3)
+Requirement already satisfied: cryptography in /usr/lib/python3.14/site-packages (from ansible-core~=2.21.1->ansible) (49.0.0)
+Requirement already satisfied: packaging in /usr/lib/python3.14/site-packages (from ansible-core~=2.21.1->ansible) (26.2)
+Requirement already satisfied: resolvelib<2.0.0,>=0.8.0 in /usr/lib/python3.14/site-packages (from ansible-core~=2.21.1->ansible) (1.2.1)
+Requirement already satisfied: MarkupSafe>=2.0 in /usr/lib/python3.14/site-packages (from jinja2>=3.1.0->ansible-core~=2.21.1->ansible) (3.0.3)
+Requirement already satisfied: cffi>=2.0.0 in /usr/lib/python3.14/site-packages (from cryptography->ansible-core~=2.21.1->ansible) (2.0.0)
+Requirement already satisfied: pycparser in /usr/lib/python3.14/site-packages (from cffi>=2.0.0->cryptography->ansible-core~=2.21.1->ansible) (3.0)
+1.1 install_ansible completed. Reports: ansible_version.txt, ansible_status.txt
+exit code: 0
+
+# S1.2 - test_connection.sh
+$ bash 01_ansible_install/test_connection.sh
+1.2 test_connection completed. Report: ansible_config/connection_test.txt
+exit code: 0
+
+# S2.2 - inventory_operations.sh
+$ bash 02_ansible_basics/inventory_operations.sh
+2.2 inventory_operations completed. Report: inventory_operations.txt
+exit code: 0
+
+# S3.1 - idempotency_demo.sh
+$ bash 03_ansible_concepts/idempotency_demo.sh
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: No inventory was parsed, only implicit localhost is available
+3.1 idempotency_demo completed. Report: idempotency_demo.txt (expect changed:true only on the first run)
+exit code: 0
+
+# S3.2 - modules_documentation.sh
+$ bash 03_ansible_concepts/modules_documentation.sh
+3.2 modules_documentation completed. Report: modules_doc.txt
+exit code: 0
+
+# S4.1 - facts_demo.sh
+$ bash 04_ansible_components/facts_demo.sh
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: No inventory was parsed, only implicit localhost is available
+4.1 facts_demo completed. Reports: facts_demo.txt, facts_all.json
+exit code: 0
+
+# S4.2 - config_demo.sh
+$ bash 04_ansible_components/config_demo.sh
+4.2 config_demo completed. Report: config_demo.txt
+exit code: 0
+
+# S5.1 - adhoc_commands.sh
+$ bash 05_ansible_adhoc/adhoc_commands.sh
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: No inventory was parsed, only implicit localhost is available
+5.1 adhoc_commands completed. Report: adhoc_output.txt
+exit code: 0
+
+= END of transcript =

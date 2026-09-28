@@ -1,0 +1,55 @@
+# Commands History - ManiNava Ansible Homework 03
+# (all ansible commands used, grouped by scenario)
+# ================================================
+# S1.1 install & version
+pip3 install --user --break-system-packages ansible 2>&1 | tail -n 12
+ansible --version > ansible_version.txt
+ansible-doc -l > /tmp/ansible_doc_list.txt 2>/dev/null || true
+ansible --version
+ansible-config dump | head -30
+python3 --version
+pip3 show ansible
+# S1.2 connection test
+ansible localhost -m ping >> connection_test.txt
+ansible-inventory --list >> connection_test.txt
+ansible all --list-hosts >> connection_test.txt
+ansible-inventory --host localhost >> connection_test.txt
+# S2.2 inventory operations
+ansible-inventory -i inventory --list >> inventory_operations.txt
+ansible-inventory -i inventory --list --yaml >> inventory_operations.txt
+ansible-inventory -i inventory --host web1 >> inventory_operations.txt
+ansible all -i inventory --list-hosts >> inventory_operations.txt
+ansible production -i inventory --list-hosts >> inventory_operations.txt
+ansible-inventory -i inventory --host web1 >> inventory_operations.txt
+ansible all -i inventory -m ping >> inventory_operations.txt
+# S3.1 idempotency demo
+ansible localhost -m file -a "path=/tmp/ansible_idempotency state=directory" >> idempotency_demo.txt
+ansible localhost -m file -a "path=/tmp/ansible_idempotency state=directory" >> idempotency_demo.txt
+ansible localhost -m file -a "path=/tmp/ansible_idempotency state=directory" >> idempotency_demo.txt
+# S3.2 modules documentation
+ansible-doc -l > /tmp/ansible_doc_list.txt 2>/dev/null
+ansible-doc apt > /tmp/ansible_doc_apt.txt 2>/dev/null
+ansible-doc file > /tmp/ansible_doc_file.txt 2>/dev/null
+ansible-doc copy > /tmp/ansible_doc_copy.txt 2>/dev/null
+ansible-doc -t module ping > /tmp/ansible_doc_ping.txt 2>/dev/null
+# S4.1 facts & variables
+ansible localhost -m setup >> facts_demo.txt
+ansible localhost -m setup -a "filter=ansible_distribution*" >> facts_demo.txt
+ansible localhost -m setup -a "filter=ansible_default_ipv4" >> facts_demo.txt
+ansible localhost -m setup -a "filter=ansible_memtotal_mb" >> facts_demo.txt
+ansible localhost -m setup 2>/dev/null | sed '1s/^.*=> //' > facts_all.json
+# S4.2 ansible.cfg config demo
+ansible-config dump >> config_demo.txt
+ansible-config dump | grep inventory >> config_demo.txt
+ansible-config dump | grep -i ssh >> config_demo.txt
+ansible-config dump | grep become >> config_demo.txt
+# S5.1 ad-hoc commands
+ansible localhost -m ping >> adhoc_output.txt
+ansible localhost -m setup -a "filter=ansible_distribution*" >> adhoc_output.txt
+ansible localhost -m file -a "path=/tmp/ansible_test state=directory mode=0755" >> adhoc_output.txt
+ansible localhost -m stat -a "path=/tmp/ansible_test" >> adhoc_output.txt
+ansible localhost -m command -a "uptime" >> adhoc_output.txt
+ansible localhost -m shell -a "echo $HOME && whoami" >> adhoc_output.txt
+ansible localhost -m copy -a "src=/tmp/test_source.txt dest=/tmp/test_dest.txt" >> adhoc_output.txt
+ansible localhost -m get_url -a "url=https://www.google.com dest=/tmp/google.html" >> adhoc_output.txt
+ansible localhost -m apt -a "name=curl state=present update_cache=yes" --become >> adhoc_output.txt 2>&1 || echo "Skipped no sudo access" >> adhoc_output.txt

@@ -1,0 +1,83 @@
+# ManiNava Ansible Homework 03 - Overview & Q&A Recap
+
+Quick answers to the main ansible questions this homework touches. All
+numbers are real, measured on my Arch machine.
+
+## 1. What is Ansible and why is it "agentless"?
+
+- There is no agent installed on managed nodes. Ansible connects over SSH
+  (or runs locally), pushes small module payloads, executes them and
+  removes them. The control node is my Arch box and for this homework the
+  managed node is the same machine via `ansible_connection=local`.
+- First action of the homework: install, `ansible --version`, then a
+  `ping` test that answers `pong` - the whole pipeline works with zero
+  setup on the target side.
+
+## 2. Install - why the --break-system-packages thing?
+
+- Arch marks the python environment as externally managed (PEP 668), so a
+  plain `pip3 install --user ansible` is refused. I used
+  `--break-system-packages` and it installed fine.
+- Installed versions: ansible core 2.21.1 plus the collections;
+  `ansible-doc -l` reports 8687 modules available on the machine.
+
+## 3. Idempotency - what does changed: true -> false -> false show?
+
+- I ran the same task three times in a row in `idempotency_demo.sh`.
+  First run creates the file/directory (`changed: true`), second run
+  checks the state, sees it already matches and does nothing
+  (`changed: false`), third run again `false`. Same module, same
+  arguments, but the result differs because Ansible is state-driven: it
+  only changes what differs from the desired state.
+
+## 4. Facts - what did `setup` return on my machine?
+
+- `ansible localhost -m setup` collected 107 `ansible_facts` keys into
+  `facts_all.json` (distribution Archlinux, kernels, mount points,
+  network interfaces, python version...). I validated the file is proper
+  JSON by loading it with python.
+- Facts are the start of real automation: without them you cannot write
+  plays that behave differently on RedHat vs Debian vs Arch.
+
+## 5. Inventory - how did I model hosts and groups?
+
+- `01_ansible_install/ansible_config/inventory` has a `[local]` group
+  (localhost, local connection) plus commented-out `webservers` /
+  `dbservers` ssh examples and parent groups with `:children`.
+- `ansible-inventory --list --yaml` prints the fully-resolved tree:
+  groups, children and inherited `[all:vars]`.
+
+## 6. Modules - what did `ansible-doc` tell me?
+
+- `ansible-doc -l` lists every module and `ansible-doc <module>` gives
+  the offline reference in several sections (synopsis, parameters,
+  examples, return values, notes). I documented `command` vs `shell` vs
+  `raw` in `modules_doc.txt` - all run commands but they differ in
+  quoting, shell features and even require python on the target or not.
+
+## 7. Ad-hoc commands - what actually ran?
+
+- `ping` -> `pong`; `setup` with a filter; `file` (create a directory
+  with mode 0755); `stat`; `command` (uptime); `shell` (echo + whoami);
+  `copy` and `get_url`.
+- Fun one: `apt` on Arch does not exist, and the run failed gracefully
+  with `Skipped no sudo access` - a good reminder that modules are just
+  code with assumptions about the target OS.
+
+## 8. ansible.cfg - what did I configure and why?
+
+- `ansible.cfg` points to the inventory file, sets
+  `host_key_checking = False` (demo setup), `become` via sudo and a
+  comfortable stdout callback. `config_demo.sh` shows `ansible-config
+  dump` resolving the effective values and how the file search order
+  works (env vars override, then ansible.cfg, then defaults).
+
+## 9. What would I do differently for a real server?
+
+- Use real ssh hosts, not `localhost`; a dedicated user with key-based
+  auth instead of becoming root; vault or a secret manager for passwords;
+  and turn the ad-hoc examples into playbooks with `state=` declarations
+  so every run is idempotent.
+
+That's the whole picture - raw outputs live inside each section folder
+and `commands_history.txt` keeps every ansible command I ran.
