@@ -1,21 +1,142 @@
 scripts (main) U
-❯ ./audit_homework__maninava.sh
-Audit completed.
+❯ rm -rf ~/exam_results/audit
 
 scripts (main) U
-❯ ls -l ~/exam_results/audit
-total 44
--rw-r--r-- 1 mava mava  103 Jul 20 19:56 cwd.txt
--rw-r--r-- 1 mava mava 2017 Jul 20 19:56 files_conf.txt
--rw------- 1 mava mava  119 Jul 20 19:56 hosts.bak
--rw-r--r-- 1 mava mava  100 Jul 20 19:56 hosts_perm.txt
--rw-r--r-- 1 mava mava 1104 Jul 20 19:56 logs_top.txt
--rw-r--r-- 1 mava mava    8 Jul 20 19:56 notes.txt
--rw-r--r-- 1 mava mava  199 Jul 20 19:56 preview_shell.txt
--rw-r--r-- 1 mava mava   83 Jul 20 19:56 summary_group.txt
--rw-r--r-- 1 mava mava  130 Jul 20 19:56 sysinfo.txt
--rw-r--r-- 1 mava mava   27 Jul 20 19:56 users_bash.txt
--rw-r--r-- 1 mava mava  265 Jul 20 19:56 users.txt
+❯ rm -rf ./audit /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L1_01_Linux/ManiNava_linux_01.zip
+
+scripts (main) U
+❯ ls -l ~/exam_results
+total 0
+
+scripts (main) U
+❯ cat audit_homework__maninava.sh
+#!/bin/bash
+
+AUDIT_DIR="$HOME/exam_results/audit"
+
+# print what a generated file holds, so the run log itself shows every output
+report() {
+  printf '  created %-22s %s lines\n' "$(basename "$1")" "$(wc -l <"$1")"
+}
+
+mkdir -p "$AUDIT_DIR"
+
+# notes file: the assignment asks for an *empty* notes.txt, and its closing note
+# only asks us to "try" to start the .txt files with a "#" heading, so the empty
+# file wins here and stays at 0 bytes
+: >"$AUDIT_DIR/notes.txt"
+report "$AUDIT_DIR/notes.txt"
+
+# cwd
+{
+  echo "# Current Working Directory"
+  pwd
+} >"$AUDIT_DIR/cwd.txt"
+report "$AUDIT_DIR/cwd.txt"
+
+# users: all
+{
+  echo "# All Users"
+  cut -d: -f1 /etc/passwd
+} >"$AUDIT_DIR/users.txt"
+report "$AUDIT_DIR/users.txt"
+
+# users whose login shell is bash
+# On Arch the login shell lives in /usr/bin/bash, not /bin/bash, so the
+# pattern is anchored to the last field of /etc/passwd instead of matching
+# "/bin/bash" anywhere in the line.
+{
+  echo "# Bash Users"
+  grep -E ":(/usr)?/bin/bash$" /etc/passwd | cut -d: -f1
+} >"$AUDIT_DIR/bash_users.txt"
+report "$AUDIT_DIR/bash_users.txt"
+
+# shell preview, for viewing only: /etc/passwd itself is never modified.
+# The old pattern 's|/bin/bash|/usr/bin/zsh|g' also matched the tail of
+# /usr/bin/bash and wrote /usr/usr/bin/zsh, so the shell field is matched
+# with a (^|:) prefix and an end-of-line anchor instead.
+{
+  echo "# Shell Preview"
+  sed -E 's#(^|:)(/usr)?/bin/bash$#\1/usr/bin/zsh#' /etc/passwd | head -n 5
+} >"$AUDIT_DIR/shell_preview.txt"
+report "$AUDIT_DIR/shell_preview.txt"
+
+# sys info
+{
+  echo "# System Information"
+  uname -a
+
+  # the assignment asks for the arch command; Arch Linux does not ship it,
+  # so fall back to uname -m which reports the same machine architecture
+  if command -v arch >/dev/null 2>&1; then
+    arch
+  else
+    uname -m
+  fi
+
+} >"$AUDIT_DIR/sysinfo.txt"
+report "$AUDIT_DIR/sysinfo.txt"
+
+# groups: first 3 and last 2 lines of /etc/group
+{
+  echo "# Group Summary"
+  head -n 3 /etc/group
+  tail -n 2 /etc/group
+} >"$AUDIT_DIR/group_summary.txt"
+report "$AUDIT_DIR/group_summary.txt"
+
+# every .conf file under /etc
+{
+  echo "# Configuration Files"
+  find /etc -type f -name "*.conf" 2>/dev/null
+} >"$AUDIT_DIR/conf_files.txt"
+report "$AUDIT_DIR/conf_files.txt"
+
+# 10 biggest files under /var/log
+{
+  echo "# Top 10 Log Files"
+
+  find /var/log -type f -exec du -h {} + 2>/dev/null |
+    sort -hr |
+    head -n 10
+} >"$AUDIT_DIR/top_logs.txt"
+report "$AUDIT_DIR/top_logs.txt"
+
+# backup of /etc/hosts, readable/writable by its owner only
+cp /etc/hosts "$AUDIT_DIR/hosts.bak"
+chmod 600 "$AUDIT_DIR/hosts.bak"
+
+{
+  echo "# Hosts Permissions"
+  ls -l "$AUDIT_DIR/hosts.bak"
+} >"$AUDIT_DIR/hosts_perm.txt"
+report "$AUDIT_DIR/hosts_perm.txt"
+
+# cleanup: every .txt in the audit dir goes except notes.txt & hosts_perm.txt
+find "$AUDIT_DIR" -maxdepth 1 -type f -name '*.txt' ! -name 'notes.txt' ! -name 'hosts_perm.txt' -delete
+
+echo "Audit completed."
+
+scripts (main) U
+❯ sed '/^find "\$AUDIT_DIR" -maxdepth/s/^/# /' audit_homework__maninava.sh > /tmp/audit_nodelete.sh
+
+scripts (main) U
+❯ grep -n -- '-delete' /tmp/audit_nodelete.sh
+104:# find "$AUDIT_DIR" -maxdepth 1 -type f -name '*.txt' ! -name 'notes.txt' ! -name 'hosts_perm.txt' -delete
+
+scripts (main) U
+❯ bash /tmp/audit_nodelete.sh
+  created notes.txt              0 lines
+  created cwd.txt                2 lines
+  created users.txt              33 lines
+  created bash_users.txt         3 lines
+  created shell_preview.txt      6 lines
+  created sysinfo.txt            3 lines
+  created group_summary.txt      6 lines
+  created conf_files.txt         92 lines
+  created top_logs.txt           11 lines
+  created hosts_perm.txt         2 lines
+Audit completed.
 
 scripts (main) U
 ❯ for file in $HOME/exam_results/audit/*.txt; do
@@ -23,12 +144,14 @@ scripts (main) U
     cat "$file"
     echo
 done
------ cwd.txt -----
-# Current Working Directory
-/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/02-Linux/scripts
+----- bash_users.txt -----
+# Bash Users
+root
+postgres
 
------ files_conf.txt -----
+----- conf_files.txt -----
 # Configuration Files
+/etc/sqlmap.conf
 /etc/ssh/sshd_config.d/99-archlinux.conf
 /etc/ld.so.conf
 /etc/ts.conf
@@ -39,6 +162,8 @@ done
 /etc/valkey/valkey.conf
 /etc/valkey/sentinel.conf
 /etc/mke2fs.conf
+/etc/nginx/fastcgi.conf
+/etc/nginx/nginx.conf
 /etc/systemd/logind.conf
 /etc/systemd/system.conf
 /etc/systemd/journald.conf
@@ -59,7 +184,6 @@ done
 /etc/mkinitcpio.conf
 /etc/man_db.conf
 /etc/pacman.conf
-/etc/resolv.conf
 /etc/fonts/fonts.conf
 /etc/gtk-3.0/im-multipress.conf
 /etc/arptables.conf
@@ -70,6 +194,7 @@ done
 /etc/smartd.conf
 /etc/sensors3.conf
 /etc/dkms/framework.conf
+/etc/named.conf
 /etc/libao.conf
 /etc/vconsole.conf
 /etc/NetworkManager/NetworkManager.conf
@@ -95,6 +220,7 @@ done
 /etc/pacman.d/gnupg/gpg-agent.conf
 /etc/ufw/ufw.conf
 /etc/ufw/sysctl.conf
+/etc/resolvconf.conf
 /etc/krb5.conf
 /etc/makepkg.conf
 /etc/rsyncd.conf
@@ -103,6 +229,7 @@ done
 /etc/healthd.conf
 /etc/X11/xorg.conf.d/00-keyboard.conf
 /etc/xdg/user-dirs.conf
+/etc/xdg/reflector/reflector.conf
 /etc/pulse/client.conf
 /etc/UPower/UPower.conf
 /etc/host.conf
@@ -112,53 +239,53 @@ done
 /etc/makepkg.conf.d/rust.conf
 /etc/udisks2/udisks2.conf
 /etc/fuse.conf
+/etc/default/cpufreq-bench.conf
+/etc/default/cpupower-service.conf
 /etc/jack/example.conf
 
------ hosts_perm.txt -----
-# Hosts Permissions
--rw------- 1 mava mava 119 Jul 20 19:56 /home/mava/exam_results/audit/hosts.bak
+----- cwd.txt -----
+# Current Working Directory
+/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L1_01_Linux/ManiNava_linux_01
 
------ logs_top.txt -----
-# Top 10 Log Files
-96M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system@92aba5bc647f4c67a7359989ea6a3770-0000000000008e54-00065505596e7184.journal
-65M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system.journal
-65M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system@00065656697df1bb-870f8ec6a4875823.journal~
-55M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system@92aba5bc647f4c67a7359989ea6a3770-000000000008ce22-0006565679ac92f2.journal
-25M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/user-1000@000656566a9e912c-ddde04be184fac7c.journal~
-25M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system@000655055971b586-24d9558269d96304.journal~
-9.0M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/user-1000@92aba5bc647f4c67a7359989ea6a3770-000000000008ce21-0006565679abd9a5.journal
-8.1M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/user-1000.journal
-8.1M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/user-1000@000655055c8eb8b7-130194dd5ad48e66.journal~
-8.1M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/user-1000@000654f428739adb-d82fce1edf6832ed.journal~
-
------ notes.txt -----
-# Notes
-
------ preview_shell.txt -----
-# Shell Preview
-root:x:0:0::/root:/usr/usr/bin/zsh
-bin:x:1:1::/:/usr/bin/nologin
-daemon:x:2:2::/:/usr/bin/nologin
-mail:x:8:12::/var/spool/mail:/usr/bin/nologin
-ftp:x:14:11::/srv/ftp:/usr/bin/nologin
-
------ summary_group.txt -----
+----- group_summary.txt -----
 # Group Summary
 root:x:0:root
 sys:x:3:bin
 mem:x:8:
-valkey:x:962:
-mattermost:x:961:
+_talkd:x:959:
+www-data:x:958:
+
+----- hosts_perm.txt -----
+# Hosts Permissions
+-rw------- 1 mava mava 239 Sep 30 18:09 /home/mava/exam_results/audit/hosts.bak
+
+----- notes.txt -----
+
+----- shell_preview.txt -----
+# Shell Preview
+root:x:0:0::/root:/usr/bin/zsh
+bin:x:1:1::/:/usr/bin/nologin
+daemon:x:2:2::/:/usr/bin/nologin
+mail:x:8:12::/var/spool/mail:/usr/bin/nologin
+ftp:x:14:11::/srv/ftp:/usr/bin/nologin
 
 ----- sysinfo.txt -----
 # System Information
 Linux jermaine 7.0.13-arch1-1 #1 SMP PREEMPT_DYNAMIC Tue, 23 Jun 2026 11:14:21 +0000 x86_64 GNU/Linux
 x86_64
 
------ users_bash.txt -----
-# Bash Users
-root
-postgres
+----- top_logs.txt -----
+# Top 10 Log Files
+95M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system@92aba5bc647f4c67a7359989ea6a3770-000000000023a97c-000659f3c1d42ec3.journal
+92M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system@92aba5bc647f4c67a7359989ea6a3770-00000000001e724f-0006595d50e58eb9.journal
+91M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system@92aba5bc647f4c67a7359989ea6a3770-000000000028f0a7-00065a78d83252e3.journal
+80M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system@92aba5bc647f4c67a7359989ea6a3770-00000000001a47b6-000658d594bd0f49.journal
+73M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system@92aba5bc647f4c67a7359989ea6a3770-00000000003021a7-00065b82e9c28814.journal
+49M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system@00065c87d8a64ce3-23233d53148d6924.journal~
+49M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system@00065b82e9c4bd7c-31209a472b2a047c.journal~
+33M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/system.journal
+17M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/user-1000@92aba5bc647f4c67a7359989ea6a3770-00000000001e7265-0006595d51efb4f9.journal
+11M	/var/log/journal/fe290c67e7bc4cafbadd8ccd3ccebd07/user-1000@92aba5bc647f4c67a7359989ea6a3770-000000000028f82f-00065a814a7ebc47.journal
 
 ----- users.txt -----
 # All Users
@@ -190,4 +317,61 @@ systemd-imds
 postgres
 valkey
 mattermost
+kube
+named
+_talkd
+www-data
+
+scripts (main) U
+❯ rm -rf ~/exam_results/audit && ./audit_homework__maninava.sh
+  created notes.txt              0 lines
+  created cwd.txt                2 lines
+  created users.txt              33 lines
+  created bash_users.txt         3 lines
+  created shell_preview.txt      6 lines
+  created sysinfo.txt            3 lines
+  created group_summary.txt      6 lines
+  created conf_files.txt         92 lines
+  created top_logs.txt           11 lines
+  created hosts_perm.txt         2 lines
+Audit completed.
+
+scripts (main) U
+❯ ls -l ~/exam_results/audit
+total 8
+-rw------- 1 mava mava 239 Sep 30 18:09 hosts.bak
+-rw-r--r-- 1 mava mava 100 Sep 30 18:09 hosts_perm.txt
+-rw-r--r-- 1 mava mava   0 Sep 30 18:09 notes.txt
+
+scripts (main) U
+❯ cat ~/exam_results/audit/notes.txt ~/exam_results/audit/hosts_perm.txt
+# Hosts Permissions
+-rw------- 1 mava mava 239 Sep 30 18:09 /home/mava/exam_results/audit/hosts.bak
+
+scripts (main) U
+❯ diff ~/exam_results/audit/hosts.bak /etc/hosts && echo 'hosts.bak is a faithful copy of /etc/hosts'
+hosts.bak is a faithful copy of /etc/hosts
+
+scripts (main) U
+❯ cp -r ~/exam_results/audit ./audit
+
+scripts (main) U
+❯ cd /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L1_01_Linux && rm -f ManiNava_linux_01.zip && zip -rq ManiNava_linux_01.zip ManiNava_linux_01
+
+scripts (main) U
+❯ unzip -l ManiNava_linux_01.zip
+Archive:  ManiNava_linux_01.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+        0  2026-09-30 18:09   ManiNava_linux_01/
+        0  2026-09-30 18:09   ManiNava_linux_01/audit/
+        0  2026-09-30 18:09   ManiNava_linux_01/audit/notes.txt
+      239  2026-09-30 18:09   ManiNava_linux_01/audit/hosts.bak
+      100  2026-09-30 18:09   ManiNava_linux_01/audit/hosts_perm.txt
+     2932  2026-09-30 18:09   ManiNava_linux_01/audit_homework__maninava.sh
+---------                     -------
+     3271                     6 files
+
+scripts (main) U
+❯ rm -f /tmp/audit_nodelete.sh
 

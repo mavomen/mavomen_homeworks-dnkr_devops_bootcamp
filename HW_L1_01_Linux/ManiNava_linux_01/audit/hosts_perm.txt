@@ -1,0 +1,2 @@
+# Hosts Permissions
+-rw------- 1 mava mava 239 Sep 30 18:09 /home/mava/exam_results/audit/hosts.bak

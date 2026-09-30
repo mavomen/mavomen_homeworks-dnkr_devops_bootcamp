@@ -1,0 +1,9 @@
+# Static table lookup for hostnames.
+# See hosts(5) for details.
+127.0.0.1        localhost
+::1              localhost
+
+# --- homework: local service names ---
+192.168.1.10    app.local
+192.168.1.11    db.local
+192.168.1.12    cache.local
