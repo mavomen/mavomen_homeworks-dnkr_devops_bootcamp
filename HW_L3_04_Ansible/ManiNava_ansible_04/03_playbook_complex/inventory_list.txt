@@ -1,0 +1,32 @@
+{
+    "_meta": {
+        "hostvars": {
+            "db1": {
+                "ansible_connection": "local",
+                "ansible_host": "localhost"
+            },
+            "web1": {
+                "ansible_connection": "local",
+                "ansible_host": "localhost"
+            }
+        },
+        "profile": "inventory_legacy"
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "webservers",
+            "dbservers"
+        ]
+    },
+    "dbservers": {
+        "hosts": [
+            "db1"
+        ]
+    },
+    "webservers": {
+        "hosts": [
+            "web1"
+        ]
+    }
+}

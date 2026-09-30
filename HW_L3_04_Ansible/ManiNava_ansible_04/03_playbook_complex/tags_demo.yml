@@ -1,0 +1,50 @@
+---
+- name: Tags Demo
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Always runs
+      debug:
+        msg: "This always executes"
+      tags: always
+
+    - name: Install web
+      apt:
+        name: nginx
+        state: present
+      tags:
+        - install
+        - webserver
+      ignore_errors: yes
+
+    - name: Install db
+      apt:
+        name: mysql-server
+        state: present
+      tags:
+        - install
+        - database
+      ignore_errors: yes
+
+    - name: Configure web
+      copy:
+        content: "# nginx config"
+        dest: /etc/nginx/nginx.conf
+      tags:
+        - configure
+        - webserver
+      ignore_errors: yes
+
+    - name: Configure db
+      copy:
+        content: "# mysql config"
+        dest: /etc/mysql/my.cnf
+      tags:
+        - configure
+        - database
+      ignore_errors: yes
+
+    - name: Never runs by default
+      debug:
+        msg: "Only with --tags never"
+      tags: never

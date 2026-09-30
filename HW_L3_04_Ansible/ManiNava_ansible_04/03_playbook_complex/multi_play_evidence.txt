@@ -1,0 +1,28 @@
+=== /opt/apps/host.conf written by the *included* configure.yml ===
+HOSTNAME=jermaine
+
+=== directories created by the loop in configure.yml ===
+drwxr-xr-x 2 root root 4096 Sep 30 13:43 /opt/apps
+drwxr-xr-x 2 root root 4096 Sep 30 13:43 /opt/logs
+
+=== web page written by play 2 (hosts: webservers -> web1 only) ===
+<h1>Web Server jermaine</h1>
+=== db files written by play 3 (hosts: dbservers -> db1 only) ===
+[mysqld]
+port=3306
+drwxr-xr-x 2 root root 4096 Sep 30 13:43 /var/lib/mydb
+
+=== plays recap: one play per group ===
+2:PLAY [Setup all servers] *******************************************************
+83:PLAY [Configure web servers] ***************************************************
+113:PLAY [Configure database] ******************************************************
+124:PLAY RECAP *********************************************************************
+
+=== tasks of play 1 only (hosts: all -> web1 + db1) ===
+TASK [Gathering Facts] *********************************************************
+TASK [Show host] ***************************************************************
+TASK [Update cache] ************************************************************
+TASK [Install packages] ********************************************************
+TASK [Include configuration] ***************************************************
+TASK [Create directories] ******************************************************
+TASK [Deploy config] ***********************************************************

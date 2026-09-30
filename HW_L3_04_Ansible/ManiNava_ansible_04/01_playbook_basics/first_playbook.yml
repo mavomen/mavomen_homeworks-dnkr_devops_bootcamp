@@ -1,0 +1,47 @@
+---
+- name: First Playbook with Variables
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  vars:
+    app_name: "MyApp"
+    app_version: "1.0.0"
+    app_port: 8080
+    app_home: "/opt/{{ app_name }}"
+  tasks:
+    - name: Display system info
+      debug:
+        msg: "Running {{ app_name }} v{{ app_version }} on {{ ansible_hostname }}"
+
+    - name: Show system resources
+      debug:
+        msg: "System: {{ ansible_distribution }} | CPU: {{ ansible_processor_vcpus }} | RAM: {{ ansible_memtotal_mb }}MB"
+
+    - name: Create app directory
+      file:
+        path: "{{ app_home }}"
+        state: directory
+        mode: '0755'
+      become: yes
+      ignore_errors: yes
+
+    - name: Deploy config file
+      copy:
+        content: |
+          APP_NAME={{ app_name }}
+          APP_VERSION={{ app_version }}
+          APP_PORT={{ app_port }}
+          HOSTNAME={{ ansible_hostname }}
+          DEPLOYED_AT={{ ansible_date_time.iso8601 }}
+        dest: "{{ app_home }}/config.env"
+      become: yes
+      ignore_errors: yes
+
+    - name: Set deployment facts
+      set_fact:
+        deployment_time: "{{ ansible_date_time.iso8601 }}"
+        deployment_user: "{{ ansible_user_id }}"
+
+    - name: Show deployment info
+      debug:
+        msg: "Deployed by {{ deployment_user }} at {{ deployment_time }}"

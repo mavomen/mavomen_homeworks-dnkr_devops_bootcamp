@@ -1,0 +1,64 @@
+---
+- name: Deploy Application
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  vars:
+    environment: production
+    app_version: 1.0.0
+  pre_tasks:
+    - name: Show deployment info
+      debug:
+        msg: "Deploying v{{ app_version }} to {{ environment }}"
+
+    - name: Check requirements
+      assert:
+        that:
+          - ansible_memtotal_mb >= 1024
+        fail_msg: "Insufficient memory"
+  roles:
+    - role: common
+      tags: common
+
+    - role: webserver
+      vars:
+        webserver_port: 8080
+      tags: webserver
+
+    - role: monitoring
+      tags: monitoring
+  post_tasks:
+    - name: Verify deployment
+      uri:
+        url: http://localhost:8080
+        status_code: 200
+      register: health
+      failed_when: false
+      ignore_errors: yes
+
+    - name: Log deployment
+      copy:
+        content: |
+          Deployment: {{ app_version }}
+          Time: {{ ansible_date_time.iso8601 }}
+          Status: Success
+        dest: /opt/logs/deploy.log
+      become: yes
+      ignore_errors: yes
+
+# The PDF shows a `---` before this second play. A playbook file must be one
+# YAML document, so I dropped the separator and kept both plays in this file.
+# Advanced usage: conditional role usage and include_role with vars
+- name: Conditional Role Usage
+  hosts: localhost
+  tasks:
+    - name: Include webserver role
+      include_role:
+        name: webserver
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Use role with custom vars
+      include_role:
+        name: monitoring
+      vars:
+        monitoring_interval: 60

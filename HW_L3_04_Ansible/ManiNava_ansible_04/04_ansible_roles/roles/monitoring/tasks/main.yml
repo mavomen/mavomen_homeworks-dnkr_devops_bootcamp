@@ -1,0 +1,21 @@
+---
+- name: Install monitoring tools
+  apt:
+    name:
+      - htop
+      - iotop
+    state: present
+  become: yes
+  ignore_errors: yes
+
+- name: Create monitor script
+  copy:
+    content: |
+      #!/bin/bash
+      echo "=== System Status ==="
+      free -h
+      df -h /
+    dest: /opt/scripts/monitor.sh
+    mode: '0755'
+  become: yes
+  ignore_errors: yes

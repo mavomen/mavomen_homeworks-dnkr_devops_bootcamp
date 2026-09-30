@@ -1,0 +1,26 @@
+=== role skeletons created with ansible-galaxy init ===
+roles/common/defaults/main.yml
+roles/common/handlers/main.yml
+roles/common/meta/main.yml
+roles/common/README.md
+roles/common/tasks/main.yml
+roles/common/tests/inventory
+roles/common/tests/test.yml
+roles/common/vars/main.yml
+roles/monitoring/defaults/main.yml
+roles/monitoring/handlers/main.yml
+roles/monitoring/meta/main.yml
+roles/monitoring/README.md
+roles/monitoring/tasks/main.yml
+roles/monitoring/tests/inventory
+roles/monitoring/tests/test.yml
+roles/monitoring/vars/main.yml
+roles/webserver/defaults/main.yml
+roles/webserver/handlers/main.yml
+roles/webserver/meta/main.yml
+roles/webserver/README.md
+roles/webserver/tasks/main.yml
+roles/webserver/templates/index.html.j2
+roles/webserver/tests/inventory
+roles/webserver/tests/test.yml
+roles/webserver/vars/main.yml

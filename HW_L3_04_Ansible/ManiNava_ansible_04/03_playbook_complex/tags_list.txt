@@ -1,0 +1,7 @@
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+playbook: tags_demo.yml
+
+  play #1 (localhost): Tags Demo	TAGS: []
+      TASK TAGS: [always, configure, database, install, never, webserver]

@@ -1,0 +1,69 @@
+=== rendered /etc/nginx/nginx.conf (Jinja2 substituted) ===
+user www-data;
+worker_processes 12;
+
+http {
+    
+    gzip on;
+
+    
+    server {
+        listen 80;
+        server_name localhost;
+        root /var/www/html;
+
+        location / {
+            try_files $uri $uri/ =404;
+        }
+    }
+}
+
+=== nginx -t : does the rendered config actually load? ===
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+2026/09/30 13:43:31 [emerg] 1156850#1156850: no "events" section in configuration
+nginx: configuration file /etc/nginx/nginx.conf test failed
+
+=== nginx state after the handlers ===
+failed
+
+=== rendered /etc/myapp/app.conf (if/else + for loop) ===
+[general]
+app_name=MyApp
+environment=[]
+
+
+[server]
+port=8080
+
+
+[database]
+db_host=localhost
+
+
+[users]
+admin=administrator
+user1=user
+
+=== deployed /var/www/html/index.html ===
+<html><body>
+<h1>MyApp v2.0.0</h1>
+<p>Deployed at 2026-09-30T10:13:25Z</p>
+</body></html>
+
+
+=== nothing answers on port 80: the rendered config has no events{} block, ===
+=== so both nginx handlers failed and were ignored. Proof that the template ===
+=== itself is fine - the same bytes plus one events{} line pass nginx -t: ===
+nginx: the configuration file /tmp/nginx_events_probe.conf syntax is ok
+nginx: configuration file /tmp/nginx_events_probe.conf test is successful
+
+=== backup copy left by 'backup: yes' ===
+-rw-r--r-- 1 root root  238 Sep 30 13:43 /etc/nginx/nginx.conf
+-rw-r--r-- 1 root root 2717 Sep 16 12:13 /etc/nginx/nginx.conf.1156374.2026-09-30@13:43:20~
+
+=== handler lines of each run ===
+handlers_templates_run.txt:58:RUNNING HANDLER [Restart nginx] ************************************************
+handlers_templates_run.txt:72:RUNNING HANDLER [Reload nginx] *************************************************
+handlers_templates_rerun.txt:58:RUNNING HANDLER [Reload nginx] *************************************************
+
+=== why the handlers failed (same reason in both runs) ===

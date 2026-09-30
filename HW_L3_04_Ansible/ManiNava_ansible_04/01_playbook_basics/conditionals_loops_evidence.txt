@@ -1,0 +1,26 @@
+=== users created by the loop over the users list ===
+user1:x:1001:1001::/home/user1:/bin/bash
+user2:x:1002:1002::/home/user2:/bin/bash
+
+=== /opt/myapp created by the stat/when pair ===
+drwxr-xr-x 2 root root 4096 Sep 30 13:43 /opt/myapp
+
+=== curl/wget/git on this box, so the Debian-only apt loop was skipped ===
+curl 8.20.0-7
+wget 1.25.0-5
+git 2.54.0-1
+
+=== skipped lines of the first run (3 apt items + create-if-not-exists + ubuntu-only) ===
+21:skipping: [localhost] => (item=curl) 
+22:skipping: [localhost] => (item=wget) 
+23:skipping: [localhost] => (item=git) 
+24:skipping: [localhost]
+62:skipping: [localhost]
+
+=== and of the second run, where 'Create if not exists' is skipped as well ===
+21:skipping: [localhost] => (item=curl) 
+22:skipping: [localhost] => (item=wget) 
+23:skipping: [localhost] => (item=git) 
+24:skipping: [localhost]
+34:skipping: [localhost]
+62:skipping: [localhost]

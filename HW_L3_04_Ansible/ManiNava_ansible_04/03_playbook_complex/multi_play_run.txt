@@ -1,0 +1,127 @@
+
+PLAY [Setup all servers] *******************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [db1]
+ok: [web1]
+
+TASK [Show host] ***************************************************************
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/multi_play.yml:18:14
+
+16     - name: Show host
+17       debug:
+18         msg: "Configuring {{ ansible_hostname }}"
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [web1] => {
+    "msg": "Configuring jermaine"
+}
+ok: [db1] => {
+    "msg": "Configuring jermaine"
+}
+
+TASK [Update cache] ************************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/tasks/install.yml:5:9
+
+3   apt:
+4     update_cache: yes
+5   when: ansible_os_family == "Debian"
+          ^ column 9
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+skipping: [web1]
+skipping: [db1]
+
+TASK [Install packages] ********************************************************
+[WARNING]: Updating cache and auto-installing missing dependency: python3-apt
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/tasks/install.yml:8:3
+
+6   ignore_errors: yes
+7
+8 - name: Install packages
+    ^ column 3
+
+failed: [web1] (item=curl) => {"ansible_loop_var": "item", "changed": false, "cmd": "update", "item": "curl", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+failed: [db1] (item=curl) => {"ansible_loop_var": "item", "changed": false, "cmd": "update", "item": "curl", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+failed: [web1] (item=wget) => {"ansible_loop_var": "item", "changed": false, "cmd": "update", "item": "wget", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+failed: [db1] (item=wget) => {"ansible_loop_var": "item", "changed": false, "cmd": "update", "item": "wget", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+failed: [web1] (item=vim) => {"ansible_loop_var": "item", "changed": false, "cmd": "update", "item": "vim", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+failed: [db1] (item=vim) => {"ansible_loop_var": "item", "changed": false, "cmd": "update", "item": "vim", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Include configuration] ***************************************************
+included: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/tasks/configure.yml for web1, db1
+
+TASK [Create directories] ******************************************************
+ok: [db1] => (item=/opt/apps)
+ok: [web1] => (item=/opt/apps)
+ok: [web1] => (item=/opt/logs)
+ok: [db1] => (item=/opt/logs)
+
+TASK [Deploy config] ***********************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/multi_play.yml:26:25
+
+24       include_tasks: tasks/configure.yml
+25       vars:
+26         config_content: "HOSTNAME={{ ansible_hostname }}\n"
+                           ^ column 25
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+changed: [db1]
+ok: [web1]
+
+PLAY [Configure web servers] ***************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [web1]
+
+TASK [Install nginx] ***********************************************************
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/multi_play.yml:34:7
+
+32   become: yes
+33   tasks:
+34     - name: Install nginx
+         ^ column 7
+
+fatal: [web1]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Deploy web page] *********************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/multi_play.yml:42:18
+
+40     - name: Deploy web page
+41       copy:
+42         content: "<h1>Web Server {{ ansible_hostname }}</h1>"
+                    ^ column 18
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+changed: [web1]
+
+PLAY [Configure database] ******************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [db1]
+
+TASK [Create db directory] *****************************************************
+changed: [db1]
+
+TASK [Create db config] ********************************************************
+changed: [db1]
+
+PLAY RECAP *********************************************************************
+db1                        : ok=9    changed=3    unreachable=0    failed=0    skipped=1    rescued=0    ignored=1   
+web1                       : ok=9    changed=1    unreachable=0    failed=0    skipped=1    rescued=0    ignored=2   
+

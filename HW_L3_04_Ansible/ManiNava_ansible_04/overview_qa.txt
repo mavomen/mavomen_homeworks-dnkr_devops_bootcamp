@@ -1,0 +1,194 @@
+# ManiNava Ansible Playbooks & Roles Homework 04 - Overview & Q&A Recap
+
+Quick answers to the questions this homework asks about playbooks, roles,
+variables and error handling. Every number below is real and was measured
+on my machine (Arch Linux, kernel 7.0.13-arch1-1, ansible-core 2.21.1,
+12 vCPU / 15852 MB RAM, user `mava`, host `jermaine`). The transcript of
+the whole run is `../ManiNava_ansible_04_output__maninava.txt` and all
+seven scripts exited 0.
+
+## 1. What is a playbook and what is inside it?
+
+A playbook is a YAML file that describes the desired state of one or more
+machines, and it is the documentation and the automation in one file. The
+skeleton is `name`, `hosts`, `become`, `gather_facts`, `vars`, `tasks` -
+every task is a single module call, and each one reports `ok`, `changed`,
+`skipped` or `failed`. This homework has seven playbooks:
+`first_playbook.yml`, `conditionals_loops.yml`, `handlers_templates.yml`,
+`error_handling.yml`, `multi_play.yml`, `tags_demo.yml` and `deploy.yml`
+(two plays), plus the two task files and three roles of section 04. All
+seven pass `ansible-playbook --syntax-check`.
+
+## 2. Variables - where do they come from and who wins?
+
+Precedence, highest first: `-e` extra vars, then `set_fact:`/`register:`
+values, then play `vars:`, then inventory vars, then facts. I proved it
+with the same playbook twice: the plain run printed `Running MyApp v1.0.0`
+and wrote `APP_PORT=8080` to `/opt/MyApp/config.env`, while
+`ansible-playbook first_playbook.yml -e "app_port=9090 app_version=2.0.0"`
+printed `Running MyApp v2.0.0` and rewrote the file with `APP_PORT=9090`
+(see `01_playbook_basics/config_env.txt`). `app_home: "/opt/{{ app_name }}"`
+shows that a variable can be built from another variable, so the directory
+is `/opt/MyApp` without hardcoding it.
+
+## 3. Loops and conditionals - what did they actually do?
+
+- The `loop` over `users` (a list of dicts) created both accounts:
+  `user1:x:1001:1001::/home/user1:/bin/bash` and `user2:x:1002:1002::...`
+  - two tasks in the playbook for two users, `item.name` / `item.state`
+  instead of duplicated code.
+- The platform guard `when: ansible_os_family == "Debian"` skipped the
+  whole `apt` loop on my Arch box (3 skipped items), which is the
+  condition doing its job rather than an error.
+- `register: dir_check` + `when: not dir_check.stat.exists` is check-then-
+  act: run 1 reports `changed` and creates `/opt/myapp`, run 2 reports `ok`
+  and skips the create (`changed=0` in `conditionals_loops_rerun.txt`).
+- The two-condition task (Ubuntu **and** RAM > 1024) is skipped, so the
+  RAM half passed (`Sufficient memory`) and the Ubuntu half did not.
+
+## 4. Templates - how is the substitution verified?
+
+`templates/nginx.conf.j2` rendered to `/etc/nginx/nginx.conf` with real
+values: `worker_processes 12` (`ansible_processor_vcpus`), `listen 80`,
+`server_name localhost`, `root /var/www/html`, and the `{% if enable_gzip %}`
+block kept. `templates/app.conf.j2` rendered the `{% if %}` branch
+(`db_host=localhost` because `environment` is not production) and expanded
+the `{% for %}` loop into `admin=administrator` and `user1=user`. Proof
+that idempotency comes for free: run 2 reports `ok` for both templates
+instead of `changed`.
+
+## 5. Handlers - when do they run?
+
+Handlers run once at the end of the play and only for tasks that reported
+`changed`. The two runs prove both branches:
+
+- run 1: nginx template `changed` -> `RUNNING HANDLER [Restart nginx]`,
+  index.html `changed` -> `RUNNING HANDLER [Reload nginx]` (2 handlers);
+- run 2: nginx template `ok` (the render is byte-identical) -> the restart
+  handler stays **silent**, while index.html carries
+  `ansible_date_time.iso8601` and is `changed` again -> `Reload nginx`
+  fires. `notify:` is tied to *changed*, not to "the task ran".
+
+## 6. Error handling - what did each tool do?
+
+`error_handling_run.txt` shows all four tools:
+
+- `ignore_errors: yes` on `/bin/false` -> `fatal: ... rc 1` then
+  `...ignoring`, play continues (recap `ignored=2`);
+- `failed_when: "'Error' in result.stdout"` -> the shell command itself was
+  `changed` (it ran fine) and the assertion did not trigger, so this is the
+  "redefine failure" case;
+- `changed_when: false` -> the status check reports `ok`, never `changed`;
+- `block` / `rescue` / `always` -> the risky task failed, `rescue` printed
+  "Error handled gracefully", `always` printed "Always executed"
+  (recap `rescued=1`).
+
+The `assert` task is a *real* failure: `ansible_distribution in
+["Ubuntu", "Debian"]` is false on Arch, so it fails with `fail_msg:
+"Requirements not met"` and is then ignored.
+
+## 7. Multi-play, import vs include, inventory?
+
+`inventory` defines `web1` in `[webservers]` and `db1` in `[dbservers]`
+plus `[all:children]`; `ansible-inventory -i inventory --graph` prints the
+tree `@all -> @webservers -> web1`, `@all -> @dbservers -> db1` (both are
+my own machine with `ansible_connection=local`, the exercise is about
+grouping). `multi_play.yml` then runs three plays: play 1 on `all`
+(7 task blocks: show host, the imported `tasks/install.yml`, the included
+`tasks/configure.yml`), play 2 on `webservers` (web page
+`<h1>Web Server jermaine</h1>`), play 3 on `dbservers`
+(`/var/lib/mydb` + `/etc/my.cnf`). `import_tasks` is static (parsed with
+the playbook), `include_tasks` is dynamic, which is why only the included
+file gets per-call `vars:` (`config_content`, `config_path`).
+
+## 8. Tags - what did each selection run?
+
+- `--list-tags` -> `TAGS: [always, configure, database, install, never,
+  webserver]`
+- `--tags install` -> `Always runs`, `Install web`, `Install db`
+- `--tags webserver` -> `Always runs`, `Install web`, `Configure web`
+  (one install **and** one configure task share that tag)
+- `--skip-tags configure` -> everything except the two configure tasks
+- `--tags never` -> `Always runs` + the task nobody runs by default
+
+`always` comes along in every selection because ansible adds it to every
+task. Note the "Configure web" task of this demo playbook writes the line
+`# nginx config` over the real `/etc/nginx/nginx.conf`; `run_tags.sh` keeps
+a copy of the real file, keeps the placeholder as evidence and restores
+the real one afterwards (`restore: identical` in `tags_evidence.txt`).
+
+## 9. Roles, dependencies and overrides?
+
+Three roles created with `ansible-galaxy init` (`common`, `webserver`,
+`monitoring`) and then filled in. `roles_run.txt` shows the real order:
+`common` (from `roles:`) -> `webserver` -> **`common` again** ->
+`monitoring`, because `roles/monitoring/meta/main.yml` declares
+`dependencies: [role: common]` and the play never mentions it. Variable
+override works as documented: `webserver/defaults/main.yml` has
+`webserver_port: 80`, `deploy.yml` passes `webserver_port: 8080`, and the
+rendered `/var/www/html/index.html` shows `<p>Port: 8080</p>`. Handlers live
+inside the role (`webserver/handlers/main.yml`) and fire because the task
+notified them. `--tags monitoring` runs only `common` + `monitoring`, and
+the conditional `include_role: name=webserver` is **skipped** because
+`ansible_distribution != "Ubuntu"`.
+
+## 10. Everything that is different from the assignment (read this)
+
+The assignment targets Ubuntu 22.04, I ran on Arch. Deviations and
+assignment quirks, all visible in the logs:
+
+1. **the `apt` module is missing, 22 task failures across the runs.** Arch
+   has no apt (`[Errno 2] No such file or directory: b'update'`): 7 of them
+   in `multi_play_run.txt` (3 packages x 2 hosts + the nginx task of play
+   2), 6 in `roles_run.txt`, the rest in the tags runs. Every one of those
+   tasks already carries `ignore_errors: yes` in the assignment, so the
+   plays continue - `failed=0` in every single play recap and the failures
+   show up as `ignored` (`handlers_templates_run.txt` ignored=3 = apt +
+   both nginx handlers, its rerun ignored=2 = apt + only the reload
+   handler, which is the handler evidence of question 5 in numbers). I did
+   not swap the module - the playbooks are copied as they are.
+2. **`nginx.conf.j2` has no `events {}` block.** nginx requires it, so
+   `nginx -t` on the rendered file says `no "events" section in
+   configuration` and both nginx handlers fail and are ignored. This is a
+   defect of the assignment's template and it fails the same way on Ubuntu
+   22.04 - I proved the rest of the render is fine: the identical file
+   plus one `events {}` line passes `nginx -t`
+   (`handlers_templates_evidence.txt`). The template is untouched, so
+   nothing serves port 80 in this homework.
+3. **`deploy.yml` needed one `---` less.** The assignment shows a second
+   `---` document before the "Conditional Role Usage" play; a playbook has
+   to be a single YAML document, so ansible refuses the file with
+   `Expected a single document in the stream`. I dropped the separator and
+   both plays are one document now - valid, because a playbook is a list of
+   plays.
+4. **`environment` is a reserved name.** The play variable
+   `environment: "development"` collides with the task keyword, ansible
+   warns (`Found variable using reserved name 'environment'`) and inside
+   the template `{{ environment }}` resolves to the empty task environment,
+   which is why the rendered file contains `environment=[]`. The
+   `{% if environment == 'production' %}` branch then takes the else path
+   and writes `db_host=localhost`. Kept as it is - same warning on Ubuntu.
+5. **`uri http://localhost:8080`** in the post_tasks cannot succeed,
+   because the rendered nginx config listens on port 80.
+   `failed_when: false` is what keeps the play alive; the same request from
+   the shell gives `curl: (7) Failed to connect to localhost port 8080`.
+6. **Host preparation** (needed because the templates assume the Ubuntu
+   layout): `pacman -S --needed nginx`, the `www-data` system user and
+   `/var/www/html`. The commands are in the README, section 4.
+7. **`INJECT_FACTS_AS_VARS` deprecation warnings** in every log: the
+   playbooks use the classic top-level `ansible_hostname` /
+   `ansible_distribution` syntax, which ansible-core 2.21 still supports
+   but warns about (removal planned for 2.24). Left visible on purpose -
+   it is the syntax the assignment teaches.
+8. **Section 3.1 needs `-i inventory`**, the other sections use the
+   implicit `localhost`, otherwise the `hosts: webservers` plays would skip
+   every host ("Could not match supplied host pattern").
+
+## 11. What I cleaned up afterwards
+
+Only what this homework created: `/opt/{MyApp,myapp,apps,logs,scripts}`,
+`/etc/myapp`, `/etc/my.cnf`, `/var/lib/mydb` and the two users `user1` /
+`user2`; nginx was stopped and `systemctl reset-failed nginx` cleared the
+rate limit that the failed starts left behind. I kept the `nginx` package,
+the `www-data` user, `/var/www/html` and `/etc/nginx/nginx.conf` (with
+the `backup: yes` copy next to it) so the evidence stays inspectable.

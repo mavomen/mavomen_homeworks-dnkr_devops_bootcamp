@@ -1,0 +1,76 @@
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+[WARNING]: Found variable using reserved name 'environment'.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/handlers_templates.yml:11:5
+
+ 9     app_version: "2.0.0"
+10     app_port: 8080
+11     environment: "development"
+       ^ column 5
+
+
+PLAY [Handlers and Templates Demo] *********************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Install nginx] ***********************************************************
+[WARNING]: Updating cache and auto-installing missing dependency: python3-apt
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/handlers_templates.yml:25:7
+
+23         role: user
+24   tasks:
+25     - name: Install nginx
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Generate nginx config] ***************************************************
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/templates/nginx.conf.j2
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost]
+
+TASK [Create app config directory] *********************************************
+ok: [localhost]
+
+TASK [Generate app config] *****************************************************
+ok: [localhost]
+
+TASK [Deploy index page] *******************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/handlers_templates.yml:53:18
+
+51     - name: Deploy index page
+52       copy:
+53         content: |
+                    ^ column 18
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+changed: [localhost]
+
+RUNNING HANDLER [Reload nginx] *************************************************
+[ERROR]: Task failed: Module failed: Unable to start service nginx: Job for nginx.service failed because start of the service was attempted too often.
+See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details.
+To force a start use "systemctl reset-failed nginx.service"
+followed by "systemctl start nginx.service" again.
+
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/handlers_templates.yml:68:7
+
+66       ignore_errors: yes
+67
+68     - name: Reload nginx
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": false, "msg": "Unable to start service nginx: Job for nginx.service failed because start of the service was attempted too often.\nSee \"systemctl status nginx.service\" and \"journalctl -xeu nginx.service\" for details.\nTo force a start use \"systemctl reset-failed nginx.service\"\nfollowed by \"systemctl start nginx.service\" again.\n"}
+...ignoring
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=7    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=2   
+

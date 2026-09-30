@@ -1,0 +1,44 @@
+---
+- name: Error Handling Demo
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  tasks:
+    - name: Task that fails but ignored
+      command: /bin/false
+      ignore_errors: yes
+
+    - name: Custom fail condition
+      shell: echo "Processing data"
+      register: result
+      failed_when: "'Error' in result.stdout"
+
+    - name: No change reported
+      command: echo "status check"
+      changed_when: false
+
+    - name: Debug variable
+      debug:
+        msg: "Hostname: {{ ansible_hostname }}, RAM: {{ ansible_memtotal_mb }}MB"
+
+    - name: Assert requirements
+      assert:
+        that:
+          - ansible_memtotal_mb >= 512
+          - ansible_distribution in ["Ubuntu", "Debian"]
+        fail_msg: "Requirements not met"
+        success_msg: "All checks passed"
+      ignore_errors: yes
+
+    - name: Block rescue example
+      block:
+        - name: Risky task
+          command: /bin/false
+      rescue:
+        - name: Handle error
+          debug:
+            msg: "Error handled gracefully"
+      always:
+        - name: Cleanup
+          debug:
+            msg: "Always executed"

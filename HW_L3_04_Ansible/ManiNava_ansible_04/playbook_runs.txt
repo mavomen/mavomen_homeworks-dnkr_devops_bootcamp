@@ -1,0 +1,32 @@
+# Commands History - ManiNava Ansible Playbooks & Roles Homework 04
+# (kept as playbook_runs.txt too: every playbook / ansible command of the run, grouped by scenario)
+# ================================================
+# S0.1 host preparation (this box is Arch, the assignment targets Ubuntu 22.04)
+sudo pacman -S --needed --noconfirm nginx
+sudo useradd --system --no-create-home --shell /usr/sbin/nologin www-data
+sudo mkdir -p /var/www/html
+# S1.1 first_playbook
+ansible-playbook first_playbook.yml
+ansible-playbook first_playbook.yml --syntax-check
+ansible-playbook first_playbook.yml -e "app_port=9090 app_version=2.0.0"
+# S1.2 conditionals_loops (twice: run 2 shows 'Create if not exists' skipped)
+ansible-playbook conditionals_loops.yml
+ansible-playbook conditionals_loops.yml
+# S2.1 handlers_templates (twice: run 2 keeps the nginx template ok, so no restart)
+ansible-playbook handlers_templates.yml
+ansible-playbook handlers_templates.yml
+# S2.2 error_handling
+ansible-playbook error_handling.yml
+# S3.1 multi_play
+ansible-inventory -i inventory --graph
+ansible-inventory -i inventory --list
+ansible-playbook multi_play.yml -i inventory
+# S3.2 tags_demo
+ansible-playbook tags_demo.yml --list-tags
+ansible-playbook tags_demo.yml --tags install
+ansible-playbook tags_demo.yml --tags webserver
+ansible-playbook tags_demo.yml --skip-tags configure
+ansible-playbook tags_demo.yml --tags never
+# S4.1 roles/deploy
+ansible-playbook deploy.yml
+ansible-playbook deploy.yml --tags monitoring

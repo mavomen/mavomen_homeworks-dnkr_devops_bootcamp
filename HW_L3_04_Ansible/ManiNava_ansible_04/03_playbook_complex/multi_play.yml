@@ -1,0 +1,61 @@
+---
+# Play 1: Common setup
+- name: Setup all servers
+  hosts: all
+  gather_facts: yes
+  become: yes
+  vars:
+    packages:
+      - curl
+      - wget
+      - vim
+    directories:
+      - /opt/apps
+      - /opt/logs
+  tasks:
+    - name: Show host
+      debug:
+        msg: "Configuring {{ ansible_hostname }}"
+
+    - name: Import package installation
+      import_tasks: tasks/install.yml
+
+    - name: Include configuration
+      include_tasks: tasks/configure.yml
+      vars:
+        config_content: "HOSTNAME={{ ansible_hostname }}\n"
+        config_path: "/opt/apps/host.conf"
+
+# Play 2: Web servers
+- name: Configure web servers
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+      ignore_errors: yes
+
+    - name: Deploy web page
+      copy:
+        content: "<h1>Web Server {{ ansible_hostname }}</h1>"
+        dest: /var/www/html/index.html
+      ignore_errors: yes
+
+# Play 3: Database servers
+- name: Configure database
+  hosts: dbservers
+  become: yes
+  tasks:
+    - name: Create db directory
+      file:
+        path: /var/lib/mydb
+        state: directory
+      ignore_errors: yes
+
+    - name: Create db config
+      copy:
+        content: "[mysqld]\nport=3306\n"
+        dest: /etc/my.cnf
+      ignore_errors: yes

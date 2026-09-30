@@ -1,0 +1,103 @@
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [Error Handling Demo] *****************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Task that fails but ignored] *********************************************
+[ERROR]: Task failed: Module failed: The command exited with a non-zero return code.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/error_handling.yml:7:7
+
+5   gather_facts: yes
+6   tasks:
+7     - name: Task that fails but ignored
+        ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": true, "cmd": ["/bin/false"], "delta": "0:00:00.003174", "end": "2026-09-30 13:43:33.546937", "msg": "The command exited with a non-zero return code.", "rc": 1, "start": "2026-09-30 13:43:33.543763", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Custom fail condition] ***************************************************
+changed: [localhost]
+
+TASK [No change reported] ******************************************************
+ok: [localhost]
+
+TASK [Debug variable] **********************************************************
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/error_handling.yml:22:14
+
+20     - name: Debug variable
+21       debug:
+22         msg: "Hostname: {{ ansible_hostname }}, RAM: {{ ansible_memtotal_mb }}MB"
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost] => {
+    "msg": "Hostname: jermaine, RAM: 15852MB"
+}
+
+TASK [Assert requirements] *****************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/error_handling.yml:27:13
+
+25       assert:
+26         that:
+27           - ansible_memtotal_mb >= 512
+               ^ column 13
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/error_handling.yml:28:13
+
+26         that:
+27           - ansible_memtotal_mb >= 512
+28           - ansible_distribution in ["Ubuntu", "Debian"]
+               ^ column 13
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+[ERROR]: Task failed: Action failed: Requirements not met
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/error_handling.yml:24:7
+
+22         msg: "Hostname: {{ ansible_hostname }}, RAM: {{ ansible_memtotal_mb }}MB"
+23
+24     - name: Assert requirements
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {
+    "assertion": "ansible_distribution in [\"Ubuntu\", \"Debian\"]",
+    "changed": false,
+    "evaluated_to": false,
+    "msg": "Requirements not met"
+}
+...ignoring
+
+TASK [Risky task] **************************************************************
+[ERROR]: Task failed: Module failed: The command exited with a non-zero return code.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/error_handling.yml:35:11
+
+33     - name: Block rescue example
+34       block:
+35         - name: Risky task
+             ^ column 11
+
+fatal: [localhost]: FAILED! => {"changed": true, "cmd": ["/bin/false"], "delta": "0:00:00.003391", "end": "2026-09-30 13:43:34.745041", "msg": "The command exited with a non-zero return code.", "rc": 1, "start": "2026-09-30 13:43:34.741650", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [Handle error] ************************************************************
+ok: [localhost] => {
+    "msg": "Error handled gracefully"
+}
+
+TASK [Cleanup] *****************************************************************
+ok: [localhost] => {
+    "msg": "Always executed"
+}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=8    changed=2    unreachable=0    failed=0    skipped=0    rescued=1    ignored=2   
+

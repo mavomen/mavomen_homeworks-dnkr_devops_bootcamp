@@ -1,0 +1,1194 @@
+= ManiNava Ansible Playbooks & Roles Homework 04 - Run Transcript =
+= Date: Wed Sep 30 01:43:00 PM +0330 2026 =
+= User: mava =
+
+
+# S1.1 - run_first_playbook.sh
+$ bash 01_playbook_basics/run_first_playbook.sh
+--- 1.1a plain run ---
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [First Playbook with Variables] *******************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Display system info] *****************************************************
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:14:14
+
+12     - name: Display system info
+13       debug:
+14         msg: "Running {{ app_name }} v{{ app_version }} on {{ ansible_hostname }}"
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost] => {
+    "msg": "Running MyApp v1.0.0 on jermaine"
+}
+
+TASK [Show system resources] ***************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:18:14
+
+16     - name: Show system resources
+17       debug:
+18         msg: "System: {{ ansible_distribution }} | CPU: {{ ansible_processor_vcpus }} | RAM: {{ ansible_memtotal_m...
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost] => {
+    "msg": "System: Archlinux | CPU: 12 | RAM: 15852MB"
+}
+
+TASK [Create app directory] ****************************************************
+changed: [localhost]
+
+TASK [Deploy config file] ******************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:30:18
+
+28     - name: Deploy config file
+29       copy:
+30         content: |
+                    ^ column 18
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+changed: [localhost]
+
+TASK [Set deployment facts] ****************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:42:26
+
+40     - name: Set deployment facts
+41       set_fact:
+42         deployment_time: "{{ ansible_date_time.iso8601 }}"
+                            ^ column 26
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:43:26
+
+41       set_fact:
+42         deployment_time: "{{ ansible_date_time.iso8601 }}"
+43         deployment_user: "{{ ansible_user_id }}"
+                            ^ column 26
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost]
+
+TASK [Show deployment info] ****************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:47:14
+
+45     - name: Show deployment info
+46       debug:
+47         msg: "Deployed by {{ deployment_user }} at {{ deployment_time }}"
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost] => {
+    "msg": "Deployed by mava at 2026-09-30T10:13:02Z"
+}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=7    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+--- 1.1b syntax check ---
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+playbook: first_playbook.yml
+--- 1.1c extra vars win over playbook vars (-e) ---
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [First Playbook with Variables] *******************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Display system info] *****************************************************
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:14:14
+
+12     - name: Display system info
+13       debug:
+14         msg: "Running {{ app_name }} v{{ app_version }} on {{ ansible_hostname }}"
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost] => {
+    "msg": "Running MyApp v2.0.0 on jermaine"
+}
+
+TASK [Show system resources] ***************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:18:14
+
+16     - name: Show system resources
+17       debug:
+18         msg: "System: {{ ansible_distribution }} | CPU: {{ ansible_processor_vcpus }} | RAM: {{ ansible_memtotal_m...
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost] => {
+    "msg": "System: Archlinux | CPU: 12 | RAM: 15852MB"
+}
+
+TASK [Create app directory] ****************************************************
+ok: [localhost]
+
+TASK [Deploy config file] ******************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:30:18
+
+28     - name: Deploy config file
+29       copy:
+30         content: |
+                    ^ column 18
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+changed: [localhost]
+
+TASK [Set deployment facts] ****************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:42:26
+
+40     - name: Set deployment facts
+41       set_fact:
+42         deployment_time: "{{ ansible_date_time.iso8601 }}"
+                            ^ column 26
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:43:26
+
+41       set_fact:
+42         deployment_time: "{{ ansible_date_time.iso8601 }}"
+43         deployment_user: "{{ ansible_user_id }}"
+                            ^ column 26
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost]
+
+TASK [Show deployment info] ****************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:47:14
+
+45     - name: Show deployment info
+46       debug:
+47         msg: "Deployed by {{ deployment_user }} at {{ deployment_time }}"
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost] => {
+    "msg": "Deployed by mava at 2026-09-30T10:13:06Z"
+}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=7    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+1.1 first_playbook completed. Reports: first_playbook_run.txt, first_playbook_syntax_check.txt, first_playbook_extra_vars.txt, config_env.txt
+exit code: 0
+
+# S1.2 - run_conditionals_loops.sh
+$ bash 01_playbook_basics/run_conditionals_loops.sh
+--- 1.2a first run (stat says the directory does not exist yet) ---
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [Conditionals and Loops] **************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Install packages on Debian] **********************************************
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/conditionals_loops.yml:23:13
+
+21         update_cache: yes
+22       loop: "{{ packages }}"
+23       when: ansible_os_family == "Debian"
+               ^ column 13
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+skipping: [localhost] => (item=curl) 
+skipping: [localhost] => (item=wget) 
+skipping: [localhost] => (item=git) 
+skipping: [localhost]
+
+TASK [Create users] ************************************************************
+changed: [localhost] => (item={'name': 'user1', 'state': 'present'})
+changed: [localhost] => (item={'name': 'user2', 'state': 'present'})
+
+TASK [Check directory] *********************************************************
+ok: [localhost]
+
+TASK [Create if not exists] ****************************************************
+changed: [localhost]
+
+TASK [Memory check] ************************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/conditionals_loops.yml:51:14
+
+49     - name: Memory check
+50       debug:
+51         msg: "{{ 'Sufficient memory' if ansible_memtotal_mb > 1024 else 'Low memory' }}"
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost] => {
+    "msg": "Sufficient memory"
+}
+
+TASK [Multiple conditions] *****************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/conditionals_loops.yml:57:11
+
+55         msg: "Ubuntu with enough RAM"
+56       when:
+57         - ansible_distribution == "Ubuntu"
+             ^ column 11
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+skipping: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=5    changed=2    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+
+--- 1.2b second run (the create task is now skipped by its condition) ---
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [Conditionals and Loops] **************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Install packages on Debian] **********************************************
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/conditionals_loops.yml:23:13
+
+21         update_cache: yes
+22       loop: "{{ packages }}"
+23       when: ansible_os_family == "Debian"
+               ^ column 13
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+skipping: [localhost] => (item=curl) 
+skipping: [localhost] => (item=wget) 
+skipping: [localhost] => (item=git) 
+skipping: [localhost]
+
+TASK [Create users] ************************************************************
+ok: [localhost] => (item={'name': 'user1', 'state': 'present'})
+ok: [localhost] => (item={'name': 'user2', 'state': 'present'})
+
+TASK [Check directory] *********************************************************
+ok: [localhost]
+
+TASK [Create if not exists] ****************************************************
+skipping: [localhost]
+
+TASK [Memory check] ************************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/conditionals_loops.yml:51:14
+
+49     - name: Memory check
+50       debug:
+51         msg: "{{ 'Sufficient memory' if ansible_memtotal_mb > 1024 else 'Low memory' }}"
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost] => {
+    "msg": "Sufficient memory"
+}
+
+TASK [Multiple conditions] *****************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/conditionals_loops.yml:57:11
+
+55         msg: "Ubuntu with enough RAM"
+56       when:
+57         - ansible_distribution == "Ubuntu"
+             ^ column 11
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+skipping: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=4    changed=0    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0   
+
+1.2 conditionals_loops completed. Reports: conditionals_loops_run.txt, conditionals_loops_rerun.txt, conditionals_loops_evidence.txt
+exit code: 0
+
+# S2.1 - run_handlers_templates.sh
+$ bash 02_playbook_advanced/run_handlers_templates.sh
+--- 2.1a first run (both templates render, both handlers fire) ---
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+[WARNING]: Found variable using reserved name 'environment'.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/handlers_templates.yml:11:5
+
+ 9     app_version: "2.0.0"
+10     app_port: 8080
+11     environment: "development"
+       ^ column 5
+
+
+PLAY [Handlers and Templates Demo] *********************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Install nginx] ***********************************************************
+[WARNING]: Updating cache and auto-installing missing dependency: python3-apt
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/handlers_templates.yml:25:7
+
+23         role: user
+24   tasks:
+25     - name: Install nginx
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Generate nginx config] ***************************************************
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/templates/nginx.conf.j2
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+changed: [localhost]
+
+TASK [Create app config directory] *********************************************
+changed: [localhost]
+
+TASK [Generate app config] *****************************************************
+changed: [localhost]
+
+TASK [Deploy index page] *******************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/handlers_templates.yml:53:18
+
+51     - name: Deploy index page
+52       copy:
+53         content: |
+                    ^ column 18
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+changed: [localhost]
+
+RUNNING HANDLER [Restart nginx] ************************************************
+[ERROR]: Task failed: Module failed: Unable to start service nginx: Job for nginx.service failed because the control process exited with error code.
+See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details.
+
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/handlers_templates.yml:62:7
+
+60       ignore_errors: yes
+61   handlers:
+62     - name: Restart nginx
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": false, "msg": "Unable to start service nginx: Job for nginx.service failed because the control process exited with error code.\nSee \"systemctl status nginx.service\" and \"journalctl -xeu nginx.service\" for details.\n"}
+...ignoring
+
+RUNNING HANDLER [Reload nginx] *************************************************
+[ERROR]: Task failed: Module failed: Unable to reload service nginx: Job for nginx.service failed because the control process exited with error code.
+See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details.
+
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/handlers_templates.yml:68:7
+
+66       ignore_errors: yes
+67
+68     - name: Reload nginx
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": false, "msg": "Unable to reload service nginx: Job for nginx.service failed because the control process exited with error code.\nSee \"systemctl status nginx.service\" and \"journalctl -xeu nginx.service\" for details.\n"}
+...ignoring
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=8    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=3   
+
+--- 2.1b second run (nginx template is ok, index.html is still changed) ---
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+[WARNING]: Found variable using reserved name 'environment'.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/handlers_templates.yml:11:5
+
+ 9     app_version: "2.0.0"
+10     app_port: 8080
+11     environment: "development"
+       ^ column 5
+
+
+PLAY [Handlers and Templates Demo] *********************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Install nginx] ***********************************************************
+[WARNING]: Updating cache and auto-installing missing dependency: python3-apt
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/handlers_templates.yml:25:7
+
+23         role: user
+24   tasks:
+25     - name: Install nginx
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Generate nginx config] ***************************************************
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/templates/nginx.conf.j2
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost]
+
+TASK [Create app config directory] *********************************************
+ok: [localhost]
+
+TASK [Generate app config] *****************************************************
+ok: [localhost]
+
+TASK [Deploy index page] *******************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/handlers_templates.yml:53:18
+
+51     - name: Deploy index page
+52       copy:
+53         content: |
+                    ^ column 18
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+changed: [localhost]
+
+RUNNING HANDLER [Reload nginx] *************************************************
+[ERROR]: Task failed: Module failed: Unable to start service nginx: Job for nginx.service failed because start of the service was attempted too often.
+See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details.
+To force a start use "systemctl reset-failed nginx.service"
+followed by "systemctl start nginx.service" again.
+
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/handlers_templates.yml:68:7
+
+66       ignore_errors: yes
+67
+68     - name: Reload nginx
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": false, "msg": "Unable to start service nginx: Job for nginx.service failed because start of the service was attempted too often.\nSee \"systemctl status nginx.service\" and \"journalctl -xeu nginx.service\" for details.\nTo force a start use \"systemctl reset-failed nginx.service\"\nfollowed by \"systemctl start nginx.service\" again.\n"}
+...ignoring
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=7    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=2   
+
+2.1 handlers_templates completed. Reports: handlers_templates_run.txt, handlers_templates_rerun.txt, handlers_templates_evidence.txt
+exit code: 0
+
+# S2.2 - run_error_handling.sh
+$ bash 02_playbook_advanced/run_error_handling.sh
+--- 2.2 error handling run ---
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [Error Handling Demo] *****************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Task that fails but ignored] *********************************************
+[ERROR]: Task failed: Module failed: The command exited with a non-zero return code.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/error_handling.yml:7:7
+
+5   gather_facts: yes
+6   tasks:
+7     - name: Task that fails but ignored
+        ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": true, "cmd": ["/bin/false"], "delta": "0:00:00.003174", "end": "2026-09-30 13:43:33.546937", "msg": "The command exited with a non-zero return code.", "rc": 1, "start": "2026-09-30 13:43:33.543763", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Custom fail condition] ***************************************************
+changed: [localhost]
+
+TASK [No change reported] ******************************************************
+ok: [localhost]
+
+TASK [Debug variable] **********************************************************
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/error_handling.yml:22:14
+
+20     - name: Debug variable
+21       debug:
+22         msg: "Hostname: {{ ansible_hostname }}, RAM: {{ ansible_memtotal_mb }}MB"
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost] => {
+    "msg": "Hostname: jermaine, RAM: 15852MB"
+}
+
+TASK [Assert requirements] *****************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/error_handling.yml:27:13
+
+25       assert:
+26         that:
+27           - ansible_memtotal_mb >= 512
+               ^ column 13
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/error_handling.yml:28:13
+
+26         that:
+27           - ansible_memtotal_mb >= 512
+28           - ansible_distribution in ["Ubuntu", "Debian"]
+               ^ column 13
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+[ERROR]: Task failed: Action failed: Requirements not met
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/error_handling.yml:24:7
+
+22         msg: "Hostname: {{ ansible_hostname }}, RAM: {{ ansible_memtotal_mb }}MB"
+23
+24     - name: Assert requirements
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {
+    "assertion": "ansible_distribution in [\"Ubuntu\", \"Debian\"]",
+    "changed": false,
+    "evaluated_to": false,
+    "msg": "Requirements not met"
+}
+...ignoring
+
+TASK [Risky task] **************************************************************
+[ERROR]: Task failed: Module failed: The command exited with a non-zero return code.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/02_playbook_advanced/error_handling.yml:35:11
+
+33     - name: Block rescue example
+34       block:
+35         - name: Risky task
+             ^ column 11
+
+fatal: [localhost]: FAILED! => {"changed": true, "cmd": ["/bin/false"], "delta": "0:00:00.003391", "end": "2026-09-30 13:43:34.745041", "msg": "The command exited with a non-zero return code.", "rc": 1, "start": "2026-09-30 13:43:34.741650", "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+
+TASK [Handle error] ************************************************************
+ok: [localhost] => {
+    "msg": "Error handled gracefully"
+}
+
+TASK [Cleanup] *****************************************************************
+ok: [localhost] => {
+    "msg": "Always executed"
+}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=8    changed=2    unreachable=0    failed=0    skipped=0    rescued=1    ignored=2   
+
+2.2 error_handling completed. Reports: error_handling_run.txt, error_handling_evidence.txt
+exit code: 0
+
+# S3.1 - run_multi_play.sh
+$ bash 03_playbook_complex/run_multi_play.sh
+--- 3.1a inventory graph ---
+@all:
+  |--@ungrouped:
+  |--@webservers:
+  |  |--web1
+  |--@dbservers:
+  |  |--db1
+--- 3.1b flat inventory (who is in which group) ---
+{
+    "_meta": {
+        "hostvars": {
+            "db1": {
+                "ansible_connection": "local",
+                "ansible_host": "localhost"
+            },
+            "web1": {
+                "ansible_connection": "local",
+                "ansible_host": "localhost"
+            }
+        },
+        "profile": "inventory_legacy"
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "webservers",
+            "dbservers"
+        ]
+    },
+    "dbservers": {
+        "hosts": [
+            "db1"
+        ]
+    },
+    "webservers": {
+        "hosts": [
+            "web1"
+        ]
+    }
+}
+--- 3.1c multi-play run ---
+
+PLAY [Setup all servers] *******************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [db1]
+ok: [web1]
+
+TASK [Show host] ***************************************************************
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/multi_play.yml:18:14
+
+16     - name: Show host
+17       debug:
+18         msg: "Configuring {{ ansible_hostname }}"
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [web1] => {
+    "msg": "Configuring jermaine"
+}
+ok: [db1] => {
+    "msg": "Configuring jermaine"
+}
+
+TASK [Update cache] ************************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/tasks/install.yml:5:9
+
+3   apt:
+4     update_cache: yes
+5   when: ansible_os_family == "Debian"
+          ^ column 9
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+skipping: [web1]
+skipping: [db1]
+
+TASK [Install packages] ********************************************************
+[WARNING]: Updating cache and auto-installing missing dependency: python3-apt
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/tasks/install.yml:8:3
+
+6   ignore_errors: yes
+7
+8 - name: Install packages
+    ^ column 3
+
+failed: [web1] (item=curl) => {"ansible_loop_var": "item", "changed": false, "cmd": "update", "item": "curl", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+failed: [db1] (item=curl) => {"ansible_loop_var": "item", "changed": false, "cmd": "update", "item": "curl", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+failed: [web1] (item=wget) => {"ansible_loop_var": "item", "changed": false, "cmd": "update", "item": "wget", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+failed: [db1] (item=wget) => {"ansible_loop_var": "item", "changed": false, "cmd": "update", "item": "wget", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+failed: [web1] (item=vim) => {"ansible_loop_var": "item", "changed": false, "cmd": "update", "item": "vim", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+failed: [db1] (item=vim) => {"ansible_loop_var": "item", "changed": false, "cmd": "update", "item": "vim", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Include configuration] ***************************************************
+included: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/tasks/configure.yml for web1, db1
+
+TASK [Create directories] ******************************************************
+ok: [db1] => (item=/opt/apps)
+ok: [web1] => (item=/opt/apps)
+ok: [web1] => (item=/opt/logs)
+ok: [db1] => (item=/opt/logs)
+
+TASK [Deploy config] ***********************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/multi_play.yml:26:25
+
+24       include_tasks: tasks/configure.yml
+25       vars:
+26         config_content: "HOSTNAME={{ ansible_hostname }}\n"
+                           ^ column 25
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+changed: [db1]
+ok: [web1]
+
+PLAY [Configure web servers] ***************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [web1]
+
+TASK [Install nginx] ***********************************************************
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/multi_play.yml:34:7
+
+32   become: yes
+33   tasks:
+34     - name: Install nginx
+         ^ column 7
+
+fatal: [web1]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Deploy web page] *********************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/multi_play.yml:42:18
+
+40     - name: Deploy web page
+41       copy:
+42         content: "<h1>Web Server {{ ansible_hostname }}</h1>"
+                    ^ column 18
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+changed: [web1]
+
+PLAY [Configure database] ******************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [db1]
+
+TASK [Create db directory] *****************************************************
+changed: [db1]
+
+TASK [Create db config] ********************************************************
+changed: [db1]
+
+PLAY RECAP *********************************************************************
+db1                        : ok=9    changed=3    unreachable=0    failed=0    skipped=1    rescued=0    ignored=1   
+web1                       : ok=9    changed=1    unreachable=0    failed=0    skipped=1    rescued=0    ignored=2   
+
+3.1 multi_play completed. Reports: inventory_graph.txt, inventory_list.txt, multi_play_run.txt, multi_play_evidence.txt
+exit code: 0
+
+# S3.2 - run_tags.sh
+$ bash 03_playbook_complex/run_tags.sh
+--- 3.2a which tags exist? ---
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+playbook: tags_demo.yml
+
+  play #1 (localhost): Tags Demo	TAGS: []
+      TASK TAGS: [always, configure, database, install, never, webserver]
+--- 3.2b only the install tasks (+ the always one) ---
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [Tags Demo] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Always runs] *************************************************************
+ok: [localhost] => {
+    "msg": "This always executes"
+}
+
+TASK [Install web] *************************************************************
+[WARNING]: Updating cache and auto-installing missing dependency: python3-apt
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/tags_demo.yml:11:7
+
+ 9       tags: always
+10
+11     - name: Install web
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Install db] **************************************************************
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/tags_demo.yml:20:7
+
+18       ignore_errors: yes
+19
+20     - name: Install db
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=2   
+
+--- 3.2c only the webserver tasks (one install + one configure) ---
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [Tags Demo] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Always runs] *************************************************************
+ok: [localhost] => {
+    "msg": "This always executes"
+}
+
+TASK [Install web] *************************************************************
+[WARNING]: Updating cache and auto-installing missing dependency: python3-apt
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/tags_demo.yml:11:7
+
+ 9       tags: always
+10
+11     - name: Install web
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Configure web] ***********************************************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1   
+
+--- 3.2d everything except the configure tasks ---
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [Tags Demo] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Always runs] *************************************************************
+ok: [localhost] => {
+    "msg": "This always executes"
+}
+
+TASK [Install web] *************************************************************
+[WARNING]: Updating cache and auto-installing missing dependency: python3-apt
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/tags_demo.yml:11:7
+
+ 9       tags: always
+10
+11     - name: Install web
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Install db] **************************************************************
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/tags_demo.yml:20:7
+
+18       ignore_errors: yes
+19
+20     - name: Install db
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=2   
+
+--- 3.2e the task that never runs unless you ask for it ---
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [Tags Demo] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Always runs] *************************************************************
+ok: [localhost] => {
+    "msg": "This always executes"
+}
+
+TASK [Never runs by default] ***************************************************
+ok: [localhost] => {
+    "msg": "Only with --tags never"
+}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+3.2 tags completed. Reports: tags_list.txt, tags_install.txt, tags_webserver.txt, tags_skip_configure.txt, tags_never.txt, tags_evidence.txt
+exit code: 0
+
+# S4.1 - run_roles.sh
+$ bash 04_ansible_roles/run_roles.sh
+--- 4.1a full deploy (both plays) ---
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+[WARNING]: Found variable using reserved name 'environment'.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/04_ansible_roles/deploy.yml:7:5
+
+5   gather_facts: yes
+6   vars:
+7     environment: production
+      ^ column 5
+
+
+PLAY [Deploy Application] ******************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Show deployment info] ****************************************************
+ok: [localhost] => {
+    "msg": "Deploying v1.0.0 to []"
+}
+
+TASK [Check requirements] ******************************************************
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/04_ansible_roles/deploy.yml:17:13
+
+15       assert:
+16         that:
+17           - ansible_memtotal_mb >= 1024
+               ^ column 13
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [common : Install base packages] ******************************************
+[WARNING]: Updating cache and auto-installing missing dependency: python3-apt
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/04_ansible_roles/roles/common/tasks/main.yml:2:3
+
+1 ---
+2 - name: Install base packages
+    ^ column 3
+
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [common : Create directories] *********************************************
+ok: [localhost] => (item=/opt/apps)
+ok: [localhost] => (item=/opt/logs)
+
+TASK [webserver : Install nginx] ***********************************************
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/04_ansible_roles/roles/webserver/tasks/main.yml:2:3
+
+1 ---
+2 - name: Install nginx
+    ^ column 3
+
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [webserver : Deploy index] ************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/04_ansible_roles/roles/webserver/templates/index.html.j2
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+changed: [localhost]
+
+TASK [webserver : Start nginx] *************************************************
+[ERROR]: Task failed: Module failed: Unable to start service nginx: Job for nginx.service failed because the control process exited with error code.
+See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details.
+
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/04_ansible_roles/roles/webserver/tasks/main.yml:17:3
+
+15   ignore_errors: yes
+16
+17 - name: Start nginx
+     ^ column 3
+
+fatal: [localhost]: FAILED! => {"changed": false, "msg": "Unable to start service nginx: Job for nginx.service failed because the control process exited with error code.\nSee \"systemctl status nginx.service\" and \"journalctl -xeu nginx.service\" for details.\n"}
+...ignoring
+
+TASK [common : Install base packages] ******************************************
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [common : Create directories] *********************************************
+ok: [localhost] => (item=/opt/apps)
+ok: [localhost] => (item=/opt/logs)
+
+TASK [monitoring : Install monitoring tools] ***********************************
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/04_ansible_roles/roles/monitoring/tasks/main.yml:2:3
+
+1 ---
+2 - name: Install monitoring tools
+    ^ column 3
+
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [monitoring : Create monitor script] **************************************
+changed: [localhost]
+
+RUNNING HANDLER [webserver : Restart nginx] ************************************
+[ERROR]: Task failed: Module failed: Unable to start service nginx: Job for nginx.service failed because start of the service was attempted too often.
+See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details.
+To force a start use "systemctl reset-failed nginx.service"
+followed by "systemctl start nginx.service" again.
+
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/04_ansible_roles/roles/webserver/handlers/main.yml:2:3
+
+1 ---
+2 - name: Restart nginx
+    ^ column 3
+
+fatal: [localhost]: FAILED! => {"changed": false, "msg": "Unable to start service nginx: Job for nginx.service failed because start of the service was attempted too often.\nSee \"systemctl status nginx.service\" and \"journalctl -xeu nginx.service\" for details.\nTo force a start use \"systemctl reset-failed nginx.service\"\nfollowed by \"systemctl start nginx.service\" again.\n"}
+...ignoring
+
+TASK [Verify deployment] *******************************************************
+ok: [localhost]
+
+TASK [Log deployment] **********************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/04_ansible_roles/deploy.yml:41:18
+
+39     - name: Log deployment
+40       copy:
+41         content: |
+                    ^ column 18
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+changed: [localhost]
+
+PLAY [Conditional Role Usage] **************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Include webserver role] **************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/04_ansible_roles/deploy.yml:58:13
+
+56       include_role:
+57         name: webserver
+58       when: ansible_distribution == "Ubuntu"
+               ^ column 13
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+skipping: [localhost]
+
+TASK [Use role with custom vars] ***********************************************
+included: monitoring for localhost
+
+TASK [common : Install base packages] ******************************************
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [common : Create directories] *********************************************
+ok: [localhost] => (item=/opt/apps)
+ok: [localhost] => (item=/opt/logs)
+
+TASK [monitoring : Install monitoring tools] ***********************************
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [monitoring : Create monitor script] **************************************
+ok: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=21   changed=3    unreachable=0    failed=0    skipped=1    rescued=0    ignored=8   
+
+--- 4.1b only the monitoring role, by tag (its 'common' dependency comes with it) ---
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+[WARNING]: Found variable using reserved name 'environment'.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/04_ansible_roles/deploy.yml:7:5
+
+5   gather_facts: yes
+6   vars:
+7     environment: production
+      ^ column 5
+
+
+PLAY [Deploy Application] ******************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [common : Install base packages] ******************************************
+[WARNING]: Updating cache and auto-installing missing dependency: python3-apt
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/04_ansible_roles/roles/common/tasks/main.yml:2:3
+
+1 ---
+2 - name: Install base packages
+    ^ column 3
+
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [common : Create directories] *********************************************
+ok: [localhost] => (item=/opt/apps)
+ok: [localhost] => (item=/opt/logs)
+
+TASK [monitoring : Install monitoring tools] ***********************************
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/04_ansible_roles/roles/monitoring/tasks/main.yml:2:3
+
+1 ---
+2 - name: Install monitoring tools
+    ^ column 3
+
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [monitoring : Create monitor script] **************************************
+ok: [localhost]
+
+PLAY [Conditional Role Usage] **************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=6    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=2   
+
+4.1 roles completed. Reports: roles_tree.txt, roles_run.txt, roles_tags_monitoring.txt, roles_evidence.txt
+exit code: 0
+
+= END of transcript =

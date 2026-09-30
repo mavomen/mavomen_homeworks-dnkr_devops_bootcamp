@@ -1,0 +1,20 @@
+---
+- name: Install base packages
+  apt:
+    name:
+      - curl
+      - wget
+      - vim
+    state: present
+  become: yes
+  ignore_errors: yes
+
+- name: Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /opt/apps
+    - /opt/logs
+  become: yes
+  ignore_errors: yes

@@ -1,0 +1,73 @@
+=== rendered /var/www/html/index.html (webserver_port 8080 came from deploy.yml vars) ===
+<!DOCTYPE html>
+<html>
+<head><title>jermaine</title></head>
+<body>
+<h1>jermaine</h1>
+<p>Port: 8080</p>
+<p>Deployed: 2026-09-30T10:14:01Z</p>
+</body>
+</html>
+
+=== /opt/scripts/monitor.sh from the monitoring role ===
+#!/bin/bash
+echo "=== System Status ==="
+free -h
+df -h /
+
+=== /opt/logs/deploy.log from deploy.yml post_tasks ===
+Deployment: 1.0.0
+Time: 2026-09-30T10:14:01Z
+Status: Success
+
+=== directories from the common role ===
+drwxr-xr-x 2 root root 4096 Sep 30 13:43 /opt/apps
+drwxr-xr-x 2 root root 4096 Sep 30 13:44 /opt/logs
+
+=== nginx state after the role's Restart nginx handler (config has no events{} block) ===
+failed
+
+=== role order in the log: common runs twice, because monitoring depends on it ===
+TASK [Gathering Facts] *********************************************************
+TASK [Show deployment info] ****************************************************
+TASK [Check requirements] ******************************************************
+TASK [common : Install base packages] ******************************************
+TASK [common : Create directories] *********************************************
+TASK [webserver : Install nginx] ***********************************************
+TASK [webserver : Deploy index] ************************************************
+TASK [webserver : Start nginx] *************************************************
+TASK [common : Install base packages] ******************************************
+TASK [common : Create directories] *********************************************
+TASK [monitoring : Install monitoring tools] ***********************************
+TASK [monitoring : Create monitor script] **************************************
+TASK [Verify deployment] *******************************************************
+TASK [Log deployment] **********************************************************
+TASK [Gathering Facts] *********************************************************
+TASK [Include webserver role] **************************************************
+TASK [Use role with custom vars] ***********************************************
+TASK [common : Install base packages] ******************************************
+TASK [common : Create directories] *********************************************
+TASK [monitoring : Install monitoring tools] ***********************************
+TASK [monitoring : Create monitor script] **************************************
+
+=== conditional role usage: webserver is skipped on a non-Ubuntu box ===
+TASK [Include webserver role] **************************************************
+skipping: [localhost]
+TASK [Use role with custom vars] ***********************************************
+
+=== health check against :8080 while the rendered nginx listens on :80 ===
+=== the uri task reports ok anyway, because failed_when: false swallows it ===
+TASK [Verify deployment] *******************************************************
+ok: [localhost]
+TASK [Log deployment] **********************************************************
+--- the same request from the shell, so the real reason is visible ---
+curl: (7) Failed to connect to localhost port 8080 after 0 ms: Could not connect to server
+curl exit code: 7
+
+=== --tags monitoring: only common + monitoring run, webserver is not touched ===
+TASK [Gathering Facts] *********************************************************
+TASK [common : Install base packages] ******************************************
+TASK [common : Create directories] *********************************************
+TASK [monitoring : Install monitoring tools] ***********************************
+TASK [monitoring : Create monitor script] **************************************
+TASK [Gathering Facts] *********************************************************

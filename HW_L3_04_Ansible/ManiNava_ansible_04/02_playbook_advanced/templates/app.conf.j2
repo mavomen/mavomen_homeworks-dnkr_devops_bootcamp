@@ -1,0 +1,21 @@
+[general]
+app_name={{ app_name }}
+environment={{ environment }}
+
+
+[server]
+port={{ app_port }}
+
+
+[database]
+{% if environment == 'production' %}
+db_host={{ prod_db_host }}
+{% else %}
+db_host={{ dev_db_host }}
+{% endif %}
+
+
+[users]
+{% for user in app_users %}
+{{ user.name }}={{ user.role }}
+{% endfor %}

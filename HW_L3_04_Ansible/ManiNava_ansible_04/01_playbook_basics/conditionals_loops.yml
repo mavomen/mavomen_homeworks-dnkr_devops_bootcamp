@@ -1,0 +1,58 @@
+---
+- name: Conditionals and Loops
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  vars:
+    packages:
+      - curl
+      - wget
+      - git
+    users:
+      - name: user1
+        state: present
+      - name: user2
+        state: present
+  tasks:
+    - name: Install packages on Debian
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop: "{{ packages }}"
+      when: ansible_os_family == "Debian"
+      become: yes
+      ignore_errors: yes
+
+    - name: Create users
+      user:
+        name: "{{ item.name }}"
+        state: "{{ item.state }}"
+        shell: /bin/bash
+      loop: "{{ users }}"
+      become: yes
+      ignore_errors: yes
+
+    - name: Check directory
+      stat:
+        path: /opt/myapp
+      register: dir_check
+
+    - name: Create if not exists
+      file:
+        path: /opt/myapp
+        state: directory
+      when: not dir_check.stat.exists
+      become: yes
+      ignore_errors: yes
+
+    - name: Memory check
+      debug:
+        msg: "{{ 'Sufficient memory' if ansible_memtotal_mb > 1024 else 'Low memory' }}"
+
+    - name: Multiple conditions
+      debug:
+        msg: "Ubuntu with enough RAM"
+      when:
+        - ansible_distribution == "Ubuntu"
+        - ansible_memtotal_mb > 1024

@@ -1,0 +1,21 @@
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [Tags Demo] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Always runs] *************************************************************
+ok: [localhost] => {
+    "msg": "This always executes"
+}
+
+TASK [Never runs by default] ***************************************************
+ok: [localhost] => {
+    "msg": "Only with --tags never"
+}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

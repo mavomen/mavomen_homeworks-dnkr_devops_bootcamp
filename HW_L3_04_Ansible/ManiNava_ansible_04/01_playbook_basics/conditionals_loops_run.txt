@@ -1,0 +1,66 @@
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [Conditionals and Loops] **************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Install packages on Debian] **********************************************
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/conditionals_loops.yml:23:13
+
+21         update_cache: yes
+22       loop: "{{ packages }}"
+23       when: ansible_os_family == "Debian"
+               ^ column 13
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+skipping: [localhost] => (item=curl) 
+skipping: [localhost] => (item=wget) 
+skipping: [localhost] => (item=git) 
+skipping: [localhost]
+
+TASK [Create users] ************************************************************
+changed: [localhost] => (item={'name': 'user1', 'state': 'present'})
+changed: [localhost] => (item={'name': 'user2', 'state': 'present'})
+
+TASK [Check directory] *********************************************************
+ok: [localhost]
+
+TASK [Create if not exists] ****************************************************
+changed: [localhost]
+
+TASK [Memory check] ************************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/conditionals_loops.yml:51:14
+
+49     - name: Memory check
+50       debug:
+51         msg: "{{ 'Sufficient memory' if ansible_memtotal_mb > 1024 else 'Low memory' }}"
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost] => {
+    "msg": "Sufficient memory"
+}
+
+TASK [Multiple conditions] *****************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/conditionals_loops.yml:57:11
+
+55         msg: "Ubuntu with enough RAM"
+56       when:
+57         - ansible_distribution == "Ubuntu"
+             ^ column 11
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+skipping: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=5    changed=2    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+

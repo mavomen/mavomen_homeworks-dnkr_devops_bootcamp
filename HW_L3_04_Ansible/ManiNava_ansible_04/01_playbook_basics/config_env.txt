@@ -1,0 +1,20 @@
+=== /opt/MyApp/config.env written by the -e run (app_port must be 9090) ===
+APP_NAME=MyApp
+APP_VERSION=2.0.0
+APP_PORT=9090
+HOSTNAME=jermaine
+DEPLOYED_AT=2026-09-30T10:13:06Z
+
+=== ls -l /opt/MyApp (created by the file task with become) ===
+total 4
+-rw-r--r-- 1 root root 98 Sep 30 13:43 config.env
+
+=== debug messages of the -e run: extra vars reached the Jinja2 templates ===
+    "msg": "Running MyApp v2.0.0 on jermaine"
+    "msg": "System: Archlinux | CPU: 12 | RAM: 15852MB"
+    "msg": "Deployed by mava at 2026-09-30T10:13:06Z"
+
+=== the same messages in the plain run (playbook vars: app_port 8080 / version 1.0.0) ===
+    "msg": "Running MyApp v1.0.0 on jermaine"
+    "msg": "System: Archlinux | CPU: 12 | RAM: 15852MB"
+    "msg": "Deployed by mava at 2026-09-30T10:13:02Z"

@@ -1,0 +1,54 @@
+=== /etc/nginx/nginx.conf after the tag runs (placeholder written by 'Configure web') ===
+# nginx config
+=== diff against the real config before the demo ===
+1,18c1
+< user www-data;
+< worker_processes 12;
+< 
+< http {
+<     
+<     gzip on;
+< 
+<     
+<     server {
+<         listen 80;
+<         server_name localhost;
+<         root /var/www/html;
+< 
+<         location / {
+<             try_files $uri $uri/ =404;
+<         }
+<     }
+< }
+---
+> # nginx config
+\ No newline at end of file
+
+=== tasks each tag selection actually ran ===
+--- tags_install ---
+TASK [Gathering Facts] *********************************************************
+TASK [Always runs] *************************************************************
+TASK [Install web] *************************************************************
+TASK [Install db] **************************************************************
+--- tags_webserver ---
+TASK [Gathering Facts] *********************************************************
+TASK [Always runs] *************************************************************
+TASK [Install web] *************************************************************
+TASK [Configure web] ***********************************************************
+--- tags_skip_configure ---
+TASK [Gathering Facts] *********************************************************
+TASK [Always runs] *************************************************************
+TASK [Install web] *************************************************************
+TASK [Install db] **************************************************************
+--- tags_never ---
+TASK [Gathering Facts] *********************************************************
+TASK [Always runs] *************************************************************
+TASK [Never runs by default] ***************************************************
+
+=== real config restored: identical to the pre-demo copy ===
+restore: identical
+
+=== nginx -t on the restored file still reports the missing events{} block (see README) ===
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+2026/09/30 13:44:00 [emerg] 1158612#1158612: no "events" section in configuration
+nginx: configuration file /etc/nginx/nginx.conf test failed

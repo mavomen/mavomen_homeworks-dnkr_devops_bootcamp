@@ -1,0 +1,96 @@
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [First Playbook with Variables] *******************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Display system info] *****************************************************
+[WARNING]: Deprecation warnings can be disabled by setting `deprecation_warnings=False` in ansible.cfg.
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:14:14
+
+12     - name: Display system info
+13       debug:
+14         msg: "Running {{ app_name }} v{{ app_version }} on {{ ansible_hostname }}"
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost] => {
+    "msg": "Running MyApp v2.0.0 on jermaine"
+}
+
+TASK [Show system resources] ***************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:18:14
+
+16     - name: Show system resources
+17       debug:
+18         msg: "System: {{ ansible_distribution }} | CPU: {{ ansible_processor_vcpus }} | RAM: {{ ansible_memtotal_m...
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost] => {
+    "msg": "System: Archlinux | CPU: 12 | RAM: 15852MB"
+}
+
+TASK [Create app directory] ****************************************************
+ok: [localhost]
+
+TASK [Deploy config file] ******************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:30:18
+
+28     - name: Deploy config file
+29       copy:
+30         content: |
+                    ^ column 18
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+changed: [localhost]
+
+TASK [Set deployment facts] ****************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:42:26
+
+40     - name: Set deployment facts
+41       set_fact:
+42         deployment_time: "{{ ansible_date_time.iso8601 }}"
+                            ^ column 26
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:43:26
+
+41       set_fact:
+42         deployment_time: "{{ ansible_date_time.iso8601 }}"
+43         deployment_user: "{{ ansible_user_id }}"
+                            ^ column 26
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost]
+
+TASK [Show deployment info] ****************************************************
+[DEPRECATION WARNING]: INJECT_FACTS_AS_VARS default to `True` is deprecated, top-level facts will not be auto injected after the change. This feature will be removed from ansible-core version 2.24.
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/01_playbook_basics/first_playbook.yml:47:14
+
+45     - name: Show deployment info
+46       debug:
+47         msg: "Deployed by {{ deployment_user }} at {{ deployment_time }}"
+                ^ column 14
+
+Use `ansible_facts["fact_name"]` (no `ansible_` prefix) instead.
+
+ok: [localhost] => {
+    "msg": "Deployed by mava at 2026-09-30T10:13:06Z"
+}
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=7    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

@@ -1,0 +1,41 @@
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [Tags Demo] ***************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [Always runs] *************************************************************
+ok: [localhost] => {
+    "msg": "This always executes"
+}
+
+TASK [Install web] *************************************************************
+[WARNING]: Updating cache and auto-installing missing dependency: python3-apt
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/tags_demo.yml:11:7
+
+ 9       tags: always
+10
+11     - name: Install web
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Install db] **************************************************************
+[ERROR]: Task failed: Module failed: Error executing command: [Errno 2] No such file or directory: b'update'
+Origin: /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L3_04_Ansible/ManiNava_ansible_04/03_playbook_complex/tags_demo.yml:20:7
+
+18       ignore_errors: yes
+19
+20     - name: Install db
+         ^ column 7
+
+fatal: [localhost]: FAILED! => {"changed": false, "cmd": "update", "msg": "Error executing command.", "rc": 2, "stderr": "", "stderr_lines": [], "stdout": "", "stdout_lines": []}
+...ignoring
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=2   
+
