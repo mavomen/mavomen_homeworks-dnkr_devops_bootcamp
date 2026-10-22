@@ -1,0 +1,33 @@
+### stack_status.txt - captured 2026-10-21T12:27:27+03:30
+time="2026-10-21T12:27:27+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_03_Observability/ManiNava_observability_02/03_monitoring_install_docker_2/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+NAME            IMAGE                       COMMAND                  SERVICE         CREATED          STATUS          PORTS
+grafana         grafana/grafana:latest      "/run.sh"                grafana         27 seconds ago   Up 26 seconds   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+node_exporter   prom/node-exporter:latest   "/bin/node_exporter …"   node_exporter   28 seconds ago   Up 26 seconds   0.0.0.0:9100->9100/tcp, [::]:9100->9100/tcp
+prometheus      prom/prometheus:latest      "/bin/prometheus --c…"   prometheus      27 seconds ago   Up 27 seconds   0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
+
+bd955f6f9fb1   03_monitoring_install_docker_2_monitoring   bridge    local
+
+local     02_monitoring_install_docker_1_prometheus_data
+local     03_monitoring_install_docker_2_grafana_data
+local     03_monitoring_install_docker_2_prometheus_data
+
+{
+  "job": null,
+  "health": "up"
+}
+{
+  "job": null,
+  "health": "up"
+}
+
+## labels-level target health (Prometheus v3 API detail)
+{
+  "job": "node_exporter",
+  "instance": "node_exporter:9100",
+  "health": "up"
+}
+{
+  "job": "prometheus",
+  "instance": "localhost:9090",
+  "health": "up"
+}

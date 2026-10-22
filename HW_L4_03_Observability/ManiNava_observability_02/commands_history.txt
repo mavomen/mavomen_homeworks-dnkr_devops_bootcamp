@@ -1,0 +1,41 @@
+=== 02_monitoring_install_docker_1 start ===
+bash start_prometheus.sh
+=== 02_monitoring_install_docker_1 start ===
+bash start_prometheus.sh
+# docker ps | grep prometheus
+docker ps | grep prometheus
+# docker logs prometheus | tail -20
+docker logs prometheus | tail -20
+# active config via API
+curl -s http://localhost:9090/api/v1/status/config | jq '.data.yaml' | head -20
+# docker volume ls | grep prometheus
+docker volume ls | grep prometheus
+=== 02_monitoring_install_docker_1 done ===
+=== 03_monitoring_install_docker_2 start ===
+(cd 02_monitoring_install_docker_1 && docker-compose down --remove-orphans)
+bash start_monitoring_stack.sh
+# docker-compose ps
+docker-compose ps
+# docker network ls | grep monitoring
+docker network ls | grep monitoring
+# docker volume ls | grep -E 'prometheus|grafana'
+docker volume ls | grep -E 'prometheus|grafana'
+# targets health via API
+curl -s http://localhost:9090/api/v1/targets | jq '.data.activeTargets[] | {job: .job, health: .health}'
+=== 03_monitoring_install_docker_2 done ===
+=== 06_promql_queries_1 start (uses the running 03 stack) ===
+# instant query: up
+curl -s 'http://localhost:9090/api/v1/query?query=up' | jq
+# range-rate query: rate(prometheus_http_requests_total[5m])
+curl -s 'http://localhost:9090/api/v1/query?query=rate(prometheus_http_requests_total[5m])' | jq
+# aggregation: sum(prometheus_http_requests_total) by (handler)
+curl -s 'http://localhost:9090/api/v1/query?query=sum(prometheus_http_requests_total)%20by%20(handler)' | jq
+=== 06_promql_queries_1 done ===
+=== 06_promql_queries_1 start (uses the running 03 stack) ===
+# instant query: up
+curl -s 'http://localhost:9090/api/v1/query?query=up' | jq
+# range-rate query: rate(prometheus_http_requests_total[5m])
+curl -s 'http://localhost:9090/api/v1/query?query=rate(prometheus_http_requests_total%5B5m%5D)' | jq
+# aggregation: sum(prometheus_http_requests_total) by (handler)
+curl -s 'http://localhost:9090/api/v1/query?query=sum(prometheus_http_requests_total)%20by%20(handler)' | jq
+=== 06_promql_queries_1 done ===

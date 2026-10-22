@@ -1,0 +1,65 @@
+# Prometheus Architecture Diagram (text)
+
+Shows: how Prometheus scrapes exporters, how it talks to Alertmanager,
+and how Grafana pulls data from Prometheus.
+
+```
+                          ┌──────────────────────────────────────────────────────┐
+                          │                    MONITORED SYSTEMS                 │
+                          │                                                      │
+   Service Discovery      │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐  │
+  (k8s/file_sd/DNS/       │  │ node_exporter│ │   app with   │ │ mysqld/smtp/ │  │
+   static targets)        │  │  :9100       │ │  client-lib  │ │ blackbox ... │  │
+        │                 │  │  /metrics    │ │  /metrics    │ │  /metrics    │  │
+        │                 │  └──────▲───────┘ └──────▲───────┘ └──────▲───────┘  │
+        ▼                 │         │                │                │          │
+┌───────────────────┐      │         └────────────────┼────────────────┘          │
+│  PROMETHEUS SERVER│      │            HTTP GET /metrics   (PULL every           │
+│ ─────────────────│      │                        scrape_interval=15s)          │
+│ • discovery ──────┼──────┘                                                      │
+│ • scrape pool     │  HTTP POST /api/v2/alerts (firing alerts)                   │
+│ • TSDB storage    ├──────────────────────────────┐                              │
+│ • rules engine    │                              ▼                              │
+│ • PromQL /api/v1  │                 ┌─────────────────────────┐                 │
+└─────────┬─────────┘                 │      ALERTMANAGER       │                 │
+          │                           │ ─────────────────────── │                 │
+          │                           │ • group_by / dedup      │                 │
+          │                           │ • silence / inhibit     │                 │
+          │                           │ • route tree            │                 │
+          │                           └───────┬─────────────────┘                 │
+          │                                   │                                   │
+          │                                   │ notify (webhook/email/slack)      │
+          │                                   ▼                                   │
+          │                         ┌──────────────────────┐                      │
+          │                         │   receivers:         │                      │
+          │                         │  Slack / Email /     │                      │
+          │                         │  PagerDuty / Webhook │                      │
+          │                         └──────────────────────┘                      │
+          │                                                                       │
+          │   PromQL over HTTP:  GET /api/v1/query?query=up                       │
+          │   GET /api/v1/query_range?...                                         │
+          ▼                                                                       │
+┌───────────────────┐                                                             │
+│      GRAFANA      │                                                             │
+│ ─────────────────│                                                             │
+│ datasource:       │                                                             │
+│  Prometheus       │                                                             │
+│  (http://prom:9090│                                                             │
+│   inside network) │                                                             │
+│ dashboards/panels │                                                             │
+└───────────────────┘                                                             │
+                                                                                  │
+                    (Pushgateway variant for batch jobs:                          │
+                     batch job ──push──▶ Pushgateway ◀──scrape── Prometheus)      │
+                          └──────────────────────────────────────────────────────┘
+```
+
+Flow summary:
+
+1. **Prometheus → Exporters (pull):** service discovery feeds the target list; Prometheus
+   issues `GET /metrics` to every target every `scrape_interval` and stores samples in
+   its TSDB.
+2. **Prometheus → Alertmanager (push of alert events):** alerting rules that fire are
+   POSTed to Alertmanager, which groups/silences/inhibits and notifies receivers.
+3. **Grafana → Prometheus (pull of query results):** Grafana holds a Prometheus
+   data source and sends PromQL instant/range queries over HTTP for its panels.

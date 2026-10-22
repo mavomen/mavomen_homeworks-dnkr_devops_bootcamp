@@ -1,0 +1,125 @@
+= ManiNava Observability 2 - Run Transcript =
+= Date: Wed Oct 21 10:53:10 PM +0330 2026 =
+= User: mava =
+
+# Structure
+$ ls ManiNava_observability_02
+01_red_metrics
+02_monitoring_install_docker_1
+03_monitoring_install_docker_2
+04_prometheus_architecture_1
+05_prometheus_architecture_2
+06_promql_queries_1
+07_promql_queries_2
+commands_history.txt
+lib
+README.md
+run_all.sh
+exit code: 0
+
+$ ls ManiNava_observability_02/03_monitoring_install_docker_2
+build.sh
+docker_compose_explanation.md
+docker-compose.yml
+prometheus.yml
+stack_status.txt
+start_monitoring_stack.sh
+exit code: 0
+
+# Section 02 - Prometheus via Docker (evidence captured at run time)
+$ sed -n '1,10p' ManiNava_observability_02/02_monitoring_install_docker_1/prometheus_docker_status.txt
+### prometheus_docker_status.txt - captured 2026-10-21T12:26:45+03:30
+e283b90b5367   prom/prometheus:latest   "/bin/prometheus --c…"   6 seconds ago   Up 5 seconds   0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp   prometheus
+
+time=2026-10-21T08:56:40.697Z level=INFO source=main.go:1793 msg="updated GOGC" old=100 new=75
+time=2026-10-21T08:56:40.698Z level=INFO source=main.go:830 msg="Leaving GOMAXPROCS=12: CPU quota undefined" component=automaxprocs
+time=2026-10-21T08:56:40.699Z level=INFO source=memlimit.go:177 msg="GOMEMLIMIT is updated" component=automemlimit package=github.com/KimMachineGun/automemlimit/memlimit GOMEMLIMIT=14959602892 previous=9223372036854775807
+time=2026-10-21T08:56:40.699Z level=INFO source=main.go:939 msg="Starting Prometheus Server" mode=server version="(version=3.16.0, branch=HEAD, revision=e2e28adeee2c5883d000fc82aca6008cfbf7e96d)"
+time=2026-10-21T08:56:40.700Z level=INFO source=main.go:944 msg="operational information" build_context="(go=go1.27.3, platform=linux/amd64, user=root@880187fc0808, date=20261105-15:13:16, tags=netgo,builtinassets)" host_details="(Linux 7.2.11-arch1-1 #1 SMP PREEMPT_DYNAMIC Fri, 16 Oct 2026 00:28:58 +0000 x86_64 e283b90b5367 (none))" fd_limits="(soft=524287, hard=524288)" vm_limits="(soft=unlimited, hard=unlimited)"
+time=2026-10-21T08:56:41.153Z level=INFO source=web.go:731 msg="Start listening for connections" component=web address=0.0.0.0:9090
+time=2026-10-21T08:56:41.155Z level=INFO source=main.go:1521 msg="Starting TSDB ..."
+exit code: 0
+
+# Section 03 - full stack (brought up live for this transcript)
+$ cd ManiNava_observability_02/03_monitoring_install_docker_2 && docker-compose up -d
+time="2026-10-21T22:53:10+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_03_Observability/ManiNava_observability_02/03_monitoring_install_docker_2/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Network 03_monitoring_install_docker_2_monitoring Creating 
+ Network 03_monitoring_install_docker_2_monitoring Creating 
+ Network 03_monitoring_install_docker_2_monitoring Created 
+ Network 03_monitoring_install_docker_2_monitoring Created 
+ Container node_exporter Creating 
+ Container prometheus Creating 
+ Container node_exporter Created 
+ Container prometheus Created 
+ Container grafana Creating 
+ Container grafana Created 
+ Container prometheus Starting 
+ Container node_exporter Starting 
+ Container prometheus Started 
+ Container grafana Starting 
+ Container node_exporter Started 
+ Container grafana Started 
+exit code: 0
+
+$ docker ps --format '{{.Names}}  {{.Status}}' | grep -E 'prometheus|grafana|node_exporter'
+grafana  Up Less than a second
+prometheus  Up Less than a second
+node_exporter  Up Less than a second
+exit code: 0
+
+$ curl -s http://localhost:9090/-/ready
+Prometheus Server is Ready.
+exit code: 0
+
+$ for i in $(seq 1 30); do curl -sf http://localhost:3000/api/health >/dev/null 2>&1 && break; sleep 1; done; curl -s http://localhost:3000/api/health
+{
+  "database": "ok",
+  "version": "11.5.0",
+  "commit": "f7a938db9ad71c1558e93d8e29e69f42c8a5f50b"
+}
+exit code: 0
+
+$ for i in $(seq 1 40); do n=$(curl -s 'http://localhost:9090/api/v1/query?query=up' | jq '.data.result | length'); [ "$n" -gt 0 ] && break; sleep 1; done; curl -s 'http://localhost:9090/api/v1/query?query=up' | jq -c '.data.result[] | {instance: .metric.instance, up: .value[1]}'
+{"instance":"localhost:9090","up":"1"}
+{"instance":"node_exporter:9100","up":"1"}
+exit code: 0
+
+$ curl -s 'http://localhost:9090/api/v1/query?query=rate(prometheus_http_requests_total%5B5m%5D)' | jq '.data.result | length'
+0
+exit code: 0
+
+$ sed -n '1,12p' ManiNava_observability_02/03_monitoring_install_docker_2/stack_status.txt
+### stack_status.txt - captured 2026-10-21T12:27:27+03:30
+time="2026-10-21T12:27:27+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_03_Observability/ManiNava_observability_02/03_monitoring_install_docker_2/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+NAME            IMAGE                       COMMAND                  SERVICE         CREATED          STATUS          PORTS
+grafana         grafana/grafana:latest      "/run.sh"                grafana         27 seconds ago   Up 26 seconds   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+node_exporter   prom/node-exporter:latest   "/bin/node_exporter …"   node_exporter   28 seconds ago   Up 26 seconds   0.0.0.0:9100->9100/tcp, [::]:9100->9100/tcp
+prometheus      prom/prometheus:latest      "/bin/prometheus --c…"   prometheus      27 seconds ago   Up 27 seconds   0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
+
+bd955f6f9fb1   03_monitoring_install_docker_2_monitoring   bridge    local
+
+local     02_monitoring_install_docker_1_prometheus_data
+local     03_monitoring_install_docker_2_grafana_data
+local     03_monitoring_install_docker_2_prometheus_data
+exit code: 0
+
+# Teardown (after capture)
+$ cd ManiNava_observability_02/03_monitoring_install_docker_2 && docker-compose down --remove-orphans
+time="2026-10-21T22:53:28+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_03_Observability/ManiNava_observability_02/03_monitoring_install_docker_2/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Container node_exporter Stopping 
+ Container grafana Stopping 
+ Container node_exporter Stopped 
+ Container node_exporter Removing 
+ Container node_exporter Removed 
+ Container grafana Stopped 
+ Container grafana Removing 
+ Container grafana Removed 
+ Container prometheus Stopping 
+ Container prometheus Stopped 
+ Container prometheus Removing 
+ Container prometheus Removed 
+ Network 03_monitoring_install_docker_2_monitoring Removing 
+ Network 03_monitoring_install_docker_2_monitoring Removed 
+exit code: 0
+
+= END of transcript =

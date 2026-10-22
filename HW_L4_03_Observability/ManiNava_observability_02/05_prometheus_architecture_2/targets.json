@@ -1,0 +1,9 @@
+[
+    {
+        "targets": ["app1:8080", "app2:8080"],
+        "labels": {
+            "service": "webapp",
+            "environment": "production"
+        }
+    }
+]
