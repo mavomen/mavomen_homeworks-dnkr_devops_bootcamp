@@ -1,0 +1,49 @@
+## stash list
+$ git stash list
+stash@{0}: On main: Another WIP
+stash@{1}: On main: WIP: working on feature
+
+## stash show
+$ git stash show
+ file.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+$ git stash show -p
+diff --git a/file.txt b/file.txt
+index a77fa51..826ac8c 100644
+--- a/file.txt
++++ b/file.txt
+@@ -1 +1,2 @@
+ Initial
++Change 2
+
+$ git stash show stash@{1}
+ file.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+## apply (without dropping) and pop
+$ git stash apply
+On branch main
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   file.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git stash pop
+Please commit your changes or stash them before you merge.
+Aborting
+On branch main
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   file.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+The stash entry is kept in case you need it again.
+
+$ git stash list (after pop/apply scenario)
+stash@{0}: On main: Another WIP
+stash@{1}: On main: WIP: working on feature
+

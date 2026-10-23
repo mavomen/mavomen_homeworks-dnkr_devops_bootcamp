@@ -1,0 +1,246 @@
+git --version
+git config --list
+git config user.name
+git config user.email
+git init -q
+git add README.md
+git status
+git commit -q -m Add README file
+git add app.js style.css
+git commit -q -m Add application files
+git log --oneline
+git init -q
+git add file1.txt
+git status
+git add file2.txt file3.txt
+git commit -q -m Initial commit with three files
+git add file1.txt
+git status
+git diff
+git diff --staged
+git commit -q -m Update file1 to version 2
+git init -q
+git add document.txt
+git commit -q -m Add document
+git log --oneline
+git add config.txt
+git commit -q --amend -m Add document and config file
+git commit -q --amend -m Initial commit: Add document and config
+git log --oneline
+git show --stat --oneline HEAD
+git init -q
+git add main.txt
+git commit -q -m Initial commit on main
+git branch feature-login
+git branch
+git checkout feature-login
+git switch feature-login
+git add login.js
+git commit -q -m Add login feature
+git switch main
+git branch
+git log --oneline --graph --all
+git init -q
+git add file.txt
+git commit -q -m Initial commit
+git branch feature-a
+git branch feature-b
+git branch old-feature
+git branch -m old-feature new-feature
+git switch main
+git branch -d feature-a
+git branch -D feature-b
+git switch new-feature
+git add new.txt
+git switch main
+git status
+git switch new-feature
+git commit -q -m Add new file
+git branch
+git branch -a
+git status
+git init -q
+git add main.txt
+git commit -q -m Initial commit
+git branch feature
+git switch feature
+git add feature.txt
+git commit -q -m Add feature
+git switch main
+git merge feature -q
+git log --oneline --graph
+git init -q
+git add base.txt
+git commit -q -m Base commit
+git branch branch-a
+git switch branch-a
+git add file_a.txt
+git commit -q -m Add file A
+git switch main
+git branch branch-b
+git switch branch-b
+git add file_b.txt
+git commit -q -m Add file B
+git switch main
+git merge branch-a -q
+git merge branch-b -q
+git log --oneline --graph --all
+git init -q
+git add conflict.txt
+git commit -q -m Initial commit
+git branch branch-a
+git switch branch-a
+git add conflict.txt
+git commit -q -m Add line from A
+git switch main
+git branch branch-b
+git switch branch-b
+git add conflict.txt
+git commit -q -m Add line from B
+git switch main
+git merge branch-a -q
+git add conflict.txt
+git commit -q -m Merge branch-b, resolve conflict
+git log --oneline --graph --all
+git init -q
+git add file.txt
+git commit -q -m Initial commit
+git stash push -q -u -m WIP: working on feature
+git status --short
+git stash push -q -m Another WIP
+git stash list
+git stash show
+git stash show -p
+git stash show stash@{1}
+git stash apply
+git stash pop
+git stash list
+git init -q
+git add file.txt
+git commit -q -m Initial commit
+git stash push -q -m tmp1
+git stash push -q -m tmp2
+git stash list
+git stash drop stash@{0}
+git stash clear
+git stash list
+git init -q
+git add file1.txt file2.txt
+git commit -q -m Initial commit
+git add file1.txt
+git diff
+git diff --staged
+git diff HEAD
+git diff file1.txt
+git diff --staged file2.txt
+git branch feature
+git switch feature
+git add file1.txt
+git commit -q -m Feature change
+git switch main
+git diff main feature
+git diff main feature -- file1.txt
+git log --oneline
+git diff HEAD~1 HEAD
+git init -q
+git add file.txt
+git commit -q -m Commit 1
+git add file.txt
+git commit -q -m Commit 2
+git add file.txt
+git commit -q -m Commit 3
+git log --oneline
+git checkout HEAD~1
+git status
+git log --oneline
+git branch from-detached
+git switch main
+git checkout HEAD~2
+git checkout HEAD^
+git switch main
+git init -q
+git add file.txt
+git commit -q -m Commit 1
+git add file.txt
+git commit -q -m Commit 2
+git add file.txt
+git commit -q -m Commit 3
+git log --oneline
+git add file.txt
+git restore --staged file.txt
+git status --short
+git restore file.txt
+git status --short
+git init -q
+git add file.txt
+git commit -q -m Commit 1
+git add file.txt
+git commit -q -m Commit 2
+git add file.txt
+git commit -q -m Commit 3
+git log --oneline
+git reset --soft HEAD~1
+git log --oneline
+git status
+git init -q
+git add file.txt
+git commit -q -m Commit 1
+git add file.txt
+git commit -q -m Commit 2
+git add file.txt
+git commit -q -m Commit 3
+git log --oneline
+git reset HEAD~1
+git log --oneline
+git status
+git init -q
+git add file.txt
+git commit -q -m Commit 1
+git add file.txt
+git commit -q -m Commit 2
+git add file.txt
+git commit -q -m Commit 3
+git log --oneline
+git reset --hard HEAD~1
+git log --oneline
+git status
+git init -q
+git add file.txt
+git commit -q -m Add line 1
+git add file.txt
+git commit -q -m Add line 2
+git add file.txt
+git commit -q -m Add line 3
+git log --oneline
+git revert -q HEAD
+git revert HEAD
+git log --oneline
+git revert -q HEAD~1
+git revert HEAD~1
+git log --oneline
+git show HEAD
+git init -q
+git add .
+git commit -q -m Initial commit
+git remote add origin ../../remotes/hw.git
+git branch -M main
+git push -q -u origin main
+git remote -v
+git branch -vv
+git config pull.rebase false
+git add local.txt
+git commit -q -m Add local file
+git config pull.rebase false
+git add remote.txt shared.txt
+git commit -q -m Add remote files
+git push -q origin main
+git add shared.txt
+git commit -q -m Edit shared.txt locally
+git remote -v
+git status
+git pull origin main
+git status
+git add shared.txt
+git commit -q -m Merge remote changes
+git push -q origin main
+git log --oneline -4

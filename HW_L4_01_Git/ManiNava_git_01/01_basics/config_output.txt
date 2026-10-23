@@ -1,0 +1,35 @@
+## Installed version
+$ git --version
+git version 2.56.0
+
+## git config --list
+$ git config --list
+user.name=mavantgarderc
+user.email=manihabibinava@gmail.com
+core.editor=nvim
+core.autocrlf=input
+core.pager=less
+interactive.difffilter=delta --color-only
+delta.navigate=true
+delta.line-numbers=true
+init.defaultbranch=main
+credential.helper=/usr/lib/git-core/git-credential-libsecret
+coderabbit.machineid=cli/e549d5015e4947d09c83431a53f88242
+pull.rebase=true
+push.default=current
+fetch.prune=true
+diff.colormoved=zebra
+rebase.autostash=true
+rerere.enabled=true
+alias.lg=log --oneline --graph --all --decorate
+alias.aa=add --all
+alias.cm=commit -m
+alias.st=status -sb
+alias.br=branch -a
+alias.df=diff --staged
+
+## identity
+$ git config user.name
+mavantgarderc
+$ git config user.email
+manihabibinava@gmail.com

@@ -1,0 +1,13 @@
+## branches and graph (main vs feature-login)
+$ git branch
+  feature-login
+* main
+
+$ git log --oneline --graph --all
+* e0c2d96 Add login feature
+* f39d7b3 Initial commit on main
+
+## note: both git checkout and git switch demonstrated
+$ git checkout feature-login  (shown)
+$ git switch feature-login   (shown)
+

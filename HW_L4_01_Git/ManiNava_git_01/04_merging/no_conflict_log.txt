@@ -1,0 +1,11 @@
+## merge commit (no conflict) - two branches merged in
+$ git merge branch-a
+$ git merge branch-b
+$ git log --oneline --graph --all
+*   7c6b81d Merge branch 'branch-b'
+|\  
+| * b2b8fea Add file B
+* | 96ca95f Add file A
+|/  
+* 6539bb1 Base commit
+

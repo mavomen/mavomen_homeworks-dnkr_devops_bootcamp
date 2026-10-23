@@ -1,0 +1,42 @@
+## history
+$ git log --oneline
+17708ca Commit 3
+606f9f9 Commit 2
+bd8f8d6 Commit 1
+
+## enter detached HEAD at HEAD~1
+$ git checkout HEAD~1
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at 606f9f9 Commit 2
+
+$ git status
+HEAD detached at 606f9f9
+nothing to commit, working tree clean
+
+$ git log --oneline
+606f9f9 Commit 2
+bd8f8d6 Commit 1
+
+## create a branch from detached HEAD to save work
+$ git branch from-detached
+
+## return to main
+$ git switch main
+Previous HEAD position was 606f9f9 Commit 2
+Switched to branch 'main'
+
+## relative refs
+$ git checkout HEAD~2
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at bd8f8d6 Commit 1
+$ git checkout HEAD^
+error: pathspec 'HEAD^' did not match any file(s) known to git
+$ git switch main
+Previous HEAD position was bd8f8d6 Commit 1
+Switched to branch 'main'
+

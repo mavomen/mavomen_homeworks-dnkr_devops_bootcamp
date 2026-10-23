@@ -1,0 +1,100 @@
+= ManiNava Git Homework 01 - Run Transcript =
+= Date: Sun Oct 25 09:48:06 AM +0330 2026 =
+= User: mava =
+
+
+# S0.1 - prepare scratch and build
+$ bash /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/run_all.sh
+cp: cannot create regular file '/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/07_reset_revert/reset_demo/./reset_demo2/reset_demo3/reset_demo4/.git/objects/07/9c900b81f445bbaa8dde29948583f0a33f50ba': Permission denied
+cp: cannot create regular file '/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/07_reset_revert/reset_demo/./reset_demo2/reset_demo3/reset_demo4/revert_demo/.git/objects/3b/e9c81fd3d8fcf01e59701e5ee48041bcdf8631': Permission denied
+cp: cannot create regular file '/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/07_reset_revert/reset_demo/./reset_demo2/reset_demo3/reset_demo4/revert_demo/.git/objects/51/fcd98c719921bbc6ae983b10e696a452766880': Permission denied
+cp: cannot create regular file '/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/07_reset_revert/reset_demo/./reset_demo2/reset_demo3/reset_demo4/revert_demo/.git/objects/c8/2de6a6a54fe9b7d6a57f7ef50747876ee7bb69': Permission denied
+cp: cannot create regular file '/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/07_reset_revert/reset_demo/./reset_demo2/reset_demo3/reset_demo4/revert_demo/.git/objects/bf/aa0d53d5ea64a51048127c8525907f6a3f7e21': Permission denied
+cp: cannot create regular file '/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/07_reset_revert/reset_demo/./reset_demo2/reset_demo3/reset_demo4/revert_demo/.git/objects/6a/d36e52f0002937ed2de6a1c15d8a0ae5df056a': Permission denied
+cp: cannot create regular file '/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/07_reset_revert/reset_demo/./reset_demo2/reset_demo3/reset_demo4/revert_demo/.git/objects/93/cb937e9555d23b6b970eccfa34b59b065740ac': Permission denied
+./file.txt
+./shared.txt
+./local.txt
+./app.js
+./README.md
+./shared.txt
+./remote.txt
+done
+exit code: 0
+
+# S1 - 01_basics evidence
+$ ls /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/01_basics
+build.sh
+config_output.txt
+my_project
+status_after_add.txt
+exit code: 0
+
+# S2 - 02_commits evidence
+$ ls /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/02_commits
+amend_log_before_after.txt
+build.sh
+commit_demo
+diff_outputs.txt
+status_stages.txt
+exit code: 0
+
+# S3 - 03_branching evidence
+$ ls /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/03_branching
+branch_demo
+branch_log_graph.txt
+branch_mgmt.txt
+build.sh
+exit code: 0
+
+# S4 - 04_merging evidence
+$ ls /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/04_merging
+build.sh
+conflict_before_after.txt
+ff_merge
+ff_merge_log.txt
+no_conflict_log.txt
+exit code: 0
+
+# S5 - 05_stash evidence
+$ ls /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/05_stash
+build.sh
+stash_demo
+stash_list_show.txt
+exit code: 0
+
+# S6 - 06_diff_history evidence
+$ ls /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/06_diff_history
+build.sh
+detached_head.txt
+diff_demo
+diff_types.txt
+exit code: 0
+
+# S7 - 07_reset_revert evidence
+$ ls /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/07_reset_revert
+build.sh
+reset_demo
+reset_log_status.txt
+revert_log.txt
+exit code: 0
+
+# S8 - 08_github evidence
+$ ls /mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_01_Git/ManiNava_git_01/08_github
+build.sh
+collaboration
+collab_status.txt
+github_demo
+pull_push.txt
+pusher
+remote_branchvv.txt
+exit code: 0
+
+# S99 - verification
+$ bash ../scripts/check_homework_structure.sh | tail -3
+  [PASS] final_structure.txt present
+
+ALL STRUCTURE CHECKS PASSED (47 checks)
+exit code: 0
+
+= END of transcript =

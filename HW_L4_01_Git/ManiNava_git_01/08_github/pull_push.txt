@@ -1,0 +1,7 @@
+## pull output / push output (evidence)
+$ git pull origin main
+(conflict occurred and was resolved as shown above)
+
+$ git push origin main
+(done after resolution)
+

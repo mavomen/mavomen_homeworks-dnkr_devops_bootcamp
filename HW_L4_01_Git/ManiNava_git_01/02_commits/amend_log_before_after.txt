@@ -1,0 +1,17 @@
+## log before amend
+$ git log --oneline
+90fe23d Add document
+
+## log after amend (one commit, new message, extra file inside it)
+$ git commit --amend -m "Add document and config file"
+$ git commit --amend -m "Initial commit: Add document and config"
+$ git log --oneline
+af38b9e Initial commit: Add document and config
+
+## the single commit now contains both files
+$ git show --stat --oneline HEAD
+af38b9e Initial commit: Add document and config
+ config.txt   | 1 +
+ document.txt | 1 +
+ 2 files changed, 2 insertions(+)
+

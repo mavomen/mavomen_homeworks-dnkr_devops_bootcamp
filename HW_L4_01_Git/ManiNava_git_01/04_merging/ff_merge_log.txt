@@ -1,0 +1,6 @@
+## fast-forward merge
+$ git merge feature
+$ git log --oneline --graph
+* eaef628 Add feature
+* da39a80 Initial commit
+

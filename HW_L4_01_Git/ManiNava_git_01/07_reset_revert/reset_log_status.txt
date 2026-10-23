@@ -1,0 +1,67 @@
+## initial history
+$ git log --oneline
+be16c30 Commit 3
+65a10b5 Commit 2
+9c81855 Commit 1
+
+## restore --staged: unstage
+$ echo "Modified" > file.txt
+$ git add file.txt
+$ git restore --staged file.txt
+$ git status --short
+ M file.txt
+
+## restore: discard changes in working tree
+$ git restore file.txt
+$ git status --short
+
+## reset --soft HEAD~1 (moves HEAD only)
+$ git log --oneline
+be16c30 Commit 3
+65a10b5 Commit 2
+9c81855 Commit 1
+$ git reset --soft HEAD~1
+$ git log --oneline
+65a10b5 Commit 2
+9c81855 Commit 1
+$ git status
+On branch main
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   file.txt
+
+
+## reset (mixed, default) HEAD~1 (moves HEAD and staging)
+$ git log --oneline
+be16c30 Commit 3
+65a10b5 Commit 2
+9c81855 Commit 1
+$ git reset HEAD~1
+Unstaged changes after reset:
+M	file.txt
+$ git log --oneline
+65a10b5 Commit 2
+9c81855 Commit 1
+$ git status
+On branch main
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   file.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+## reset --hard HEAD~1 (moves HEAD, staging, and working tree)
+$ git log --oneline
+be16c30 Commit 3
+65a10b5 Commit 2
+9c81855 Commit 1
+$ git reset --hard HEAD~1
+HEAD is now at 65a10b5 Commit 2
+$ git log --oneline
+65a10b5 Commit 2
+9c81855 Commit 1
+$ git status
+On branch main
+nothing to commit, working tree clean
+

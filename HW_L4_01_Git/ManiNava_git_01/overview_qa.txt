@@ -1,0 +1,69 @@
+# Overview Q&A - HW_L4_01_Git
+
+## 1) Basics
+**Q:** What is a Git repository?  
+**A:** A `.git` directory that stores the complete history of a project (commits, branches, tags) plus the index used to build commits.
+
+**Q:** What is an "atomic commit"?  
+**A:** A commit that represents one logical, complete change rather than several unrelated modifications.
+
+**Q:** Why should you avoid a nested repository?  
+**A:** Git treats `.git` as a repository boundary; nesting makes submodules/history ambiguous and is easy to mis-stage or break.
+
+## 2) Staging vs Working Tree
+**Q:** What is the difference between the working directory, staging area, and repository?  
+**A:** Working directory = files on disk being edited. Staging area (index) = changes marked for the next commit. Repository = committed snapshots stored in `.git`.
+
+**Q:** How do `git diff`, `git diff --staged`, and `git diff HEAD` differ?  
+**A:** `git diff` shows unstaged changes. `git diff --staged` shows staged changes vs HEAD. `git diff HEAD` shows all changes (staged+unstaged) vs HEAD.
+
+## 3) Branching & HEAD
+**Q:** What is a branch and what is `HEAD`?  
+**A:** A branch is a movable pointer to a commit (a line of development). `HEAD` is a pointer to the current branch (or to a specific commit in detached HEAD).
+
+**Q:** What is the difference between `git checkout` and `git switch`?  
+**A:** `git switch` is purpose-built for changing branches; `git checkout` has broader duties (branches, commits, files). Modern Git recommends `switch`/`restore`.
+
+## 4) Merging & Conflicts
+**Q:** What is a fast-forward merge?  
+**A:** When the target branch has no new commits, Git just moves the pointer forward with no merge commit.
+
+**Q:** When does a merge conflict occur and how is it resolved?  
+**A:** When the same lines change on both branches. Git marks `<<<<<<<`, `=======`, `>>>>>>>`. Edit to the desired final state, `git add`, then `git commit`.
+
+## 5) Stash
+**Q:** What is `git stash` used for?  
+**A:** To temporarily save uncommitted changes (tracked files) and return to a clean working tree, restoring them later with `apply` or `pop`.
+
+**Q:** Why don't untracked files go into stash by default?  
+**A:** `stash` targets the index/working tree of tracked files; use `git stash -u` (or `-a`) to include untracked/ignored files.
+
+**Q:** What is the difference between `git stash apply` and `git stash pop`?  
+**A:** `apply` restores changes but keeps the stash entry. `pop` applies and removes it.
+
+## 6) History, Time Travel
+**Q:** What is detached HEAD?  
+**A:** `HEAD` points directly to a commit instead of a branch tip. You can inspect/history-read freely; to keep new commits, create a branch (`git branch <name>` or `git switch -c <name>`).
+
+**Q:** How can you compare different commits/branches?  
+**A:** `git log --oneline --graph --all`, `git diff <a>..<b>`, or `git diff <branch1> <branch2>`.
+
+## 7) Reset vs Revert
+**Q:** What do `--soft`, `--mixed`, and `--hard` mean for `git reset`?  
+**A:** `--soft` moves HEAD only. `--mixed` (default) moves HEAD and resets the index. `--hard` moves HEAD, resets index and working tree (destructive).
+
+**Q:** When should you use `git revert` vs `git reset`?  
+**A:** Use `git reset` on local, unpushed history to rewrite it. Use `git revert` on shared/pushed history because it creates a new commit that undoes changes (non-destructive).
+
+**Q:** What is `git restore` used for?  
+**A:** Restoring files from index or HEAD (e.g. `git restore <file>` discards working-tree changes, `git restore --staged <file>` unstages).
+
+## 8) GitHub / Collaboration
+**Q:** What is a remote and `upstream` tracking?  
+**A:** A remote is a reference to another repository (e.g. `origin`). `git branch -vv` shows which local branch tracks which remote branch (`upstream`).
+
+**Q:** What is the difference between `git fetch` and `git pull`?  
+**A:** `git fetch` downloads objects/refs without merging. `git pull` = `fetch` + merge (or rebase depending on config).
+
+**Q:** How do you handle a pull conflict?  
+**A:** Resolve the same way as a merge conflict: edit the conflicted files, `git add`, `git commit`, then `git push`.

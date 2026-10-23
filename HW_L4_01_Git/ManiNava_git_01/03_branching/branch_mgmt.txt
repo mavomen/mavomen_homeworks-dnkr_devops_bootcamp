@@ -1,0 +1,20 @@
+## branch list across operations
+$ git branch
+  main
+* new-feature
+
+$ git branch -a
+  main
+* new-feature
+
+## rename, delete (-d vs -D), and switching
+$ git branch -m old-feature new-feature
+$ git switch main
+$ git branch -d feature-a
+$ git branch -D feature-b
+$ git switch new-feature
+$ git switch main  (with uncommitted change: new.txt staged context shown by status)
+$ git status
+On branch new-feature
+nothing to commit, working tree clean
+

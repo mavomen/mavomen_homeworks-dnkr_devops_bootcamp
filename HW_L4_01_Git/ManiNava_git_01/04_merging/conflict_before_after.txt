@@ -1,0 +1,31 @@
+## before conflict resolution
+$ git merge branch-a
+$ git merge branch-b  # conflict!
+Auto-merging conflict.txt
+CONFLICT (content): Merge conflict in conflict.txt
+Recorded preimage for 'conflict.txt'
+Automatic merge failed; fix conflicts and then commit the result.
+
+$ cat conflict.txt
+Line 1
+<<<<<<< HEAD
+Line 2 from A
+=======
+Line 2 from B
+>>>>>>> branch-b
+
+
+## after conflict resolution
+$ cat conflict.txt
+Line 1
+Line 2 from A
+Line 2 from B
+
+$ git log --oneline --graph --all
+*   d4d7cca Merge branch-b, resolve conflict
+|\  
+| * b26aa20 Add line from B
+* | fab2775 Add line from A
+|/  
+* cd4ea24 Initial commit
+

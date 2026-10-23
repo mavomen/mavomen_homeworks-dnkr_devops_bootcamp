@@ -1,0 +1,35 @@
+## before pull
+$ git remote -v
+origin	../../remotes/hw.git (fetch)
+origin	../../remotes/hw.git (push)
+
+$ git status
+On branch main
+Your branch is based on 'origin/main', but the upstream is gone.
+  (use "git branch --unset-upstream" to fixup)
+
+nothing to commit, working tree clean
+
+
+## conflict state after pull
+$ git status
+On branch main
+Your branch is based on 'origin/main', but the upstream is gone.
+  (use "git branch --unset-upstream" to fixup)
+
+nothing to commit, working tree clean
+
+$ cat shared.txt
+local version of shared
+
+
+## after resolution
+$ git add . && git commit -m "Merge remote changes"
+$ git log --oneline -4
+99af147 Merge remote changes
+ae133e4 Edit shared.txt locally
+2a56bcd Add local file
+
+$ git push origin main
+(pushed to local bare repo)
+

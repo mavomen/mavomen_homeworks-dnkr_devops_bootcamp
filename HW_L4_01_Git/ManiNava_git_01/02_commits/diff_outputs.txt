@@ -1,0 +1,20 @@
+## unstaged changes (working directory vs staging area)
+$ git diff
+diff --git a/file2.txt b/file2.txt
+index fb8247c..2ef8ab9 100644
+--- a/file2.txt
++++ b/file2.txt
+@@ -1 +1,2 @@
+ Version 1
++Version 2
+
+## staged changes (staging area vs last commit)
+$ git diff --staged
+diff --git a/file1.txt b/file1.txt
+index fb8247c..2ef8ab9 100644
+--- a/file1.txt
++++ b/file1.txt
+@@ -1 +1,2 @@
+ Version 1
++Version 2
+

@@ -1,0 +1,12 @@
+## remotes and tracking
+$ git remote -v
+origin	../../remotes/hw.git (fetch)
+origin	../../remotes/hw.git (push)
+
+$ git branch -vv
+* main e0054a3 Initial commit
+
+## push (to local bare repo acting as origin)
+$ git push -u origin main
+(captured via local bare repo at ../../remotes/hw.git)
+
