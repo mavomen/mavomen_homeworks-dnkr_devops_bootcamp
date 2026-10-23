@@ -1,0 +1,3 @@
+Prometheus Server is Ready.
+
+"version":"2.55.1"

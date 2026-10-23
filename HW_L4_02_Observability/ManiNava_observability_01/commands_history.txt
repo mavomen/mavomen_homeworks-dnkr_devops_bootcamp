@@ -1,0 +1,31 @@
+# Commands History - ManiNava Observability Homework
+
+# 01 observability concepts
+cat 01_observability_concepts/importance_of_observability.md
+cat 01_observability_concepts/key_concepts.md
+
+# 02 tools overview
+cat 02_tools_overview/metrics_tools.md
+cat 02_tools_overview/logging_tracing_tools.md
+
+# 03 prometheus install
+cat 03_prometheus_install/prometheus.yml
+systemctl status prometheus
+curl -s http://localhost:9090/-/ready
+
+# 04 grafana install
+systemctl status grafana
+
+# 05 connect
+curl -s -X POST -H 'Content-Type: application/json' -u admin:admin http://localhost:3000/api/datasources ...
+
+# 06 metrics types
+curl -s http://localhost:9090/api/v1/label/__name__/values
+
+# 07 grafana explore
+# queries: up, node_cpu_seconds_total, rate(node_cpu_seconds_total[5m])
+
+# 08 node exporter
+systemctl status node_exporter
+cat 08_node_exporter/prometheus.yml
+curl -s http://localhost:9090/api/v1/targets

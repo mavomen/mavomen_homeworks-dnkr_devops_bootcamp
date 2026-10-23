@@ -1,0 +1,4 @@
+● node_exporter.service - Node Exporter
+     Loaded: loaded (/etc/systemd/system/node_exporter.service; enabled; preset: disabled)
+     Active: active (running) since Sun 2026-10-25 10:05:27 +0330; 54s ago
+ Invocation: 04d727901c874c4a8ab4ba79c5594635

@@ -1,0 +1,20 @@
+Q1: تفاوت Observability و Monitoring؟
+A: Monitoring واکنشی، Observability پیشگیرانه و امکان کشف علت بدون پیش‌فرض دارد.
+
+Q2: سه ستون Observability؟
+A: Metrics, Logs, Traces
+
+Q3: Pull vs Push در Prometheus؟
+A: Prometheus بیشتر Pull-based است، Scrape می‌کند.
+
+Q4: چرا Prometheus را به Grafana متصل می‌کنیم؟
+A: برای تجسم، داشبورد و تحلیل بهتر Metrics.
+
+Q5: Counter vs Gauge؟
+A: Counter فقط افزایش، Gauge بالا/پایین می‌رود.
+
+Q6: نقش Node Exporter؟
+A: ارائه متریک‌های سیستم‌عامل (CPU/Memory/Disk/Network)
+
+Q7: تفاوت apply و pop در stash؟
+A: apply نگه می‌دارد، pop حذف می‌کند.

@@ -1,0 +1,44 @@
+= ManiNava Observability Homework - Run Transcript =
+= Date: Sun Oct 25 10:07:15 AM +0330 2026 =
+= User: mava =
+
+# Setup
+$ ls ManiNava_observability_01
+01_observability_concepts
+02_tools_overview
+03_prometheus_install
+04_grafana_install
+05_prometheus_grafana_connect
+06_metrics_types
+07_grafana_explore
+08_node_exporter
+commands_history.txt
+commands_history.txt.bak
+final_structure.txt
+lib
+overview_qa.txt
+README.md
+run_all.sh
+exit code: 0
+
+# Prometheus
+$ systemctl is-active prometheus
+active
+exit code: 0
+
+# Grafana
+$ systemctl is-active grafana
+active
+exit code: 0
+
+# Node Exporter
+$ systemctl is-active node_exporter
+active
+exit code: 0
+
+# Targets
+$ curl -s http://localhost:9090/api/v1/targets | python3 -c 'import json,sys; d=json.load(sys.stdin); print(len(d["data"]["activeTargets"]))'
+2
+exit code: 0
+
+= END of transcript =

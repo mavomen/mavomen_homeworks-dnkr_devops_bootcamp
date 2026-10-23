@@ -1,0 +1,8 @@
+● prometheus.service - Prometheus
+     Loaded: loaded (/etc/systemd/system/prometheus.service; enabled; preset: disabled)
+     Active: active (running) since Sun 2026-10-25 10:00:34 +0330; 34s ago
+ Invocation: d1a36b84166d43459fac7d6fc5cc8b5c
+   Main PID: 28339 (prometheus)
+      Tasks: 17 (limit: 18862)
+     Memory: 27.6M (peak: 28.3M)
+        CPU: 172ms

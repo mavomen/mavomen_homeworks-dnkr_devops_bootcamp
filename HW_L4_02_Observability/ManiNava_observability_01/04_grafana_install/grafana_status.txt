@@ -1,0 +1,6 @@
+● grafana.service - Grafana service
+     Loaded: loaded (/usr/lib/systemd/system/grafana.service; enabled; preset: disabled)
+     Active: active (running) since Sun 2026-10-25 10:03:12 +0330; 21s ago
+ Invocation: f3a5b5e412e840488ee4d156298c935c
+   Main PID: 31218 (grafana)
+      Tasks: 31 (limit: 18862)
