@@ -1,0 +1,13 @@
+### alerts_validation.txt - promtool validation of the rule files (2026-10-28T12:43:10+03:30)
+Checking alerts_basic.yml
+  SUCCESS: 2 rules found
+
+
+Checking alerts_slo.yml
+  SUCCESS: 1 rules found
+
+
+Checking /etc/prometheus/alerts.yml
+  SUCCESS: 2 rules found
+
+

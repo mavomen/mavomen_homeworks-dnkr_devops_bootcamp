@@ -1,0 +1,36 @@
+### instance_down_demo_output.txt - captured 2026-10-28T22:43:45+03:30
+### scenario: docker stop node_exporter -> InstanceDown (expr: up == 0, for: 2m)
+
+## before: node_exporter target health
+{"metric":{"__name__":"up","instance":"node_exporter:9100","job":"node_exporter"},"value":[1794683625.027,"1"]}
+
+Stopping node_exporter...
+Waiting for InstanceDown to fire (expr up==0, for: 2m)...
+  2026-10-28T22:43:55+03:30 InstanceDown state: none
+  2026-10-28T22:44:05+03:30 InstanceDown state: none
+  2026-10-28T22:44:15+03:30 InstanceDown state: pending
+  2026-10-28T22:44:25+03:30 InstanceDown state: pending
+  2026-10-28T22:44:35+03:30 InstanceDown state: pending
+  2026-10-28T22:44:45+03:30 InstanceDown state: pending
+  2026-10-28T22:44:55+03:30 InstanceDown state: pending
+  2026-10-28T22:45:05+03:30 InstanceDown state: pending
+  2026-10-28T22:45:15+03:30 InstanceDown state: pending
+  2026-10-28T22:45:25+03:30 InstanceDown state: pending
+  2026-10-28T22:45:35+03:30 InstanceDown state: pending
+  2026-10-28T22:45:45+03:30 InstanceDown state: pending
+  2026-10-28T22:45:55+03:30 InstanceDown state: pending
+  2026-10-28T22:46:05+03:30 InstanceDown state: pending
+  2026-10-28T22:46:15+03:30 InstanceDown state: firing
+{"alertname":"InstanceDown","state":"firing","value":"0e+00","activeAt":"2026-10-28T19:14:07.902661019Z"}
+
+{"labels":{"alertname":"InstanceDown","severity":"critical","instance":"node_exporter:9100"},"status":"active"}
+
+Waiting 35s for the Alertmanager group_wait window...
+
+## webhook sink log tail (notification actually delivered)
+### (full sink log: ../03_notifications_routing/webhook_sink_log.txt)
+## sink log cleared before instance-down demo re-run 2026-10-28T22:43:41+03:30
+2026-10-28T22:46:41  POST /stdout  {"receiver": "stdout-receiver", "status": "firing", "alerts": [{"status": "firing", "labels": {"alertname": "InstanceDown", "instance": "node_exporter:9100", "job": "node_exporter", "severity": "critical", "team": "platform"}, "annotations": {"description": "Prometheus target node_exporter:9100 (job=node_exporter) has been down for more than 2 minutes.", "runbook_url": "https://runbooks.example.com/runbooks/instance_down.md", "summary": "Instance node_exporter:9100 is down"}, "startsAt": "2026-10-28T19:16:07.902Z", "endsAt": "0001-01-01T00:00:00Z", "generatorURL": "http://b006a0fccb73:9090/graph?g0.expr=up+%3D%3D+0&g0.tab=1", "fingerprint": "b8ba228ea7f21c49"}], "notification_reason": "first notification", "groupLabels": {}, "commonLabels": {"alertname": "InstanceDown", "instance": "node_exporter:9100", "job": "node_exporter", "severity": "critical", "team": "platform"}, "commonAnnotations": {"description": "Prometheus target node_exporter:9100 (job=node_exporter) has been down for more than 2 minutes.", "runbook_url": "https://runbooks.example.com/runbooks/instance_down.md", "summary": "Instance node_exporter:9100 is down"}, "routeLabels": {}, "externalURL": "http://59deb137df80:9093", "version": "4", "groupKey": "{}:{}", "truncatedAlerts": 0}
+Restarting node_exporter...
+{"metric":{"__name__":"up","instance":"node_exporter:9100","job":"node_exporter"},"value":[1794683831.152,"1"]}
+

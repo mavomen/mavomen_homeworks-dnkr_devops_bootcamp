@@ -1,0 +1,30 @@
+Starting Prometheus + Alertmanager stack...
+time="2026-10-28T12:37:44+03:30" level=warning msg="/mnt/hdd/projects/0-shelfs/CodeStorage/06-DevOps_BOOTCAMP/homeworks/HW_L4_04_Observability/ManiNava_observability_03/01_alertmanager_setup/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Network 01_alertmanager_setup_monitoring Creating 
+ Network 01_alertmanager_setup_monitoring Creating 
+ Volume 01_alertmanager_setup_prometheus_data Creating 
+ Volume 01_alertmanager_setup_prometheus_data Creating 
+ Volume 01_alertmanager_setup_prometheus_data Created 
+ Volume 01_alertmanager_setup_prometheus_data Created 
+ Network 01_alertmanager_setup_monitoring Created 
+ Network 01_alertmanager_setup_monitoring Created 
+ Container prometheus Creating 
+ Container alertmanager Creating 
+ Container node_exporter Creating 
+ Container prometheus Created 
+ Container node_exporter Created 
+ Container alertmanager Created 
+ Container prometheus Starting 
+ Container node_exporter Starting 
+ Container alertmanager Starting 
+ Container prometheus Started 
+ Container node_exporter Started 
+ Container alertmanager Started 
+Waiting for services to be ready...
+Checking containers:
+b006a0fccb73   prom/prometheus:latest      "/bin/prometheus --c…"   6 seconds ago   Up 5 seconds   0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp   prometheus
+66d0007955e7   prom/alertmanager:latest    "/bin/alertmanager -…"   6 seconds ago   Up 5 seconds   0.0.0.0:9093->9093/tcp, [::]:9093->9093/tcp   alertmanager
+Testing Prometheus endpoint...
+Prometheus Server is Ready.
+Testing Alertmanager endpoint...
+OK

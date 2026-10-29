@@ -1,0 +1,18 @@
+groups:
+  - name: slo_alerts
+    interval: 1m
+    rules:
+      - alert: HighErrorRate
+        expr: |
+          (
+              sum(rate(http_requests_total{job="web", status=~"5.."}[5m]))
+              /
+              sum(rate(http_requests_total{job="web"}[5m]))
+          ) * 100 > 2
+        for: 10m
+        labels:
+          severity: critical
+          slo: "99"
+        annotations:
+          summary: "High HTTP 5xx rate on web service"
+          description: "5xx error rate is above 2% for more than 10 minutes (SLO 99%). Current value: {{ $value | printf \"%.2f\" }}%%"

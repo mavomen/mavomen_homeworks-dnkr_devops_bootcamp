@@ -1,0 +1,25 @@
+### inhibition_demo_output.txt - captured 2026-10-28T22:47:58+03:30
+### config: alertmanager_inhibit.yml (InstanceDown inhibits HighCPUUsage per instance)
+### scenario: InstanceDown{instance=node_exporter:9100} + HighCPUUsage{node_exporter:9100}
+###           + HighCPUUsage{other-node:9100} (control group)
+
+## amtool validation of the active config
+Checking '/etc/alertmanager/alertmanager.yml'  SUCCESS
+Found:
+ - global config
+ - route
+ - 1 inhibit rules
+ - 2 receivers
+ - 0 templates
+
+
+Waiting 40s for group_wait (30s) and the inhibition pass...
+{"alertname":"HighCPUUsage","instance":"node_exporter:9100","status":"suppressed","inhibitedBy":["d638c9865bed78bc"]}
+{"alertname":"HighCPUUsage","instance":"other-node:9100","status":"active","inhibitedBy":[]}
+{"alertname":"InstanceDown","instance":"node_exporter:9100","status":"active","inhibitedBy":[]}
+
+
+## webhook sink log (expect: InstanceDown -> /stdout, only other-node HighCPUUsage -> /logfile)
+## sink log cleared before inhibition demo (2026-10-28T22:47:55+03:30)
+2026-10-28T22:48:29  POST /stdout  {"receiver": "stdout-receiver", "status": "firing", "alerts": [{"status": "firing", "labels": {"alertname": "InstanceDown", "instance": "node_exporter:9100", "severity": "critical", "team": "platform"}, "annotations": {"summary": "synthetic InstanceDown (inhibition demo)"}, "startsAt": "2026-10-28T19:17:59Z", "endsAt": "0001-01-01T00:00:00Z", "generatorURL": "", "fingerprint": "d638c9865bed78bc"}], "notification_reason": "first notification", "groupLabels": {"alertname": "InstanceDown", "severity": "critical"}, "commonLabels": {"alertname": "InstanceDown", "instance": "node_exporter:9100", "severity": "critical", "team": "platform"}, "commonAnnotations": {"summary": "synthetic InstanceDown (inhibition demo)"}, "routeLabels": {}, "externalURL": "http://942587a0ed5a:9093", "version": "4", "groupKey": "{}/{severity=\"critical\"}:{alertname=\"InstanceDown\", severity=\"critical\"}", "truncatedAlerts": 0}
+2026-10-28T22:48:29  POST /logfile  {"receiver": "logfile-receiver", "status": "firing", "alerts": [{"status": "firing", "labels": {"alertname": "HighCPUUsage", "instance": "other-node:9100", "severity": "warning", "team": "platform"}, "annotations": {"summary": "synthetic HighCPUUsage different instance (control)"}, "startsAt": "2026-10-28T19:17:59Z", "endsAt": "0001-01-01T00:00:00Z", "generatorURL": "", "fingerprint": "c65be6cc10ad86c0"}], "notification_reason": "first notification", "groupLabels": {"alertname": "HighCPUUsage", "severity": "warning"}, "commonLabels": {"alertname": "HighCPUUsage", "instance": "other-node:9100", "severity": "warning", "team": "platform"}, "commonAnnotations": {"summary": "synthetic HighCPUUsage different instance (control)"}, "routeLabels": {}, "externalURL": "http://942587a0ed5a:9093", "version": "4", "groupKey": "{}/{severity=\"warning\"}:{alertname=\"HighCPUUsage\", severity=\"warning\"}", "truncatedAlerts": 0}

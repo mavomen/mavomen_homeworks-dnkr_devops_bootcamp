@@ -1,0 +1,12 @@
+### alerts_pipeline_check.txt - captured 2026-10-28T12:38:00+03:30
+{"name":"basic_alerts","rules":["InstanceDown","HighCPUUsage"]}
+
+"http://alertmanager:9093/api/v2/alerts"
+{
+  "job": "node_exporter",
+  "health": "up"
+}
+{
+  "job": "prometheus",
+  "health": "up"
+}

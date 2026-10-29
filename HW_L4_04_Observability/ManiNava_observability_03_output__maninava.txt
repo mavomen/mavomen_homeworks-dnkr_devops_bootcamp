@@ -1,0 +1,148 @@
+= ManiNava Observability 3 - Run Transcript =
+= Date: Wed Oct 28 10:50:27 PM +0330 2026 =
+= User: mava =
+
+# Structure
+$ ls ManiNava_observability_03
+01_alertmanager_setup
+02_alert_rules_basics
+03_notifications_routing
+04_dashboards_runbooks
+05_alert_fatigue_maintenance
+commands_history.txt
+lib
+README.md
+run_all.sh
+exit code: 0
+
+$ ls ManiNava_observability_03/04_dashboards_runbooks ManiNava_observability_03/05_alert_fatigue_maintenance
+ManiNava_observability_03/04_dashboards_runbooks:
+alert_dashboard_design.md
+runbook_instance_down.md
+
+ManiNava_observability_03/05_alert_fatigue_maintenance:
+alert_fatigue_analysis.md
+alerting_maintenance_checklist.md
+exit code: 0
+
+# Section 01 - stack (prometheus + alertmanager + node_exporter)
+$ docker ps --format '{{.Names}}  {{.Status}}' | grep -E 'prometheus|alertmanager|node_exporter'
+alertmanager  Up About a minute
+prometheus  Up 2 days
+node_exporter  Up 3 minutes
+exit code: 0
+
+$ curl -s http://localhost:9090/-/ready
+Prometheus Server is Ready.
+exit code: 0
+
+$ curl -s http://localhost:9093/-/ready
+OK
+exit code: 0
+
+$ curl -s http://localhost:9090/api/v1/rules | jq -r '.data.groups[].rules[] | .name + " for=" + (.duration|tostring) + "s"'
+InstanceDown for=120s
+HighCPUUsage for=300s
+exit code: 0
+
+$ curl -s http://localhost:9090/api/v1/rules | jq -r '.data.groups[].rules[] | .name + ": " + .annotations.runbook_url'
+InstanceDown: https://runbooks.example.com/runbooks/instance_down.md
+HighCPUUsage: 
+exit code: 0
+
+$ curl -s http://localhost:9090/api/v1/alertmanagers | jq -r '.data.activeAlertmanagers[].url'
+http://alertmanager:9093/api/v2/alerts
+exit code: 0
+
+$ docker exec prometheus promtool check config /etc/prometheus/prometheus.yml
+Checking /etc/prometheus/prometheus.yml
+  SUCCESS: 1 rule files found
+ SUCCESS: /etc/prometheus/prometheus.yml is valid prometheus config file syntax
+
+Checking /etc/prometheus/alerts.yml
+  SUCCESS: 2 rules found
+exit code: 0
+
+$ docker exec alertmanager amtool check-config /etc/alertmanager/alertmanager.yml
+Checking '/etc/alertmanager/alertmanager.yml'  SUCCESS
+Found:
+ - global config
+ - route
+ - 0 inhibit rules
+ - 1 receivers
+ - 0 templates
+exit code: 0
+
+# Section 01 - InstanceDown end-to-end demo (real alert, evidence file)
+$ sed -n '1,9p' ManiNava_observability_03/01_alertmanager_setup/instance_down_demo_output.txt
+### instance_down_demo_output.txt - captured 2026-10-28T22:43:45+03:30
+### scenario: docker stop node_exporter -> InstanceDown (expr: up == 0, for: 2m)
+
+## before: node_exporter target health
+{"metric":{"__name__":"up","instance":"node_exporter:9100","job":"node_exporter"},"value":[1794683625.027,"1"]}
+
+Stopping node_exporter...
+Waiting for InstanceDown to fire (expr up==0, for: 2m)...
+  2026-10-28T22:43:55+03:30 InstanceDown state: none
+exit code: 0
+
+$ grep -c 'state: pending' ManiNava_observability_03/01_alertmanager_setup/instance_down_demo_output.txt
+12
+exit code: 0
+
+$ grep 'state: firing' ManiNava_observability_03/01_alertmanager_setup/instance_down_demo_output.txt | head -2
+  2026-10-28T22:46:15+03:30 InstanceDown state: firing
+exit code: 0
+
+$ grep -oE 'POST /stdout' ManiNava_observability_03/01_alertmanager_setup/instance_down_demo_output.txt | head -1
+POST /stdout
+exit code: 0
+
+$ grep -oE '"runbook_url": "[^"]*"' ManiNava_observability_03/01_alertmanager_setup/instance_down_demo_output.txt | head -1
+"runbook_url": "https://runbooks.example.com/runbooks/instance_down.md"
+exit code: 0
+
+# Section 03 - routing demo (critical→/stdout, warning→/logfile)
+$ grep -cE 'POST /stdout' ManiNava_observability_03/03_notifications_routing/routing_demo_output.txt
+1
+exit code: 0
+
+$ grep -cE 'POST /logfile' ManiNava_observability_03/03_notifications_routing/routing_demo_output.txt
+1
+exit code: 0
+
+$ grep -oE '"receiver": "[a-z-]+"' ManiNava_observability_03/03_notifications_routing/routing_demo_output.txt
+"receiver": "stdout-receiver"
+"receiver": "logfile-receiver"
+exit code: 0
+
+# Section 03 - inhibition demo (same-instance warning suppressed)
+$ grep 'suppressed' ManiNava_observability_03/03_notifications_routing/inhibition_demo_output.txt
+{"alertname":"HighCPUUsage","instance":"node_exporter:9100","status":"suppressed","inhibitedBy":["d638c9865bed78bc"]}
+exit code: 0
+
+$ grep -oE 'POST /(stdout|logfile)' ManiNava_observability_03/03_notifications_routing/inhibition_demo_output.txt
+POST /stdout
+POST /logfile
+exit code: 0
+
+# Validation (promtool/amtool on the delivered rule + route files)
+$ promtool check rules ManiNava_observability_03/02_alert_rules_basics/alerts_basic.yml ManiNava_observability_03/02_alert_rules_basics/alerts_slo.yml
+Checking ManiNava_observability_03/02_alert_rules_basics/alerts_basic.yml
+  SUCCESS: 2 rules found
+
+Checking ManiNava_observability_03/02_alert_rules_basics/alerts_slo.yml
+  SUCCESS: 1 rules found
+exit code: 0
+
+$ docker run --rm --entrypoint amtool -v "$PWD/ManiNava_observability_03/03_notifications_routing:/cfg" prom/alertmanager:latest check-config /cfg/alertmanager.yml
+Checking '/cfg/alertmanager.yml'  SUCCESS
+Found:
+ - global config
+ - route
+ - 0 inhibit rules
+ - 2 receivers
+ - 0 templates
+exit code: 0
+
+= END of transcript =

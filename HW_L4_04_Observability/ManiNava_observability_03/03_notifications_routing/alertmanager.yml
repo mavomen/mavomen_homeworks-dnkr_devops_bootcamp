@@ -1,0 +1,24 @@
+# Routing config (03_notifications_routing): severity-based routing to two
+# local test receivers. The webhook endpoints are a local sink (webhook_sink.py
+# on the host); in production they would be replaced by real Slack/email configs.
+route:
+  group_by: ['alertname', 'severity']
+  receiver: stdout-receiver   # fallback for alerts that match no sub-route
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  routes:
+    - matchers:
+        - severity = "critical"
+      receiver: stdout-receiver
+    - matchers:
+        - severity = "warning"
+      receiver: logfile-receiver
+
+receivers:
+  - name: stdout-receiver
+    webhook_configs:
+      - url: http://host.docker.internal:5001/stdout
+  - name: logfile-receiver
+    webhook_configs:
+      - url: http://host.docker.internal:5001/logfile

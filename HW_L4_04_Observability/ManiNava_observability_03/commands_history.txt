@@ -1,0 +1,135 @@
+=== 01_alertmanager_setup start ===
+(cd ../HW_L4_03_Observability/.../03_monitoring_install_docker_2 && docker-compose down --remove-orphans)
+start webhook sink on :5001
+bash start_stack.sh &> start_stack_output.txt
+=== 01_alertmanager_setup: stack started ===
+# loaded rules
+curl -s http://localhost:9090/api/v1/rules | jq -c '.data.groups[] | {name: .name, rules: [.rules[].name]}'
+# active alertmanager connection
+curl -s http://localhost:9090/api/v1/alertmanagers | jq -c '.data.activeAlertmanagers[].url'
+# targets
+curl -s http://localhost:9090/api/v1/targets | jq '.data.activeTargets[] | {job: .labels.job, health: .health}'
+# promtool check config
+docker exec prometheus promtool check config /etc/prometheus/prometheus.yml
+# amtool check alertmanager config
+docker exec alertmanager amtool check-config /etc/alertmanager/alertmanager.yml
+=== 01_alertmanager_setup done ===
+=== demo_instance_down start ===
+# up query before
+curl -s 'http://localhost:9090/api/v1/query?query=up%7Bjob%3D%22node_exporter%22%7D' | jq -c '.data.result[] | {metric, value}'
+docker stop node_exporter
+# prometheus alerts after firing
+curl -s http://localhost:9090/api/v1/alerts | jq -c '.data.alerts[] | {alertname: .labels.alertname, state, value: .value, activeAt: .activeAt}'
+# alertmanager received the alert
+curl -s http://localhost:9093/api/v2/alerts | jq -c '.[] | {labels: {alertname: .labels.alertname, severity: .labels.severity, instance: .labels.instance}, status: .status.state}'
+docker compose up -d node_exporter (heal)
+# up query after restart
+curl -s 'http://localhost:9090/api/v1/query?query=up%7Bjob%3D%22node_exporter%22%7D' | jq -c '.data.result[] | {metric, value}'
+=== demo_instance_down done ===
+=== 02_alert_rules_basics start ===
+# promtool check rules alerts_basic.yml
+promtool check rules alerts_basic.yml
+# promtool check rules alerts_slo.yml
+promtool check rules alerts_slo.yml
+# promtool check rules inside container (alerts.yml copy)
+docker exec prometheus promtool check rules /etc/prometheus/alerts.yml
+=== 02_alert_rules_basics done ===
+=== 03_notifications_routing start (live routing + inhibition demos) ===
+swap in 03_notifications_routing/alertmanager.yml
+# amtool check-config (active config)
+docker exec alertmanager amtool check-config /etc/alertmanager/alertmanager.yml
+POST synthetic critical + warning alerts
+# alertmanager alert states
+curl -s http://localhost:9093/api/v2/alerts | jq -c '.[] | {alertname: .labels.alertname, severity: .labels.severity, status: .status.state}'
+swap in 03_notifications_routing/alertmanager_inhibit.yml
+# amtool check-config (active config)
+docker exec alertmanager amtool check-config /etc/alertmanager/alertmanager.yml
+POST synthetic alerts for inhibition demo (source + same-instance target + control)
+# alertmanager alert states (suppressed vs active)
+curl -s http://localhost:9093/api/v2/alerts | jq -c '.[] | {alertname: .labels.alertname, instance: .labels.instance, status: .status.state, inhibitedBy: .status.inhibitedBy}'
+restore original 01_alertmanager_setup/alertmanager.yml
+=== 03_notifications_routing done ===
+=== 03_notifications_routing start (live routing + inhibition demos) ===
+swap in 03_notifications_routing/alertmanager.yml
+# amtool check-config (active config)
+docker exec alertmanager amtool check-config /etc/alertmanager/alertmanager.yml
+POST synthetic critical + warning alerts
+# alertmanager alert states
+curl -s http://localhost:9093/api/v2/alerts | jq -c '.[] | {alertname: .labels.alertname, severity: .labels.severity, status: .status.state}'
+swap in 03_notifications_routing/alertmanager_inhibit.yml
+# amtool check-config (active config)
+docker exec alertmanager amtool check-config /etc/alertmanager/alertmanager.yml
+POST synthetic alerts for inhibition demo (source + same-instance target + control)
+# alertmanager alert states (suppressed vs active)
+curl -s http://localhost:9093/api/v2/alerts | jq -c '.[] | {alertname: .labels.alertname, instance: .labels.instance, status: .status.state, inhibitedBy: .status.inhibitedBy}'
+restore original 01_alertmanager_setup/alertmanager.yml
+=== 03_notifications_routing done ===
+=== demo_instance_down start ===
+# up query before
+curl -s 'http://localhost:9090/api/v1/query?query=up%7Bjob%3D%22node_exporter%22%7D' | jq -c '.data.result[] | {metric, value}'
+docker stop node_exporter
+# prometheus alerts after firing
+curl -s http://localhost:9090/api/v1/alerts | jq -c '.data.alerts[] | {alertname: .labels.alertname, state, value: .value, activeAt: .activeAt}'
+# alertmanager received the alert
+curl -s http://localhost:9093/api/v2/alerts | jq -c '.[] | {labels: {alertname: .labels.alertname, severity: .labels.severity, instance: .labels.instance}, status: .status.state}'
+docker compose up -d node_exporter (heal)
+# up query after restart
+curl -s 'http://localhost:9090/api/v1/query?query=up%7Bjob%3D%22node_exporter%22%7D' | jq -c '.data.result[] | {metric, value}'
+=== demo_instance_down done ===
+=== 03_notifications_routing start (live routing + inhibition demos) ===
+swap in 03_notifications_routing/alertmanager.yml
+# amtool check-config (active config)
+docker exec alertmanager amtool check-config /etc/alertmanager/alertmanager.yml
+POST synthetic critical + warning alerts
+# alertmanager alert states
+curl -s http://localhost:9093/api/v2/alerts | jq -c '.[] | {alertname: .labels.alertname, severity: .labels.severity, status: .status.state}'
+swap in 03_notifications_routing/alertmanager_inhibit.yml
+# amtool check-config (active config)
+docker exec alertmanager amtool check-config /etc/alertmanager/alertmanager.yml
+POST synthetic alerts for inhibition demo (source + same-instance target + control)
+# alertmanager alert states (suppressed vs active)
+curl -s http://localhost:9093/api/v2/alerts | jq -c '.[] | {alertname: .labels.alertname, instance: .labels.instance, status: .status.state, inhibitedBy: .status.inhibitedBy}'
+restore original 01_alertmanager_setup/alertmanager.yml
+=== 03_notifications_routing done ===
+=== 03_notifications_routing start (live routing + inhibition demos) ===
+swap in 03_notifications_routing/alertmanager.yml
+# amtool check-config (active config)
+docker exec alertmanager amtool check-config /etc/alertmanager/alertmanager.yml
+POST synthetic critical + warning alerts
+# alertmanager alert states
+curl -s http://localhost:9093/api/v2/alerts | jq -c '.[] | {alertname: .labels.alertname, severity: .labels.severity, status: .status.state}'
+swap in 03_notifications_routing/alertmanager_inhibit.yml
+# amtool check-config (active config)
+docker exec alertmanager amtool check-config /etc/alertmanager/alertmanager.yml
+POST synthetic alerts for inhibition demo (source + same-instance target + control)
+# alertmanager alert states (suppressed vs active)
+curl -s http://localhost:9093/api/v2/alerts | jq -c '.[] | {alertname: .labels.alertname, instance: .labels.instance, status: .status.state, inhibitedBy: .status.inhibitedBy}'
+restore original 01_alertmanager_setup/alertmanager.yml
+=== 03_notifications_routing done ===
+=== demo_instance_down start ===
+# up query before
+curl -s 'http://localhost:9090/api/v1/query?query=up%7Bjob%3D%22node_exporter%22%7D' | jq -c '.data.result[] | {metric, value}'
+docker stop node_exporter
+# prometheus alerts after firing
+curl -s http://localhost:9090/api/v1/alerts | jq -c '.data.alerts[] | {alertname: .labels.alertname, state, value: .value, activeAt: .activeAt}'
+# alertmanager received the alert
+curl -s http://localhost:9093/api/v2/alerts | jq -c '.[] | {labels: {alertname: .labels.alertname, severity: .labels.severity, instance: .labels.instance}, status: .status.state}'
+docker compose up -d node_exporter (heal)
+# up query after restart
+curl -s 'http://localhost:9090/api/v1/query?query=up%7Bjob%3D%22node_exporter%22%7D' | jq -c '.data.result[] | {metric, value}'
+=== demo_instance_down done ===
+=== 03_notifications_routing start (live routing + inhibition demos) ===
+swap in 03_notifications_routing/alertmanager.yml
+# amtool check-config (active config)
+docker exec alertmanager amtool check-config /etc/alertmanager/alertmanager.yml
+POST synthetic critical + warning alerts
+# alertmanager alert states
+curl -s http://localhost:9093/api/v2/alerts | jq -c '.[] | {alertname: .labels.alertname, severity: .labels.severity, status: .status.state}'
+swap in 03_notifications_routing/alertmanager_inhibit.yml
+# amtool check-config (active config)
+docker exec alertmanager amtool check-config /etc/alertmanager/alertmanager.yml
+POST synthetic alerts for inhibition demo (source + same-instance target + control)
+# alertmanager alert states (suppressed vs active)
+curl -s http://localhost:9093/api/v2/alerts | jq -c '.[] | {alertname: .labels.alertname, instance: .labels.instance, status: .status.state, inhibitedBy: .status.inhibitedBy}'
+restore original 01_alertmanager_setup/alertmanager.yml
+=== 03_notifications_routing done ===

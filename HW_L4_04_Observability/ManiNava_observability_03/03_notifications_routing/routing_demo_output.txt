@@ -1,0 +1,24 @@
+### routing_demo_output.txt - captured 2026-10-28T22:47:14+03:30
+### config: alertmanager.yml (this folder), loaded into the section-01 stack
+### scenario: POST synthetic InstanceDown(critical) + HighCPUUsage(warning)
+
+## amtool validation of the active config
+Checking '/etc/alertmanager/alertmanager.yml'  SUCCESS
+Found:
+ - global config
+ - route
+ - 0 inhibit rules
+ - 2 receivers
+ - 0 templates
+
+
+Waiting 40s for group_wait (30s) and notification dispatch...
+{"alertname":"HighCPUUsage","severity":"warning","status":"active"}
+{"alertname":"InstanceDown","severity":"critical","status":"active"}
+
+
+## webhook sink log (expect: InstanceDown -> /stdout, HighCPUUsage -> /logfile)
+### (full log: webhook_sink_log.txt)
+## sink log cleared before routing/inhibition demo re-run 2026-10-28T22:47:11+03:30
+2026-10-28T22:47:45  POST /stdout  {"receiver": "stdout-receiver", "status": "firing", "alerts": [{"status": "firing", "labels": {"alertname": "InstanceDown", "instance": "node_exporter:9100", "severity": "critical", "team": "platform"}, "annotations": {"summary": "synthetic InstanceDown (routing demo)"}, "startsAt": "2026-10-28T19:17:15Z", "endsAt": "0001-01-01T00:00:00Z", "generatorURL": "", "fingerprint": "d638c9865bed78bc"}], "notification_reason": "first notification", "groupLabels": {"alertname": "InstanceDown", "severity": "critical"}, "commonLabels": {"alertname": "InstanceDown", "instance": "node_exporter:9100", "severity": "critical", "team": "platform"}, "commonAnnotations": {"summary": "synthetic InstanceDown (routing demo)"}, "routeLabels": {}, "externalURL": "http://2554b3db5c73:9093", "version": "4", "groupKey": "{}/{severity=\"critical\"}:{alertname=\"InstanceDown\", severity=\"critical\"}", "truncatedAlerts": 0}
+2026-10-28T22:47:45  POST /logfile  {"receiver": "logfile-receiver", "status": "firing", "alerts": [{"status": "firing", "labels": {"alertname": "HighCPUUsage", "instance": "node_exporter:9100", "severity": "warning", "team": "platform"}, "annotations": {"summary": "synthetic HighCPUUsage (routing demo)"}, "startsAt": "2026-10-28T19:17:15Z", "endsAt": "0001-01-01T00:00:00Z", "generatorURL": "", "fingerprint": "740552521987e08d"}], "notification_reason": "first notification", "groupLabels": {"alertname": "HighCPUUsage", "severity": "warning"}, "commonLabels": {"alertname": "HighCPUUsage", "instance": "node_exporter:9100", "severity": "warning", "team": "platform"}, "commonAnnotations": {"summary": "synthetic HighCPUUsage (routing demo)"}, "routeLabels": {}, "externalURL": "http://2554b3db5c73:9093", "version": "4", "groupKey": "{}/{severity=\"warning\"}:{alertname=\"HighCPUUsage\", severity=\"warning\"}", "truncatedAlerts": 0}

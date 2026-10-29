@@ -1,0 +1,15 @@
+# Section 01: minimal Alertmanager config. One local webhook receiver that
+# delivers into the shared test sink (webhook_sink.py on the host, started by
+# 03_notifications_routing/webhook_sink.py); in production this would be a real
+# Slack/email configuration. Alerts are deliberately grouped into a single
+# group (group_by: []) so the InstanceDown demo notification is easy to
+# observe end-to-end. group_wait/group_interval/repeat_interval stay at their
+# defaults (30s / 5m / 4h).
+route:
+  group_by: []
+  receiver: stdout-receiver
+
+receivers:
+  - name: stdout-receiver
+    webhook_configs:
+      - url: http://host.docker.internal:5001/stdout

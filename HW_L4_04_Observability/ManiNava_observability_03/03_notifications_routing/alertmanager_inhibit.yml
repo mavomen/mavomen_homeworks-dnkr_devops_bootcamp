@@ -1,0 +1,33 @@
+# Routing + inhibition config (second version, per homework 3.2): identical to
+# alertmanager.yml in this folder plus an inhibit_rules section. InstanceDown
+# (critical) suppresses HighCPUUsage (warning) for the same instance.
+route:
+  group_by: ['alertname', 'severity']
+  receiver: stdout-receiver
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  routes:
+    - matchers:
+        - severity = "critical"
+      receiver: stdout-receiver
+    - matchers:
+        - severity = "warning"
+      receiver: logfile-receiver
+
+inhibit_rules:
+  - source_match:
+      alertname: 'InstanceDown'
+      severity: 'critical'
+    target_match:
+      alertname: 'HighCPUUsage'
+      severity: 'warning'
+    equal: ['instance']
+
+receivers:
+  - name: stdout-receiver
+    webhook_configs:
+      - url: http://host.docker.internal:5001/stdout
+  - name: logfile-receiver
+    webhook_configs:
+      - url: http://host.docker.internal:5001/logfile
