@@ -1,0 +1,3 @@
+[submodule "team_project"]
+	path = team_project
+	url = https://github.com/mavomen/DnkrDevOpsTeamProject.git
